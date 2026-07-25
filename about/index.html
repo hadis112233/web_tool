@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#f9f9f9" />
+    <title>关于项目 - Hadis 工具导航</title>
+    <link rel="icon" href="../assets/images/hadis-favicon.svg" type="image/svg+xml" />
+    <meta name="keywords" content="Hadis 工具导航,关于项目,网址导航" />
+    <meta name="description" content="了解 Hadis 工具导航：一个专注于常用网站与在线工具的一站式导航项目。" />
+    <link rel="canonical" href="https://web.008997.xyz/about/" />
+    <meta property="og:title" content="关于 Hadis 工具导航" />
+    <meta property="og:description" content="了解 Hadis 工具导航及其使用方式。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://web.008997.xyz/about/" />
+    <meta property="og:site_name" content="Hadis 工具导航" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://web.008997.xyz/assets/images/hadis-share.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="关于 Hadis 工具导航" />
+    <meta name="twitter:description" content="了解 Hadis 工具导航及其使用方式。" />
+    <meta name="twitter:image" content="https://web.008997.xyz/assets/images/hadis-share.svg" />
+
+    <link rel="stylesheet" id="block-library-css"
+        href="../assets/css/block-library.min-5.6.2.css" type="text/css" media="all" />
+    <link rel="stylesheet" id="iconfont-css" href="../assets/css/iconfont-3.03029.1.css"
+        type="text/css" media="all" />
+    <link rel="stylesheet" id="bootstrap-css" href="../assets/css/bootstrap.min-4.3.1.css"
+        type="text/css" media="all" />
+    <link rel="stylesheet" id="iowen-css" href="../assets/css/style-3.03029.1.css"
+        type="text/css" media="all" />
+    <link rel="stylesheet" id="custom-css" href="../assets/css/custom-style.css"
+        type="text/css" media="all" />
+    <link rel="stylesheet" id="fortawesome-css" href="../assets/fontawesome-5.15.4/css/all.min.css" type="text/css" />
+
+    <style>
+        body {
+            background: #f5f7fa;
+            padding: 20px 0;
+        }
+
+        .about-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .about-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .about-header h1 {
+            font-size: 32px;
+            margin: 0 0 10px 0;
+            font-weight: 600;
+        }
+
+        .about-header p {
+            font-size: 16px;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .about-content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+        .section-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .skill-item i {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .skill-item .skill-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 0 0;
+        }
+
+        .contact-list li {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .contact-list li:hover {
+            background: #e9ecef;
+        }
+
+        .contact-list li i {
+            margin-right: 12px;
+            color: #667eea;
+            width: 20px;
+            text-align: center;
+        }
+
+        .contact-list li strong {
+            color: #333;
+            margin-right: 8px;
+            min-width: 80px;
+        }
+
+        .contact-list li a {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .contact-list li a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .back-home a {
+            display: inline-block;
+            padding: 10px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .back-home a:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .back-home a i {
+            margin-right: 8px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                margin: 20px;
+            }
+
+            .about-header {
+                padding: 30px 20px;
+            }
+
+            .about-header h1 {
+                font-size: 26px;
+            }
+
+            .about-content {
+                padding: 30px 20px;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+
+</head>
+
+<body class="io-grey-mode">
+    <div class="about-container">
+        <div class="about-header">
+            <h1><i class="fas fa-user-circle"></i> 关于项目</h1>
+            <p>由 hadis112233 维护的实用网址导航项目</p>
+        </div>
+
+        <div class="about-content">
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-id-card"></i>
+                    项目简介
+                </h2>
+                <div class="section-content">
+                    <div class="highlight-box">
+                        <p>本项目由 hadis112233 创建并持续维护，致力于整理常用网站与实用在线工具。</p>
+                    </div>
+                    <p>网站采用静态页面构建，便于部署、维护和按需扩展导航分类。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-code"></i>
+                    项目特点
+                </h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fas fa-file-code"></i>
+                        <div class="skill-name">静态网页</div>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="skill-name">响应式布局</div>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-search"></i>
+                        <div class="skill-name">快速搜索</div>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-moon"></i>
+                        <div class="skill-name">日夜模式</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-heart"></i>
+                    维护说明
+                </h2>
+                <div class="section-content">
+                    <p>欢迎通过 GitHub 提交问题、建议或改进方案。站内链接和内容会根据实际使用需求持续更新。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-address-book"></i>
+                    联系方式
+                </h2>
+                <ul class="contact-list">
+                    <li>
+                        <i class="fab fa-github"></i>
+                        <strong>GitHub:</strong>
+                        <a href="https://github.com/hadis112233" target="_blank" rel="noopener noreferrer">https://github.com/hadis112233</a>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <strong>邮箱:</strong>
+                        <a href="mailto:wwd118932@gmail.com">wwd118932@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="back-home">
+            <a href="/">
+                <i class="fas fa-home"></i>
+                返回首页
+            </a>
+        </div>
+    </div>
+
+    <script src="../assets/js/jquery.min-3.2.1.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 56" role="img" aria-label="Hadis 工具导航">
+  <rect width="56" height="56" rx="16" fill="#2563eb"/>
+  <path d="M17 15h7v10h8V15h7v26h-7V31h-8v10h-7z" fill="#fff"/>
+  <text x="70" y="35" fill="#172033" font-family="Arial, sans-serif" font-size="24" font-weight="700">Hadis 导航</text>
+</svg>
