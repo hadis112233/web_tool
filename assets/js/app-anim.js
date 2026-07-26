@@ -23,14 +23,6 @@
             intoSites(true);
         }*/
     });
-    $(".panel-body.single img").each(function(i) {
-        if (!this.parentNode.href) {
-            if(theme.lazyload)
-                $(this).wrap("<a href='" + $(this).data('src') + "' data-fancybox='fancybox' data-caption='" + this.alt + "'></a>")
-            else
-                $(this).wrap("<a href='" + this.src + "' data-fancybox='fancybox' data-caption='" + this.alt + "'></a>")
-        }
-    })
     // Enable/Disable Resizable Event
     var wid = 0;
     $(window).resize(function() {
@@ -56,7 +48,7 @@
         });
     });
     $(document).on('click', "a[target!='_blank']", function() {
-        if( theme.loading=='1' && $(this).attr('href') && $(this).attr('href').indexOf("#") != 0 && $(this).attr('href').indexOf("java") != 0 && !$(this).data('fancybox')  && !$(this).data('commentid') && !$(this).hasClass('nofx') ){
+        if( theme.loading=='1' && $(this).attr('href') && $(this).attr('href').indexOf("#") != 0 && $(this).attr('href').indexOf("java") != 0 && !$(this).data('commentid') && !$(this).hasClass('nofx') ){
             var load = $('<div id="load-loading"></div>');
             $("body").prepend(load);
             load.animate({opacity:'1'},200,'swing').delay(2000).hide(300,function(){ load.remove() });
@@ -177,64 +169,6 @@
             cache:false,
         });
     });
-    // app下载统计
-    var clipboard = new ClipboardJS('a.down_count', {
-        text: $(document).on('click','a.down_count', function(e) {
-            var mm = $(e.target).data('clipboard-text');  
-            $.ajax({
-                type:"POST",
-                url:theme.ajaxurl,
-                data: $(this).data(),
-                success : function( data ){
-                    $('.down-count-text').html(data);
-                }
-            });
-            if( mm ){
-                return mm; 
-            }
-        })
-    });
-    clipboard.on("success",function (e) {
-        alert("网盘密码已复制，点“确定”进入下载页面。");
-    });
-
-    //夜间模式
-    $(document).on('click', '.switch-dark-mode', function(event) {
-        event.preventDefault();
-        $.ajax({
-            url: theme.ajaxurl,
-            type: 'POST',
-            dataType: 'html',
-            data: {
-                mode_toggle: $('body').hasClass('io-black-mode') === true ? 1 : 0,
-                action: 'switch_dark_mode',
-            },
-        })
-        .done(function(response) {
-            $('body').toggleClass('io-black-mode '+theme.defaultclass);
-            switch_mode(); 
-            $("#"+ $('.switch-dark-mode').attr('aria-describedby')).remove();
-            //$('.switch-dark-mode').removeAttr('aria-describedby');
-        })
-    });
-    function switch_mode(){
-        if($('body').hasClass('io-black-mode')){
-            if($(".switch-dark-mode").attr("data-original-title"))
-                $(".switch-dark-mode").attr("data-original-title","日间模式");
-            else
-                $(".switch-dark-mode").attr("title","日间模式");
-            $(".mode-ico").removeClass("icon-night");
-            $(".mode-ico").addClass("icon-light");
-        }
-        else{
-            if($(".switch-dark-mode").attr("data-original-title"))
-                $(".switch-dark-mode").attr("data-original-title","夜间模式");
-            else
-                $(".switch-dark-mode").attr("title","夜间模式");
-            $(".mode-ico").removeClass("icon-light");
-            $(".mode-ico").addClass("icon-night");
-        }
-    }
     //返回顶部
     $(window).scroll(function () {
         if ($(this).scrollTop() >= 50) {
@@ -367,7 +301,6 @@
     });
     //菜单栏最小化
     $('#mini-button').on('click',function(){
-        console.log('start trigger_lsm_mini');
         trigger_lsm_mini(true);
 
     });
@@ -377,19 +310,15 @@
 	    //221024: 调整左导航展开时,点击图标锚定定位失效
             //$('.sidebar-nav .change-href').attr('href','javascript:;');
             $('.sidebar-menu ul ul').css("display", "none");
-	    console.log('checked=true');
             if(isNoAnim){
-		console.log('isNoAnim=true');
                 $('.sidebar-nav').removeClass('animate-nav');
                 $('.sidebar-nav').width(170);
             }
             else{
-		console.log('isNoAnim=false');
                 $('.sidebar-nav').addClass('animate-nav');
                 $('.sidebar-nav').stop().animate({width: 170},200);
             }
         }else{
-            console.log('checked=false');
             $('.sidebar-item.sidebar-show').removeClass('sidebar-show');
             $('.sidebar-menu ul').removeAttr('style');
             $('.sidebar-nav').addClass('mini-sidebar');
@@ -490,9 +419,6 @@
                 if (response.trim()) { 
                     $(body).html('');
                     $(body).append(response); 
-                    //if(theme.lazyload == '1') {
-                    //    $(body+" img.lazy").lazyload();
-                    //} 
                     var url =  $(body).children('#ajax-cat-url').data('url');
                     if(url)
                         t.parents('.d-flex.flex-fill.flex-tab').children('.btn-move.tab-move').show().attr('href', url);
@@ -606,7 +532,7 @@
     function intoSites(isLive) {
         var sites = getItem( isLive ? "livelists" : "myLinks" );
         if(sites.length && !isLive && !$("#add-site")[0]){  
-            $(".customize_nothing.custom-site").children(".nothing").html('<a href="javascript:;" class="add-new-custom-site" data-action="add_custom_urls" data-term_name="我的导航" data-urls="'+Base64.encode(JSON.stringify( sites ))+'" >您已登录，检测到您的设备上有数据，点击<strong style="color:#db2323">同步到服务器</strong>。</a>');
+            $(".customize_nothing.custom-site").children(".nothing").html('<a href="javascript:;" class="add-new-custom-site" data-action="add_custom_urls" data-term_name="我的导航" data-urls="'+btoa(unescape(encodeURIComponent(JSON.stringify(sites))))+'" >您已登录，检测到您的设备上有数据，点击<strong style="color:#db2323">同步到服务器</strong>。</a>');
             return;
         }
         if (sites.length) {
@@ -620,7 +546,6 @@
             sites = getItem("myLinks");
         for (var i = 0; i < sites.length; i++){
             if ( parseInt(sites[i].id) === parseInt(id)) {
-                console.log(sites[i].id, id);
                 sites.splice(i, 1);
                 break;
             }
@@ -633,7 +558,6 @@
             sites = getItem("livelists");
         for (var i = 0; i < sites.length; i++){
             if ( parseInt(sites[i].id) === parseInt(id)) {
-                console.log(sites[i].id, id);
                 sites.splice(i, 1);
                 break;
             }
@@ -1292,27 +1216,3 @@ function ioConfirm(message, btnCallBack) {
 	}
 	return popup;
 }
-console.log("\n %c WebStack-Hugo 导航主题 By ShumLab %c https://www.shumlab.com/ \n", "color: #ffffff; background: #f1404b; padding:5px 0;", "background: #030307; padding:5px 0;");
-
-/**
- * Minified by jsDelivr using Terser v5.3.5.
- * Original file: /npm/js-base64@3.6.0/base64.js
- *
- * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
- */
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):function(){const r=e.Base64,o=t();o.noConflict=()=>(e.Base64=r,o),e.Meteor&&(Base64=o),e.Base64=o}()}("undefined"!=typeof self?self:"undefined"!=typeof window?window:"undefined"!=typeof global?global:this,(function(){"use strict";const e="3.6.0",t="function"==typeof atob,r="function"==typeof btoa,o="function"==typeof Buffer,n="function"==typeof TextDecoder?new TextDecoder:void 0,a="function"==typeof TextEncoder?new TextEncoder:void 0,f=[..."ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="],i=(e=>{let t={};return e.forEach(((e,r)=>t[e]=r)),t})(f),c=/^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/,u=String.fromCharCode.bind(String),s="function"==typeof Uint8Array.from?Uint8Array.from.bind(Uint8Array):(e,t=(e=>e))=>new Uint8Array(Array.prototype.slice.call(e,0).map(t)),d=e=>e.replace(/[+\/]/g,(e=>"+"==e?"-":"_")).replace(/=+$/m,""),l=e=>e.replace(/[^A-Za-z0-9\+\/]/g,""),h=e=>{let t,r,o,n,a="";const i=e.length%3;for(let i=0;i<e.length;){if((r=e.charCodeAt(i++))>255||(o=e.charCodeAt(i++))>255||(n=e.charCodeAt(i++))>255)throw new TypeError("invalid character found");t=r<<16|o<<8|n,a+=f[t>>18&63]+f[t>>12&63]+f[t>>6&63]+f[63&t]}return i?a.slice(0,i-3)+"===".substring(i):a},p=r?e=>btoa(e):o?e=>Buffer.from(e,"binary").toString("base64"):h,y=o?e=>Buffer.from(e).toString("base64"):e=>{let t=[];for(let r=0,o=e.length;r<o;r+=4096)t.push(u.apply(null,e.subarray(r,r+4096)));return p(t.join(""))},A=(e,t=!1)=>t?d(y(e)):y(e),b=e=>{if(e.length<2)return(t=e.charCodeAt(0))<128?e:t<2048?u(192|t>>>6)+u(128|63&t):u(224|t>>>12&15)+u(128|t>>>6&63)+u(128|63&t);var t=65536+1024*(e.charCodeAt(0)-55296)+(e.charCodeAt(1)-56320);return u(240|t>>>18&7)+u(128|t>>>12&63)+u(128|t>>>6&63)+u(128|63&t)},g=/[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g,B=e=>e.replace(g,b),x=o?e=>Buffer.from(e,"utf8").toString("base64"):a?e=>y(a.encode(e)):e=>p(B(e)),C=(e,t=!1)=>t?d(x(e)):x(e),m=e=>C(e,!0),U=/[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g,F=e=>{switch(e.length){case 4:var t=((7&e.charCodeAt(0))<<18|(63&e.charCodeAt(1))<<12|(63&e.charCodeAt(2))<<6|63&e.charCodeAt(3))-65536;return u(55296+(t>>>10))+u(56320+(1023&t));case 3:return u((15&e.charCodeAt(0))<<12|(63&e.charCodeAt(1))<<6|63&e.charCodeAt(2));default:return u((31&e.charCodeAt(0))<<6|63&e.charCodeAt(1))}},w=e=>e.replace(U,F),S=e=>{if(e=e.replace(/\s+/g,""),!c.test(e))throw new TypeError("malformed base64.");e+="==".slice(2-(3&e.length));let t,r,o,n="";for(let a=0;a<e.length;)t=i[e.charAt(a++)]<<18|i[e.charAt(a++)]<<12|(r=i[e.charAt(a++)])<<6|(o=i[e.charAt(a++)]),n+=64===r?u(t>>16&255):64===o?u(t>>16&255,t>>8&255):u(t>>16&255,t>>8&255,255&t);return n},E=t?e=>atob(l(e)):o?e=>Buffer.from(e,"base64").toString("binary"):S,v=o?e=>s(Buffer.from(e,"base64")):e=>s(E(e),(e=>e.charCodeAt(0))),D=e=>v(z(e)),R=o?e=>Buffer.from(e,"base64").toString("utf8"):n?e=>n.decode(v(e)):e=>w(E(e)),z=e=>l(e.replace(/[-_]/g,(e=>"-"==e?"+":"/"))),T=e=>R(z(e)),Z=e=>({value:e,enumerable:!1,writable:!0,configurable:!0}),j=function(){const e=(e,t)=>Object.defineProperty(String.prototype,e,Z(t));e("fromBase64",(function(){return T(this)})),e("toBase64",(function(e){return C(this,e)})),e("toBase64URI",(function(){return C(this,!0)})),e("toBase64URL",(function(){return C(this,!0)})),e("toUint8Array",(function(){return D(this)}))},I=function(){const e=(e,t)=>Object.defineProperty(Uint8Array.prototype,e,Z(t));e("toBase64",(function(e){return A(this,e)})),e("toBase64URI",(function(){return A(this,!0)})),e("toBase64URL",(function(){return A(this,!0)}))},O={version:e,VERSION:"3.6.0",atob:E,atobPolyfill:S,btoa:p,btoaPolyfill:h,fromBase64:T,toBase64:C,encode:C,encodeURI:m,encodeURL:m,utob:B,btou:w,decode:T,isValid:e=>{if("string"!=typeof e)return!1;const t=e.replace(/\s+/g,"").replace(/=+$/,"");return!/[^\s0-9a-zA-Z\+/]/.test(t)||!/[^\s0-9a-zA-Z\-_]/.test(t)},fromUint8Array:A,toUint8Array:D,extendString:j,extendUint8Array:I,extendBuiltins:()=>{j(),I()},Base64:{}};return Object.keys(O).forEach((e=>O.Base64[e]=O[e])),O}));
-/**
- * Chrome Bookmarks Converter
- * v1.0.0
- *
- * Convert a standard exported Google Chrome bookmarks HTML file into a JavaScript oject structure.
- * 
- * Dependencies: jQuery (latest).
- *
- * @summary Use JavaScript to convert an exported Chrome bookmarks HTML file. Export the results to JSON.
- * @author Jason Snelders <jason@jsnelders.com>
- *
- * Created at     : 2019-11-14 22:34:00
- * Last modified  : 2019-11-14 22:34:00
- */
-function ChromBookmarkConverter(){this.bookmarks={folders:[]},this.stripUnneededTags=function(a){return a=a.replace(/<p>/gi,""),a=a.replace(/<P>/gi,""),a=a.replace(/<dt>/gi,""),a=a.replace(/<DT>/gi,"")},this.processChromeBookmarksContent=function(a){var c,b=this;a=this.stripUnneededTags(a),c=$.parseHTML(a),$.each(c,function(a,c){if("DL"==c.tagName){var d={type:"folder",title:"未命名",items:[]};b.bookmarks.folders.push(d),b.processDL(c,1,d)}})},this.processDL=function(a,b,c){var d=this,e=0,f={},g={type:"folder",title:"",add_date:"",last_modified:"",items:[]},h={},i=$(a),j=!1;$.each(i.children(),function(a,i){var k,l,m,n,o,p,q,r,s;e+=1,k=b+"."+e,1==j&&i.tagName.toLowerCase()!="DL".toLowerCase()&&(j=!1,console.log("h3",f),g.items.push(f)),i.tagName.toLowerCase()=="DL".toLowerCase()&&(g={type:"folder",title:f.title,add_date:f.add_date,last_modified:f.last_modified,items:[]},1==j&&(j=!1),d.bookmarks.folders.push(g),d.processDL(i,k,g)),i.tagName.toLowerCase()=="H3".toLowerCase()&&(l=$(i),m=l.text()?l.text():"未命名",n=l.attr("add_date"),o=l.attr("last_modified"),f={type:"header",title:m,add_date:n,last_modified:o},j=!0),"a"==i.tagName.toLowerCase()&&isURL($(i).attr("href"))&&""!=$(i).text()&&(p=$(i),q=p.text(),r=p.attr("href"),s=p.attr("add_date"),p.attr("icon"),h={type:"link",title:q,href:r,add_date:s},c.items.push(h))})}}

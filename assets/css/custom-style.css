@@ -1,3 +1,8 @@
+/* 键盘用户可直接跳过导航，进入主要内容。 */
+.skip-link{position:fixed;z-index:10000;top:10px;left:10px;padding:10px 14px;border-radius:8px;background:#1d4ed8;color:#fff;font-weight:700;transform:translateY(-150%);transition:transform .18s ease}
+.skip-link:focus{transform:translateY(0);color:#fff}
+@media (max-width:575.98px){.nav-dashboard{gap:10px}.dashboard-search{order:3;flex-basis:100%}.dashboard-actions{margin-left:auto}.featured-heading{align-items:flex-start}.featured-all{white-space:nowrap}.url-card .card-body{padding:12px}.favorite-button{width:28px;height:28px}}
+
 /*调整全局字体大小*/
 body,html{font-size:14px;}
 
@@ -113,15 +118,11 @@ body{color:var(--text);background:#f4f7fb}
 .big-header-banner .page-header .navbar-nav>li>a,.big-header-banner .navbar-menu a:not(.dropdown-item){color:#334155!important}
 .big-header-banner .header-mini-btn path{stroke:#334155!important}
 .sidebar-logo .logo-expanded img{width:132px;height:40px;object-fit:contain}.sidebar-logo .logo-collapsed img{width:40px;height:40px}
-.nav-dashboard{display:flex;align-items:center;gap:1rem;justify-content:space-between;margin:0 0 2rem;padding:1.1rem 1.25rem;border:1px solid rgba(37,99,235,.12);border-radius:1rem;background:rgba(255,255,255,.88);box-shadow:0 8px 28px rgba(15,23,42,.06)}
-.dashboard-copy{min-width:150px}.dashboard-copy strong{display:block;font-size:1rem}.dashboard-copy small{color:var(--muted)}
-.dashboard-search{position:relative;display:flex;align-items:center;flex:1;max-width:480px}.dashboard-search input{width:100%;height:42px;padding:0 2.75rem 0 1rem;border:1px solid var(--line);border-radius:.7rem;background:#fff;outline:0;transition:border-color .2s,box-shadow .2s}.dashboard-search input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
-.dashboard-search span{position:absolute;right:1rem;color:var(--muted);font-size:.8rem}.dashboard-actions{display:flex;gap:.5rem}.dashboard-button{padding:.55rem .8rem;border:1px solid var(--line);border-radius:.6rem;background:#fff;color:#334155;cursor:pointer;transition:.2s}.dashboard-button:hover,.dashboard-button.is-active{border-color:var(--brand);background:#eff6ff;color:var(--brand)}
 .url-body{position:relative}.url-body .card{border:1px solid transparent;border-radius:.85rem;box-shadow:0 2px 12px rgba(15,23,42,.04);transition:transform .2s,box-shadow .2s,border-color .2s}.url-body .card:hover{border-color:rgba(37,99,235,.28);box-shadow:0 12px 24px rgba(15,23,42,.1);transform:translateY(-3px)}
 .favorite-button{position:absolute;top:.55rem;right:.55rem;z-index:3;width:28px;height:28px;border:0;border-radius:50%;background:transparent;color:#94a3b8;cursor:pointer;font-size:1rem;line-height:1}.favorite-button:hover,.favorite-button.is-favorite{background:#fef3c7;color:#d97706}.filter-empty{display:none;margin:1rem 0 2rem;padding:2rem;border:1px dashed #cbd5e1;border-radius:1rem;color:var(--muted);text-align:center}.filter-empty.is-visible{display:block}
 .content-site> .d-flex h4{position:relative;display:flex;align-items:center;gap:.25rem;margin-top:2.4rem!important;color:#1e293b!important}.content-site> .d-flex h4:after{content:'';height:1px;flex:1;margin-left:.75rem;background:linear-gradient(90deg,#dbeafe,transparent)}
-.io-black-mode .nav-dashboard{background:rgba(30,41,59,.9);border-color:#334155}.io-black-mode .dashboard-search input,.io-black-mode .dashboard-button{background:#1e293b;border-color:#475569;color:#e2e8f0}.io-black-mode .dashboard-button.is-active{background:#172554}.io-black-mode .url-body .card{box-shadow:none}.io-black-mode .content-site> .d-flex h4{color:#e2e8f0!important}
-@media(max-width:767.98px){.header-big .s-search{padding-bottom:2rem}.header-big:after{margin-top:-2.2rem}.nav-dashboard{align-items:stretch;flex-wrap:wrap;padding:1rem}.dashboard-search{order:3;flex-basis:100%;max-width:none}.dashboard-actions{margin-left:auto}.content-site> .d-flex h4{margin-top:1.8rem!important}.favorite-button{top:.35rem;right:.35rem}.url-body .card:hover{transform:none}}
+.io-black-mode .url-body .card{box-shadow:none}.io-black-mode .content-site> .d-flex h4{color:#e2e8f0!important}
+@media(max-width:767.98px){.header-big .s-search{padding-bottom:2rem}.header-big:after{margin-top:-2.2rem}.content-site> .d-flex h4{margin-top:1.8rem!important}.favorite-button{top:.35rem;right:.35rem}.url-body .card:hover{transform:none}}
 
 /*About页面*/
 .panel .panel-body a {color: #007bff;}

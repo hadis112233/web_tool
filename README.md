@@ -148,6 +148,22 @@ sudo certbot renew --dry-run
 
 Vercel 提供免费的静态网站托管服务，部署简单快速。
 
+#### 启用网址收录的在线提交
+
+项目已内置 Vercel Serverless Function（无服务器函数，即由 Vercel 按需运行的后端接口）。在 Vercel 项目设置中增加以下环境变量后，`commit.html` 会直接发送申请邮件；未配置时页面仍会提供邮件提交兜底。
+
+```text
+RESEND_API_KEY=你的 Resend API 密钥
+SUBMISSION_FROM_EMAIL=Hadis 导航 <noreply@你的已验证域名>
+SUBMISSION_TO_EMAIL=wwd118932@gmail.com
+```
+
+部署前请先在 Resend 验证发件域名。接口文件位于 `api/submit.js`，不会把密钥写入仓库。
+
+#### Nginx 安全与缓存配置
+
+如使用自己的服务器，可直接以 `nginx/web.008997.xyz.conf.example` 为模板部署。它已包含 HTTPS 强制跳转、常见安全响应头、静态资源缓存和 404 页面配置；请先填入实际证书路径与网站目录，再执行 `nginx -t` 检查。
+
 #### 方法 1: 通过 Vercel Dashboard (最简单)
 
 1. 访问 [Vercel 官网](https://vercel.com) 并注册/登录

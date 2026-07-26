@@ -5,6 +5,35 @@
     var content = document.getElementById('content');
     if (!content) return;
 
+    document.addEventListener('error', function (event) {
+        var image = event.target;
+        if (image.tagName !== 'IMG' || image.dataset.fallbackApplied === 'true') return;
+        image.dataset.fallbackApplied = 'true';
+        image.src = 'assets/images/logos/default.webp';
+    }, true);
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+    }
+    if ('PerformanceObserver' in window && navigator.sendBeacon) {
+        try {
+            new PerformanceObserver(function (list) {
+                list.getEntries().forEach(function (entry) {
+                    if (entry.entryType === 'largest-contentful-paint') {
+                        navigator.sendBeacon('/api/telemetry', JSON.stringify({ event: 'lcp', value: Math.round(entry.startTime), path: location.pathname }));
+                    }
+                });
+            }).observe({ type: 'largest-contentful-paint', buffered: true });
+        } catch (error) {}
+    }
+
+    Array.prototype.slice.call(document.querySelectorAll('a[target="_blank"]')).forEach(function (link) {
+        var rel = link.getAttribute('rel') || '';
+        if (!/\bnoopener\b/.test(rel)) rel += (rel ? ' ' : '') + 'noopener';
+        if (!/\bnoreferrer\b/.test(rel)) rel += (rel ? ' ' : '') + 'noreferrer';
+        link.setAttribute('rel', rel);
+    });
+
     function readFavorites() {
         try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
         catch (error) { return []; }
@@ -34,7 +63,7 @@
     dashboard.setAttribute('aria-label', '导航筛选工具');
     dashboard.innerHTML =
         '<div class="dashboard-copy"><strong>资源导航</strong><small id="filter-status" aria-live="polite">' + cards.length + ' 个链接 · ' + sections.length + ' 个分类</small></div>' +
-        '<label class="dashboard-search"><input id="site-filter" type="search" placeholder="筛选网站、工具或描述" autocomplete="off"><span>⌕</span></label>' +
+        '<label class="dashboard-search"><input id="site-filter" type="search" placeholder="筛选网站、工具或描述" autocomplete="off" aria-label="筛选网站、工具或描述" aria-keyshortcuts="/"><span>⌕</span></label>' +
         '<div class="dashboard-actions"><button class="dashboard-button favorites-toggle" id="favorites-toggle" type="button" aria-pressed="false"><span aria-hidden="true">♡</span> 收藏夹</button><button class="dashboard-button reset-button" id="filter-reset" type="button">清除</button></div>';
     content.insertBefore(dashboard, content.firstChild);
 
