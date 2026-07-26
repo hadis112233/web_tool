@@ -5,6 +5,13 @@
     var content = document.getElementById('content');
     if (!content) return;
 
+    Array.prototype.slice.call(document.querySelectorAll('a[target="_blank"]')).forEach(function (link) {
+        var rel = link.getAttribute('rel') || '';
+        if (!/\bnoopener\b/.test(rel)) rel += (rel ? ' ' : '') + 'noopener';
+        if (!/\bnoreferrer\b/.test(rel)) rel += (rel ? ' ' : '') + 'noreferrer';
+        link.setAttribute('rel', rel);
+    });
+
     function readFavorites() {
         try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
         catch (error) { return []; }

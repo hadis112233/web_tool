@@ -1,0 +1,49 @@
+name: Validate static site
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate HTML and local asset paths
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.references = []
+              def handle_starttag(self, tag, attrs):
+                  for name, value in attrs:
+                      if name in {'src', 'href'} and value:
+                          self.references.append(value)
+
+          root = Path('.').resolve()
+          missing = []
+          for page in root.rglob('*.html'):
+              parser = Parser()
+              parser.feed(page.read_text(encoding='utf-8'))
+              for value in parser.references:
+                  parts = urlsplit(unquote(value))
+                  if parts.scheme or parts.netloc or value.startswith(('#', '//', 'mailto:', 'tel:', 'javascript:')):
+                      continue
+                  if not parts.path:
+                      continue
+                  target = (page.parent / parts.path).resolve()
+                  if str(target).startswith(str(root)) and not target.exists():
+                      missing.append(f'{page}: {value}')
+          if missing:
+              raise SystemExit('\n'.join(missing))
+          print('HTML and local asset paths are valid.')
+          PY
+      - name: Validate JavaScript syntax
+        run: |
+          node --check assets/js/app-anim.js
+          node --check assets/js/site-enhancements.js
