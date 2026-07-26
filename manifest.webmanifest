@@ -1,0 +1,10 @@
+{
+  "name": "Hadis 工具导航",
+  "short_name": "Hadis 导航",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "lang": "zh-CN",
+  "icons": [{ "src": "/assets/images/hadis-favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

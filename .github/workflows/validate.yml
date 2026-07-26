@@ -47,3 +47,15 @@ jobs:
         run: |
           node --check assets/js/app-anim.js
           node --check assets/js/site-enhancements.js
+          node --check assets/js/index-page.js
+          node --check assets/js/commit-page.js
+          node --check api/submit.js
+          node --check scripts/build-catalog.mjs
+          node --check scripts/check-external-links.mjs
+          node --check scripts/validate-catalog.mjs
+          node --check api/telemetry.js
+      - name: Validate and rebuild site catalog
+        run: |
+          node scripts/build-catalog.mjs
+          node scripts/validate-catalog.mjs
+          git diff --exit-code -- index.html

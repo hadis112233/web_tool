@@ -1,3 +1,8 @@
+/* 键盘用户可直接跳过导航，进入主要内容。 */
+.skip-link{position:fixed;z-index:10000;top:10px;left:10px;padding:10px 14px;border-radius:8px;background:#1d4ed8;color:#fff;font-weight:700;transform:translateY(-150%);transition:transform .18s ease}
+.skip-link:focus{transform:translateY(0);color:#fff}
+@media (max-width:575.98px){.nav-dashboard{gap:10px}.dashboard-search{order:3;flex-basis:100%}.dashboard-actions{margin-left:auto}.featured-heading{align-items:flex-start}.featured-all{white-space:nowrap}.url-card .card-body{padding:12px}.favorite-button{width:28px;height:28px}}
+
 /*调整全局字体大小*/
 body,html{font-size:14px;}
 

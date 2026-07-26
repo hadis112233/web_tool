@@ -1,0 +1,875 @@
+{
+  "categories": [
+    {
+      "name": "常用工具",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "PDFCraft",
+          "url": "https://pdf.008997.xyz/",
+          "description": "专业 PDF 工具。",
+          "image": "assets/images/logos/pdfcraft.svg"
+        },
+        {
+          "name": "办公工具站",
+          "url": "http://101.43.88.87:40005/",
+          "description": "一站式办公工具助手。",
+          "image": "assets/images/logos/office-tools.svg"
+        },
+        {
+          "name": "语雀",
+          "url": "https://www.yuque.com/",
+          "description": "专业的云端知识库。",
+          "image": "assets/images/logos/%E8%AF%AD%E9%9B%80.webp"
+        },
+        {
+          "name": "QQ 邮箱",
+          "url": "https://mail.qq.com/",
+          "description": "腾讯 QQ 邮箱。",
+          "image": "assets/images/logos/qq%E9%82%AE%E7%AE%B1.webp"
+        },
+        {
+          "name": "开源中国",
+          "url": "https://www.oschina.net/",
+          "description": "中文开源技术交流社区。",
+          "image": "assets/images/logos/%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD.webp"
+        },
+        {
+          "name": "公众号平台",
+          "url": "https://mp.weixin.qq.com/",
+          "description": "再小的个体也有自己的品牌。",
+          "image": "assets/images/logos/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.webp"
+        },
+        {
+          "name": "GitHub",
+          "url": "https://github.com/",
+          "description": "GitHub 开源社区。",
+          "image": "assets/images/logos/github.webp"
+        },
+        {
+          "name": "在线ps",
+          "url": "https://www.photopea.com/",
+          "description": "在线图片编辑工具",
+          "image": "assets/images/logos/inoreader.webp"
+        },
+        {
+          "name": "m3u8在线播放器",
+          "url": "https://m3u8player.org/",
+          "description": "m3u8/hls在线播放",
+          "image": "assets/images/logos/Material_Design.webp"
+        },
+        {
+          "name": "在线工具助手",
+          "url": "https://tool.lu/",
+          "description": "常用开发与在线工具",
+          "image": "assets/images/logos/mdx.webp"
+        },
+        {
+          "name": "远程工作",
+          "url": "https://yuancheng.works/",
+          "description": "远程职位搜索，一搜即达。",
+          "image": "assets/images/logos/%E6%90%9C%E7%8B%97%E5%BE%AE%E4%BF%A1.webp"
+        },
+        {
+          "name": "知乎",
+          "url": "https://www.zhihu.com/",
+          "description": "知乎社区。",
+          "image": "assets/images/logos/%E7%9F%A5%E4%B9%8E.webp"
+        },
+        {
+          "name": "V2EX",
+          "url": "https://www.v2ex.com/",
+          "description": "V2EX 创意工作者的社区。",
+          "image": "assets/images/logos/v2ex.webp"
+        }
+      ],
+      "id": "3e90c5117dc0fe9d71410e448d766e52"
+    },
+    {
+      "name": "云服务器",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "阿里云",
+          "url": "https://www.aliyun.com/",
+          "description": "上云就上阿里云。",
+          "image": "assets/images/logos/%E9%98%BF%E9%87%8C%E4%BA%91.webp"
+        },
+        {
+          "name": "腾讯云",
+          "url": "https://cloud.tencent.com/",
+          "description": "产业智变，云启未来。",
+          "image": "assets/images/logos/%E8%85%BE%E8%AE%AF%E4%BA%91.webp"
+        },
+        {
+          "name": "华为云",
+          "url": "https://www.huaweicloud.com/",
+          "description": "提供云计算服务&#43;智能，见未来-华为云。",
+          "image": "assets/images/logos/%E5%8D%8E%E4%B8%BA%E4%BA%91.webp"
+        }
+      ],
+      "id": "acd617ea241c9daf2f251963bc03c6e3"
+    },
+    {
+      "name": "办公学习",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "有道词典",
+          "url": "https://www.youdao.com/",
+          "description": "免费，即时的多语种在线翻译。",
+          "image": "assets/images/logos/%E6%9C%89%E9%81%93%E8%AF%8D%E5%85%B8.webp"
+        },
+        {
+          "name": "有道翻译",
+          "url": "https://fanyi.youdao.com/",
+          "description": "有道翻译。",
+          "image": "assets/images/logos/%E6%9C%89%E9%81%93%E8%AF%8D%E5%85%B8.webp"
+        },
+        {
+          "name": "谷歌翻译",
+          "url": "https://translate.google.com/?sl=auto&tl=zh-CN&op=translate",
+          "description": "谷歌翻译。",
+          "image": "assets/images/logos/%E8%B0%B7%E6%AD%8C%E7%BF%BB%E8%AF%91.webp"
+        },
+        {
+          "name": "Text2Voice",
+          "url": "https://text2voice.cc/",
+          "description": "文本转声音。",
+          "image": "assets/images/logos/ProcessOn.webp"
+        }
+      ],
+      "id": "e0aade1cd567f730e498e248bbd6acdf"
+    },
+    {
+      "name": "影音视频",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "抖音",
+          "url": "https://www.douyin.com/",
+          "description": "抖音短视频平台。",
+          "image": "assets/images/logos/douyin.svg"
+        },
+        {
+          "name": "腾讯视频",
+          "url": "https://v.qq.com/",
+          "description": "腾讯视频，海量视频在线观看。",
+          "image": "assets/images/logos/%E8%85%BE%E8%AE%AF%E8%A7%86%E9%A2%91.webp"
+        },
+        {
+          "name": "优酷",
+          "url": "https://www.youku.com/ku/webhome",
+          "description": "优酷 - 这个世界很酷。",
+          "image": "assets/images/logos/%E4%BC%98%E9%85%B7.webp"
+        },
+        {
+          "name": "爱奇艺",
+          "url": "https://www.iqiyi.com/",
+          "description": "爱奇艺在线视频。",
+          "image": "assets/images/logos/%E7%88%B1%E5%A5%87%E8%89%BA.webp"
+        },
+        {
+          "name": "哔哩哔哩",
+          "url": "https://www.bilibili.com/",
+          "description": "Bilibili 视频弹幕网站。",
+          "image": "assets/images/logos/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9.webp"
+        },
+        {
+          "name": "QQ 音乐",
+          "url": "https://y.qq.com/",
+          "description": "QQ 音乐，在线听歌。",
+          "image": "assets/images/logos/QQ%E9%9F%B3%E4%B9%90.webp"
+        },
+        {
+          "name": "网易云音乐",
+          "url": "https://music.163.com/",
+          "description": "163 网易云音乐。",
+          "image": "assets/images/logos/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90.webp"
+        },
+        {
+          "name": "电影天堂（DYGOD）",
+          "url": "https://www.dygod.net/",
+          "description": "电影天堂（DYGOD），高清电影下载。",
+          "image": "assets/images/logos/%E7%94%B5%E5%BD%B1%E5%A4%A9%E5%A0%82.webp"
+        }
+      ],
+      "id": "a4d417d7850fde0cd00e4af576621a63"
+    },
+    {
+      "name": "网盘资源",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "百度网盘",
+          "url": "https://pan.baidu.com/",
+          "description": "https://pan.baidu.com/.",
+          "image": "assets/images/logos/%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98.webp"
+        },
+        {
+          "name": "阿里云盘",
+          "url": "https://www.aliyundrive.com/",
+          "description": "阿里云盘，你的数字世界。",
+          "image": "assets/images/logos/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98.webp"
+        },
+        {
+          "name": "天翼云盘",
+          "url": "https://cloud.189.cn/",
+          "description": "家庭云|网盘|文件备份|资源分享。",
+          "image": "assets/images/logos/%E5%A4%A9%E7%BF%BC%E4%BA%91%E7%9B%98.webp"
+        }
+      ],
+      "id": "5e6e1089ffbc5d7819c0d0f1f7b31ebc"
+    },
+    {
+      "name": "图标素材",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Iconfinder",
+          "url": "https://www.iconfinder.com",
+          "description": "2,100,000&#43; free and premium vector icons.",
+          "image": "assets/images/logos/Iconfinder.webp"
+        },
+        {
+          "name": "iconfont",
+          "url": "https://www.iconfont.cn/",
+          "description": "阿里巴巴矢量图标库。",
+          "image": "assets/images/logos/iconfont.webp"
+        },
+        {
+          "name": "iconmonstr",
+          "url": "https://iconmonstr.com/",
+          "description": "Free simple icons for your next project.",
+          "image": "assets/images/logos/iconmonstr.webp"
+        },
+        {
+          "name": "Icon Archive",
+          "url": "https://www.iconarchive.com/",
+          "description": "Search 590,912 free icons.",
+          "image": "assets/images/logos/iconarchive.webp"
+        },
+        {
+          "name": "IcoMoonApp",
+          "url": "https://icomoon.io/app/",
+          "description": "Icon Font, SVG, PDF &amp;amp; PNG Generator.",
+          "image": "assets/images/logos/IcoMoonApp.webp"
+        },
+        {
+          "name": "flaticon",
+          "url": "https://www.flaticon.com/",
+          "description": "634,000&#43; Free vector icons in SVG, PSD, PNG, EPS format or as ICON FONT.",
+          "image": "assets/images/logos/flaticon.webp"
+        },
+        {
+          "name": "Material icons",
+          "url": "https://material.io/icons/",
+          "description": "Access over 900 material system icons, available in a variety of sizes and densities, and as a web font.",
+          "image": "assets/images/logos/Materialicons.webp"
+        },
+        {
+          "name": "Font Awesome Icon",
+          "url": "https://fontawesome.com/icons/",
+          "description": "The complete set of 675 icons in Font Awesome.",
+          "image": "assets/images/logos/fontawesomeicon.webp"
+        },
+        {
+          "name": "ion icons",
+          "url": "https://ionic.io/ionicons",
+          "description": "The premium icon font for Ionic Framework.",
+          "image": "assets/images/logos/ionicons.webp"
+        }
+      ],
+      "id": "7866a35b09d466b9cf0295af54d30d53"
+    },
+    {
+      "name": "图标设计",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Iconsfeed",
+          "url": "https://www.iconsfeed.com/",
+          "description": "iOS icons gallery.",
+          "image": "assets/images/logos/iconsfeed.webp"
+        },
+        {
+          "name": "iOS Icon Gallery",
+          "url": "https://www.iosicongallery.com/",
+          "description": "Showcasing beautiful icon designs from the iOS App Store.",
+          "image": "assets/images/logos/iosicongallery.webp"
+        },
+        {
+          "name": "World Vector Logo",
+          "url": "https://worldvectorlogo.com/",
+          "description": "Brand logos free to download.",
+          "image": "assets/images/logos/worldvectorlogo.webp"
+        }
+      ],
+      "id": "779477bcccdd4ecb1d852c8d4a67caca"
+    },
+    {
+      "name": "平面素材",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "freepik",
+          "url": "https://www.freepik.com/",
+          "description": "More than a million free vectors, PSD, photos and free icons.",
+          "image": "assets/images/logos/freepik.webp"
+        },
+        {
+          "name": "wallhalla",
+          "url": "https://wallhalla.com/",
+          "description": "Find awesome high quality wallpapers for desktop and mobile in one place.",
+          "image": "assets/images/logos/wallhalla.webp"
+        },
+        {
+          "name": "Medialoot",
+          "url": "https://medialoot.com/",
+          "description": "Free &amp;amp; Premium Design Resources &amp;mdash; Medialoot.",
+          "image": "assets/images/logos/Medialoot.webp"
+        },
+        {
+          "name": "千图网",
+          "url": "https://www.58pic.com/",
+          "description": "专注免费设计素材下载的网站.",
+          "image": "assets/images/logos/qiantu.webp"
+        },
+        {
+          "name": "千库网",
+          "url": "https://588ku.com/",
+          "description": "免费 png 图片背景素材下载。",
+          "image": "assets/images/logos/qianku.webp"
+        },
+        {
+          "name": "我图网",
+          "url": "https://www.ooopic.com/",
+          "description": "我图网，提供图片素材及模板下载，专注正版设计作品交易。",
+          "image": "assets/images/logos/wotu.webp"
+        },
+        {
+          "name": "90 设计",
+          "url": "https://90sheji.com/",
+          "description": "电商设计（淘宝美工）千图免费淘宝素材库。",
+          "image": "assets/images/logos/90sheji.webp"
+        },
+        {
+          "name": "昵图网",
+          "url": "https://www.nipic.com/",
+          "description": "原创素材共享平台。",
+          "image": "assets/images/logos/nipic.webp"
+        },
+        {
+          "name": "懒人图库",
+          "url": "https://www.lanrentuku.com/",
+          "description": "懒人图库专注于提供网页素材下载。",
+          "image": "assets/images/logos/lanrentuku.webp"
+        },
+        {
+          "name": "素材中国",
+          "url": "http://www.sccnn.com/",
+          "description": "免费素材共享平台。",
+          "image": "assets/images/logos/sccnn.webp"
+        }
+      ],
+      "id": "ff65f7f9721757bf11b0b0c95f1b9446"
+    },
+    {
+      "name": "字体资源",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Google Font",
+          "url": "https://fonts.google.com/",
+          "description": "Making the web more beautiful, fast, and open through great typography.",
+          "image": "assets/images/logos/googlefont.webp"
+        },
+        {
+          "name": "Typekit",
+          "url": "https://typekit.com/",
+          "description": "Quality fonts from the world’s best foundries.",
+          "image": "assets/images/logos/typekit.webp"
+        },
+        {
+          "name": "方正字库",
+          "url": "https://www.foundertype.com/",
+          "description": "方正字库官方网站。",
+          "image": "assets/images/logos/Fondertype.webp"
+        },
+        {
+          "name": "字体传奇网",
+          "url": "http://ziticq.com/",
+          "description": "中国首个字体品牌设计师交流网。",
+          "image": "assets/images/logos/ziticq.webp"
+        },
+        {
+          "name": "Fontsquirrel",
+          "url": "https://www.fontsquirrel.com/",
+          "description": "FREE fonts for graphic designers.",
+          "image": "assets/images/logos/fontsquirrel.webp"
+        },
+        {
+          "name": "Urban Fonts",
+          "url": "https://www.urbanfonts.com/",
+          "description": "Download Free Fonts and Free Dingbats.",
+          "image": "assets/images/logos/UrbanFonts.webp"
+        },
+        {
+          "name": "Lost Type",
+          "url": "https://www.losttype.com/",
+          "description": "Lost Type is a Collaborative Digital Type Foundry.",
+          "image": "assets/images/logos/losttype.webp"
+        },
+        {
+          "name": "FONTS2U",
+          "url": "https://fonts2u.com/",
+          "description": "Download free fonts for Windows and Macintosh.",
+          "image": "assets/images/logos/fonts2u.webp"
+        },
+        {
+          "name": "FontM",
+          "url": "https://fontm.com/",
+          "description": "Free Fonts",
+          "image": "assets/images/logos/FontM.webp"
+        },
+        {
+          "name": "My Fonts",
+          "url": "https://www.myfonts.com/",
+          "description": "Fonts for Print, Products &amp; Screens.",
+          "image": "assets/images/logos/MyFonts.webp"
+        },
+        {
+          "name": "Da Font",
+          "url": "https://www.dafont.com/",
+          "description": "Archive of freely downloadable fonts.",
+          "image": "assets/images/logos/dafont.webp"
+        },
+        {
+          "name": "OnlineWebFonts",
+          "url": "https://www.onlinewebfonts.com/",
+          "description": "WEB Free Fonts for Windows and Mac / Font free Download.",
+          "image": "assets/images/logos/OnlineWebFonts.webp"
+        },
+        {
+          "name": "Abstract Fonts",
+          "url": "https://www.abstractfonts.com/",
+          "description": "Abstract Fonts (13,866 free fonts).",
+          "image": "assets/images/logos/abstractfonts.webp"
+        }
+      ],
+      "id": "722d3693fc0b9344bb46ee220beac1b6"
+    },
+    {
+      "name": "PPT资源",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "OfficePLUS",
+          "url": "https://www.officeplus.cn/PPT/template/",
+          "description": "OfficePLUS，微软Office官方在线模板网站！",
+          "image": "assets/images/logos/officeplus.webp"
+        },
+        {
+          "name": "优品PPT",
+          "url": "https://www.ypppt.com/",
+          "description": "高质量的模版，而且还有PPT图表，PPT背景图等资源。",
+          "image": "assets/images/logos/ypppt.webp"
+        },
+        {
+          "name": "PPT&#43;",
+          "url": "http://www.pptplus.cn/",
+          "description": "PPT加直播、录制和分享—PPT&#43;语音内容分享平台。",
+          "image": "assets/images/logos/pptplus.webp"
+        },
+        {
+          "name": "tretars",
+          "url": "http://www.tretars.com/ppt-templates",
+          "description": "The best free Mockups from the Web.",
+          "image": "assets/images/logos/tretars.webp"
+        },
+        {
+          "name": "5百丁",
+          "url": "https://www.500d.me/",
+          "description": "中国领先的PPT模板共享平台。",
+          "image": "assets/images/logos/500d.webp"
+        }
+      ],
+      "id": "113a0a745b4169af0f7646269c12ae66"
+    },
+    {
+      "name": "图形创意",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "photoshop",
+          "url": "https://www.adobe.com/cn/products/photoshop.html",
+          "description": "Photoshop不需要解释",
+          "image": "assets/images/logos/photoshop.webp"
+        },
+        {
+          "name": "Affinity Designer",
+          "url": "https://affinity.serif.com/",
+          "description": "专业创意软件",
+          "image": "assets/images/logos/AffinityDesigner.webp"
+        },
+        {
+          "name": "Illustrator",
+          "url": "https://www.adobe.com/cn/products/illustrator/",
+          "description": "矢量图形和插图。",
+          "image": "assets/images/logos/Illustrator.webp"
+        },
+        {
+          "name": "indesign",
+          "url": "https://www.adobe.com/cn/products/indesign.html",
+          "description": "页面设计、布局和出版。",
+          "image": "assets/images/logos/INDESIGN%20.webp"
+        },
+        {
+          "name": "3ds-max",
+          "url": "https://www.autodesk.com/products/3ds-max/overview",
+          "description": "3D modeling, animation, and rendering software",
+          "image": "assets/images/logos/3dsmax.webp"
+        },
+        {
+          "name": "Blender",
+          "url": "https://www.blender.org/",
+          "description": "Blender is the free and open source 3D creation suite.",
+          "image": "assets/images/logos/blender.webp"
+        }
+      ],
+      "id": "4fbc8ba07df90bae306d8e3b83fc5a21"
+    },
+    {
+      "name": "界面设计",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Sketch",
+          "url": "https://sketchapp.com/",
+          "description": "The digital design toolkit",
+          "image": "assets/images/logos/sketchapp.webp"
+        },
+        {
+          "name": "Adobe XD",
+          "url": "https://www.adobe.com/products/xd.html",
+          "description": "Introducing Adobe XD. Design. Prototype. Experience.",
+          "image": "assets/images/logos/ADOBEXDCC.webp"
+        },
+        {
+          "name": "invisionapp",
+          "url": "https://www.invisionapp.com/",
+          "description": "Powerful design prototyping tools",
+          "image": "assets/images/logos/invisionapp.webp"
+        },
+        {
+          "name": "marvelapp",
+          "url": "https://marvelapp.com/",
+          "description": "Simple design, prototyping and collaboration",
+          "image": "assets/images/logos/marvelapp.webp"
+        },
+        {
+          "name": "Muse CC",
+          "url": "https://creative.adobe.com/zh-cn/products/download/muse",
+          "description": "无需利用编码即可进行网站设计。",
+          "image": "assets/images/logos/MuseCC.webp"
+        },
+        {
+          "name": "figma",
+          "url": "https://www.figma.com/",
+          "description": "Design, prototype, and gather feedback all in one place with Figma.",
+          "image": "assets/images/logos/figma.webp"
+        }
+      ],
+      "id": "542c016a714d85715d206c8892fba01f"
+    },
+    {
+      "name": "在线配色",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "khroma",
+          "url": "https://www.khroma.co/generator/",
+          "description": "Khroma is the fastest way to discover, search, and save color combos you&#39;ll want to use.",
+          "image": "assets/images/logos/khroma.webp"
+        },
+        {
+          "name": "uigradients",
+          "url": "https://uigradients.com",
+          "description": "Beautiful colored gradients.",
+          "image": "assets/images/logos/uigradients.webp"
+        },
+        {
+          "name": "gradients",
+          "url": "https://www.gradients.io/",
+          "description": "Curated gradients for designers and developers.",
+          "image": "assets/images/logos/gradients.webp"
+        },
+        {
+          "name": "Coolest",
+          "url": "https://webkul.github.io/coolhue/",
+          "description": "Coolest handpicked Gradient Hues for your next super ⚡ amazing stuff.",
+          "image": "assets/images/logos/Coolest.webp"
+        },
+        {
+          "name": "webgradients",
+          "url": "https://webgradients.com/",
+          "description": "WebGradients is a free collection of 180 linear gradients that you can use as content backdrops in any part of your website.",
+          "image": "assets/images/logos/webgradients.webp"
+        },
+        {
+          "name": "grabient",
+          "url": "https://www.grabient.com/",
+          "description": "2017 Grabient by unfold.",
+          "image": "assets/images/logos/grabient.webp"
+        },
+        {
+          "name": "thedayscolor",
+          "url": "https://thedayscolor.com/",
+          "description": "The daily color digest",
+          "image": "assets/images/logos/thedayscolor.webp"
+        },
+        {
+          "name": "flatuicolors",
+          "url": "https://flatuicolors.com/",
+          "description": "Copy Paste Color Pallette from Flat UI Theme.",
+          "image": "assets/images/logos/flatuicolors.webp"
+        },
+        {
+          "name": "coolors",
+          "url": "https://coolors.co/",
+          "description": "The super fast color schemes generator!",
+          "image": "assets/images/logos/coolors.webp"
+        },
+        {
+          "name": "colorhunt",
+          "url": "https://www.colorhunt.co/",
+          "description": "Beautiful Color Palettes.",
+          "image": "assets/images/logos/colorhunt.webp"
+        },
+        {
+          "name": "Adobe Color CC",
+          "url": "https://color.adobe.com/zh/create/color-wheel",
+          "description": "Create color schemes with the color wheel or browse thousands of color combinations from the Color community.",
+          "image": "assets/images/logos/AdobeColorCC.webp"
+        },
+        {
+          "name": "flatuicolorpicker",
+          "url": "https://www.flatuicolorpicker.com/",
+          "description": "Best Flat Colors For UI Design.",
+          "image": "assets/images/logos/flatuicolorpicker.webp"
+        },
+        {
+          "name": "klart",
+          "url": "https://klart.co/colors/",
+          "description": "Beautiful colors and designs to your inbox every week.",
+          "image": "assets/images/logos/klart.webp"
+        },
+        {
+          "name": "vanschneider",
+          "url": "https://access.mymind.com/colors",
+          "description": "Color Claim was created in 2012 by Tobias van Schneider with the goal to collect &amp; combine unique colors for my future projects.",
+          "image": "assets/images/logos/vanschneider.webp"
+        }
+      ],
+      "id": "31e51a60697ff3fb1d1c4934cce67921"
+    },
+    {
+      "name": "迷你工具",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "tinypng",
+          "url": "https://tinypng.com/",
+          "description": "Optimize your images with a perfect balance in quality and file size.",
+          "image": "assets/images/logos/tinypng.webp"
+        },
+        {
+          "name": "goqr",
+          "url": "https://goqr.me/",
+          "description": "create QR codes for free (Logo, T-Shirt, vCard, EPS).",
+          "image": "assets/images/logos/goqr.webp"
+        },
+        {
+          "name": "ezgif",
+          "url": "https://ezgif.com",
+          "description": "simple online GIF maker and toolset for basic animated GIF editing.",
+          "image": "assets/images/logos/ezgif.webp"
+        },
+        {
+          "name": "Android 9 patch",
+          "url": "https://inloop.github.io/shadow4android/",
+          "description": "Android 9-patch shadow generator fully customizable shadows.",
+          "image": "assets/images/logos/Android9patch.webp"
+        },
+        {
+          "name": "screen sizes",
+          "url": "https://screensiz.es/",
+          "description": "Viewport Sizes and Pixel Densities for Popular Devices.",
+          "image": "assets/images/logos/screensizes.webp"
+        }
+      ],
+      "id": "9c2232288caaa8ec40948cef6a786ac2"
+    },
+    {
+      "name": "谷歌插件",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "wappalyzer",
+          "url": "https://www.wappalyzer.com/",
+          "description": "Identify technology on websites.",
+          "image": "assets/images/logos/wappalyzer.webp"
+        },
+        {
+          "name": "Panda",
+          "url": "https://usepanda.com/",
+          "description": "A smart news reader built for productivity.",
+          "image": "assets/images/logos/usepanda.webp"
+        },
+        {
+          "name": "sizzy",
+          "url": "https://sizzy.co/",
+          "description": "A tool for developing responsive websites crazy-fast.",
+          "image": "assets/images/logos/sizzy.webp"
+        },
+        {
+          "name": "csspeeper",
+          "url": "https://csspeeper.com/",
+          "description": "Smart CSS viewer tailored for Designers.",
+          "image": "assets/images/logos/csspeeper.webp"
+        },
+        {
+          "name": "insight",
+          "url": "https://www.elastic.co/blog/welcome-insight-io-to-the-elastic-team",
+          "description": "IDE-like code search and navigation, on the cloud.",
+          "image": "assets/images/logos/insight.webp"
+        },
+        {
+          "name": "mustsee",
+          "url": "https://mustsee.earth/",
+          "description": "Discover the world&#39;s most beautiful places at every opened tab.",
+          "image": "assets/images/logos/mustsee.webp"
+        }
+      ],
+      "id": "13a0e1cc22ccc31b31242a6046230729"
+    },
+    {
+      "name": "资讯书籍",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "微信读书",
+          "url": "https://weread.qq.com/",
+          "description": "微信读书电脑版。",
+          "image": "assets/images/logos/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6.webp"
+        },
+        {
+          "name": "书栈网",
+          "url": "https://www.bookstack.cn/",
+          "description": "IT 互联网开源编程书籍免费阅读与下载。",
+          "image": "assets/images/logos/%E4%B9%A6%E6%A0%88%E7%BD%91.webp"
+        }
+      ],
+      "id": "19cb9b648dba4efc58a205ea413b6b5d"
+    },
+    {
+      "name": "博客论坛",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Inoreader",
+          "url": "https://www.inoreader.com/",
+          "description": "重新掌控你的新闻订阅源。",
+          "image": "assets/images/logos/inoreader.webp"
+        },
+        {
+          "name": "Hacker News",
+          "url": "https://news.ycombinator.com/",
+          "description": "一家关于计算机黑客和创业公司的社会化新闻网站。",
+          "image": "assets/images/logos/hacker-news.webp"
+        },
+        {
+          "name": "经管之家",
+          "url": "https://bbs.pinggu.org/",
+          "description": "国内活跃的经济、管理、金融、统计在线教育和咨询网站。",
+          "image": "assets/images/logos/%E7%BB%8F%E7%AE%A1%E4%B9%8B%E5%AE%B6.webp"
+        },
+        {
+          "name": "阮一峰的网络日志",
+          "url": "https://www.ruanyifeng.com/blog/index.html",
+          "description": "阮一峰，科技爱好者周刊。",
+          "image": "assets/images/logos/%E9%98%AE%E4%B8%80%E5%B3%B0.webp"
+        },
+        {
+          "name": "酷壳",
+          "url": "https://www.coolshell.cn/",
+          "description": "酷 壳 – CoolShell。",
+          "image": "assets/images/logos/default.webp"
+        }
+      ],
+      "id": "c7a9a750a4a636f0bb3e982b5ea9141c"
+    },
+    {
+      "name": "设计规范",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Awesome design systems",
+          "url": "https://github.com/alexpate/awesome-design-systems",
+          "description": "A collection of awesome design systems.",
+          "image": "assets/images/logos/awesome_design_systems.webp"
+        },
+        {
+          "name": "Material Design",
+          "url": "https://material.io/guidelines/",
+          "description": "Introduction - Material Design.",
+          "image": "assets/images/logos/Material_Design.webp"
+        },
+        {
+          "name": "Human Interface Guidelines",
+          "url": "https://developer.apple.com/ios/human-interface-guidelines",
+          "description": "Human Interface Guidelines iOS.",
+          "image": "assets/images/logos/human_interface_guidelines.webp"
+        },
+        {
+          "name": "在线图像编辑器",
+          "url": "https://zaixianps.net/?ref=hrzhanghuan.com",
+          "description": "在线图像编辑器",
+          "image": "assets/images/logos/photoshopetiquette.webp"
+        }
+      ],
+      "id": "33d3098041927a26a98ed4c6822c9687"
+    },
+    {
+      "name": "视频教程",
+      "icon": "icon-tag",
+      "sites": [
+        {
+          "name": "Photoshop Lady",
+          "url": "https://www.photoshoplady.com/",
+          "description": "Your Favourite Photoshop Tutorials in One Place.",
+          "image": "assets/images/logos/PhotoshopLady.webp"
+        },
+        {
+          "name": "doyoudo",
+          "url": "https://doyoudo.com/",
+          "description": "创意设计软件学习平台。",
+          "image": "assets/images/logos/doyoudo.webp"
+        },
+        {
+          "name": "没位道",
+          "url": "https://www.c945.com/web-ui-tutorial/",
+          "description": "WEB UI免费视频公开课。",
+          "image": "assets/images/logos/web_ui_tutorial.webp"
+        },
+        {
+          "name": "慕课网",
+          "url": "https://www.imooc.com/",
+          "description": "程序员的梦工厂（有UI课程）。",
+          "image": "assets/images/logos/imooc.webp"
+        }
+      ],
+      "id": "aec25b122d7aceb3dd3b64cf71858ed2"
+    }
+  ]
+}

@@ -169,64 +169,6 @@
             cache:false,
         });
     });
-    // app下载统计
-    var clipboard = new ClipboardJS('a.down_count', {
-        text: $(document).on('click','a.down_count', function(e) {
-            var mm = $(e.target).data('clipboard-text');  
-            $.ajax({
-                type:"POST",
-                url:theme.ajaxurl,
-                data: $(this).data(),
-                success : function( data ){
-                    $('.down-count-text').html(data);
-                }
-            });
-            if( mm ){
-                return mm; 
-            }
-        })
-    });
-    clipboard.on("success",function (e) {
-        alert("网盘密码已复制，点“确定”进入下载页面。");
-    });
-
-    //夜间模式
-    $(document).on('click', '.switch-dark-mode', function(event) {
-        event.preventDefault();
-        $.ajax({
-            url: theme.ajaxurl,
-            type: 'POST',
-            dataType: 'html',
-            data: {
-                mode_toggle: $('body').hasClass('io-black-mode') === true ? 1 : 0,
-                action: 'switch_dark_mode',
-            },
-        })
-        .done(function(response) {
-            $('body').toggleClass('io-black-mode '+theme.defaultclass);
-            switch_mode(); 
-            $("#"+ $('.switch-dark-mode').attr('aria-describedby')).remove();
-            //$('.switch-dark-mode').removeAttr('aria-describedby');
-        })
-    });
-    function switch_mode(){
-        if($('body').hasClass('io-black-mode')){
-            if($(".switch-dark-mode").attr("data-original-title"))
-                $(".switch-dark-mode").attr("data-original-title","日间模式");
-            else
-                $(".switch-dark-mode").attr("title","日间模式");
-            $(".mode-ico").removeClass("icon-night");
-            $(".mode-ico").addClass("icon-light");
-        }
-        else{
-            if($(".switch-dark-mode").attr("data-original-title"))
-                $(".switch-dark-mode").attr("data-original-title","夜间模式");
-            else
-                $(".switch-dark-mode").attr("title","夜间模式");
-            $(".mode-ico").removeClass("icon-light");
-            $(".mode-ico").addClass("icon-night");
-        }
-    }
     //返回顶部
     $(window).scroll(function () {
         if ($(this).scrollTop() >= 50) {
