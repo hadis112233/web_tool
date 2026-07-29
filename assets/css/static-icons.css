@@ -1,0 +1,65 @@
+@font-face {
+    font-family: "Hadis Icons";
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("../fontawesome-5.15.4/webfonts/fa-solid-900.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Hadis Brands";
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("../fontawesome-5.15.4/webfonts/fa-brands-400.woff2") format("woff2");
+}
+
+.fas, .fab {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.fas {
+    font-family: "Hadis Icons";
+    font-weight: 900;
+}
+
+.fab {
+    font-family: "Hadis Brands";
+    font-weight: 400;
+}
+
+.fa-address-book::before { content: "\f2b9"; }
+.fa-check::before { content: "\f00c"; }
+.fa-check-circle::before { content: "\f058"; }
+.fa-code::before { content: "\f121"; }
+.fa-envelope::before { content: "\f0e0"; }
+.fa-file-code::before { content: "\f1c9"; }
+.fa-github::before { content: "\f09b"; }
+.fa-heart::before { content: "\f004"; }
+.fa-home::before { content: "\f015"; }
+.fa-id-card::before { content: "\f2c2"; }
+.fa-info-circle::before { content: "\f05a"; }
+.fa-mobile-alt::before { content: "\f3cd"; }
+.fa-moon::before { content: "\f186"; }
+.fa-paper-plane::before { content: "\f1d8"; }
+.fa-search::before { content: "\f002"; }
+.fa-spinner::before { content: "\f110"; }
+.fa-user-circle::before { content: "\f2bd"; }
+
+.fa-spin {
+    animation: hadis-icon-spin 2s linear infinite;
+}
+
+@keyframes hadis-icon-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fa-spin { animation-duration: 3s; }
+}

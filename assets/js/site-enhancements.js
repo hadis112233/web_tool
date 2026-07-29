@@ -2,6 +2,7 @@
     'use strict';
 
     var STORAGE_KEY = 'hadis-tool-nav-favorites';
+    var RECENT_KEY = 'hadis-tool-nav-recent';
     var content = document.getElementById('content');
     if (!content) return;
 
@@ -13,7 +14,16 @@
     }, true);
 
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+        window.addEventListener('load', function () {
+            var isLocalPreview = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            if (isLocalPreview) {
+                navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                    registrations.forEach(function (registration) { registration.unregister(); });
+                }).catch(function () {});
+                return;
+            }
+            navigator.serviceWorker.register('./sw.js').catch(function () {});
+        });
     }
     if ('PerformanceObserver' in window && navigator.sendBeacon) {
         try {
@@ -35,7 +45,10 @@
     });
 
     function readFavorites() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        try {
+            var stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            return Array.isArray(stored) ? stored.filter(function (url) { return typeof url === 'string'; }) : [];
+        }
         catch (error) { return []; }
     }
 
@@ -43,7 +56,20 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
     }
 
+    function readRecent() {
+        try {
+            var stored = JSON.parse(localStorage.getItem(RECENT_KEY));
+            return Array.isArray(stored) ? stored.filter(function (url) { return typeof url === 'string'; }) : [];
+        }
+        catch (error) { return []; }
+    }
+
+    function writeRecent(recent) {
+        localStorage.setItem(RECENT_KEY, JSON.stringify(recent.slice(0, 12)));
+    }
+
     var favorites = readFavorites();
+    var recent = readRecent();
     var cards = Array.prototype.slice.call(content.querySelectorAll('.url-card'));
     cards.forEach(function (card) {
         card.querySelectorAll('img').forEach(function (image) {
@@ -64,17 +90,23 @@
     dashboard.innerHTML =
         '<div class="dashboard-copy"><strong>资源导航</strong><small id="filter-status" aria-live="polite">' + cards.length + ' 个链接 · ' + sections.length + ' 个分类</small></div>' +
         '<label class="dashboard-search"><input id="site-filter" type="search" placeholder="筛选网站、工具或描述" autocomplete="off" aria-label="筛选网站、工具或描述" aria-keyshortcuts="/"><span>⌕</span></label>' +
-        '<div class="dashboard-actions"><button class="dashboard-button favorites-toggle" id="favorites-toggle" type="button" aria-pressed="false"><span aria-hidden="true">♡</span> 收藏夹</button><button class="dashboard-button reset-button" id="filter-reset" type="button">清除</button></div>';
+        '<div class="dashboard-actions"><button class="dashboard-button recent-toggle" id="recent-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◷</span> 最近</button><button class="dashboard-button history-clear" id="recent-clear" type="button" hidden>清空最近</button><button class="dashboard-button favorites-toggle" id="favorites-toggle" type="button" aria-pressed="false"><span aria-hidden="true">♡</span> 收藏夹</button><button class="dashboard-button reset-button" id="filter-reset" type="button">清除</button></div>';
     content.insertBefore(dashboard, content.firstChild);
 
     var filterInput = dashboard.querySelector('#site-filter');
     var favoriteToggle = dashboard.querySelector('#favorites-toggle');
+    var recentToggle = dashboard.querySelector('#recent-toggle');
+    var recentClear = dashboard.querySelector('#recent-clear');
     var resetButton = dashboard.querySelector('#filter-reset');
     var filterStatus = dashboard.querySelector('#filter-status');
     var empty = document.createElement('div');
     empty.className = 'filter-empty';
-    empty.textContent = '没有找到匹配资源，换个关键词试试。';
+    empty.innerHTML = '<p>没有找到匹配资源，换个关键词试试。</p><button type="button">清除筛选</button>';
     dashboard.insertAdjacentElement('afterend', empty);
+
+    var firstCategory = sections[0] && sections[0].heading;
+    var allResourcesTarget = firstCategory && firstCategory.id ? firstCategory.id : 'all-resources';
+    if (firstCategory && !firstCategory.id) firstCategory.id = allResourcesTarget;
 
     // 首页精选：复用已有卡片内容，避免维护两套链接与图标数据。
     var featuredNames = ['GitHub', '阿里云', '有道词典', '办公工具站', 'PDFCraft', '抖音'];
@@ -88,7 +120,7 @@
         var featured = document.createElement('section');
         featured.className = 'featured-resources';
         featured.setAttribute('aria-labelledby', 'featured-title');
-        featured.innerHTML = '<div class="featured-heading"><div><span class="featured-kicker">HADIS PICKS</span><h2 id="featured-title">精选资源</h2><p>为日常工作与学习优先整理的常用入口</p></div><a href="#all-resources" class="featured-all">查看全部 <span aria-hidden="true">→</span></a></div><div class="row featured-grid"></div>';
+        featured.innerHTML = '<div class="featured-heading"><div><span class="featured-kicker">HADIS PICKS</span><h2 id="featured-title">精选资源</h2><p>为日常工作与学习优先整理的常用入口</p></div><a href="#' + allResourcesTarget + '" class="featured-all">查看全部 <span aria-hidden="true">→</span></a></div><div class="row featured-grid"></div>';
         var featuredGrid = featured.querySelector('.featured-grid');
         featuredCards.forEach(function (card) {
             var clone = card.cloneNode(true);
@@ -96,18 +128,27 @@
             clone.removeAttribute('hidden');
             var direct = clone.querySelector('.togo');
             if (direct) direct.remove();
+            var cloneLink = clone.querySelector('a.card');
+            if (cloneLink) cloneLink.addEventListener('click', function () { recordRecent(getUrl(clone)); });
             featuredGrid.appendChild(clone);
         });
         dashboard.insertAdjacentElement('afterend', featured);
     }
 
-    var firstCategory = sections[0] && sections[0].heading;
-    if (firstCategory) firstCategory.id = 'all-resources';
     var showingFavorites = false;
+    var showingRecent = false;
 
     function getUrl(card) {
         var link = card.querySelector('a.card');
         return link ? (link.getAttribute('data-url') || link.href) : '';
+    }
+
+    function recordRecent(url) {
+        if (!url) return;
+        var position = recent.indexOf(url);
+        if (position !== -1) recent.splice(position, 1);
+        recent.unshift(url);
+        writeRecent(recent);
     }
 
     function updateButton(button, url) {
@@ -125,7 +166,8 @@
             var url = getUrl(card);
             var matchTerm = !term || card.textContent.toLocaleLowerCase().indexOf(term) !== -1 || url.toLocaleLowerCase().indexOf(term) !== -1;
             var matchFavorite = !showingFavorites || favorites.indexOf(url) !== -1;
-            var visible = matchTerm && matchFavorite;
+            var matchRecent = !showingRecent || recent.indexOf(url) !== -1;
+            var visible = matchTerm && matchFavorite && matchRecent;
             card.hidden = !visible;
             if (visible) visibleCount += 1;
         });
@@ -135,15 +177,29 @@
             section.row.hidden = !hasVisible;
         });
         empty.classList.toggle('is-visible', visibleCount === 0);
-        filterStatus.textContent = showingFavorites ? '显示 ' + visibleCount + ' 个已收藏资源' : '显示 ' + visibleCount + ' 个资源';
+        recentClear.hidden = !showingRecent || recent.length === 0;
+        filterStatus.textContent = showingFavorites ? '显示 ' + visibleCount + ' 个已收藏资源' : (showingRecent ? (recent.length ? '显示 ' + visibleCount + ' 个最近访问资源' : '暂无最近访问记录') : '显示 ' + visibleCount + ' 个资源');
+    }
+
+    function resetFilters() {
+        filterInput.value = '';
+        showingFavorites = false;
+        showingRecent = false;
+        favoriteToggle.classList.remove('is-active');
+        recentToggle.classList.remove('is-active');
+        favoriteToggle.setAttribute('aria-pressed', 'false');
+        recentToggle.setAttribute('aria-pressed', 'false');
+        favoriteToggle.innerHTML = '<span aria-hidden="true">♡</span> 收藏夹';
+        filterCards();
     }
 
     cards.forEach(function (card) {
         var link = card.querySelector('a.card');
         if (!link) return;
-        link.setAttribute('rel', 'noopener noreferrer');
-        var button = document.createElement('button');
         var url = getUrl(card);
+        link.setAttribute('rel', 'noopener noreferrer');
+        link.addEventListener('click', function () { recordRecent(url); });
+        var button = document.createElement('button');
         button.type = 'button';
         button.className = 'favorite-button';
         updateButton(button, url);
@@ -166,19 +222,26 @@
     });
     favoriteToggle.addEventListener('click', function () {
         showingFavorites = !showingFavorites;
+        if (showingFavorites) { showingRecent = false; recentToggle.classList.remove('is-active'); recentToggle.setAttribute('aria-pressed', 'false'); }
         favoriteToggle.classList.toggle('is-active', showingFavorites);
         favoriteToggle.setAttribute('aria-pressed', showingFavorites ? 'true' : 'false');
         favoriteToggle.innerHTML = '<span aria-hidden="true">' + (showingFavorites ? '♥' : '♡') + '</span> 收藏夹';
         filterCards();
     });
-    resetButton.addEventListener('click', function () {
-        filterInput.value = '';
-        showingFavorites = false;
-        favoriteToggle.classList.remove('is-active');
-        favoriteToggle.setAttribute('aria-pressed', 'false');
-        favoriteToggle.innerHTML = '<span aria-hidden="true">♡</span> 收藏夹';
+    recentToggle.addEventListener('click', function () {
+        showingRecent = !showingRecent;
+        if (showingRecent) { showingFavorites = false; favoriteToggle.classList.remove('is-active'); favoriteToggle.setAttribute('aria-pressed', 'false'); }
+        recentToggle.classList.toggle('is-active', showingRecent);
+        recentToggle.setAttribute('aria-pressed', showingRecent ? 'true' : 'false');
         filterCards();
     });
+    recentClear.addEventListener('click', function () {
+        recent = [];
+        localStorage.removeItem(RECENT_KEY);
+        resetFilters();
+    });
+    resetButton.addEventListener('click', resetFilters);
+    empty.querySelector('button').addEventListener('click', resetFilters);
     document.addEventListener('keydown', function (event) {
         if (event.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
             event.preventDefault();

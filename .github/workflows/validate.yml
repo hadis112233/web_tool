@@ -15,21 +15,37 @@ jobs:
           from html.parser import HTMLParser
           from pathlib import Path
           from urllib.parse import unquote, urlsplit
+          from collections import Counter
 
           class Parser(HTMLParser):
               def __init__(self):
                   super().__init__()
                   self.references = []
+                  self.ids = []
+                  self.fragments = []
               def handle_starttag(self, tag, attrs):
                   for name, value in attrs:
                       if name in {'src', 'href'} and value:
                           self.references.append(value)
+                      if name == 'href' and value and value.startswith('#') and len(value) > 1:
+                          self.fragments.append(unquote(value[1:]))
+                      if name == 'id' and value:
+                          self.ids.append(value)
 
           root = Path('.').resolve()
           missing = []
+          duplicate_ids = []
+          missing_fragments = []
           for page in root.rglob('*.html'):
               parser = Parser()
               parser.feed(page.read_text(encoding='utf-8'))
+              for value, count in Counter(parser.ids).items():
+                  if count > 1:
+                      duplicate_ids.append(f'{page}: duplicate id="{value}" ({count} times)')
+              known_ids = set(parser.ids)
+              for fragment in parser.fragments:
+                  if fragment not in known_ids:
+                      missing_fragments.append(f'{page}: missing fragment target #{fragment}')
               for value in parser.references:
                   parts = urlsplit(unquote(value))
                   if parts.scheme or parts.netloc or value.startswith(('#', '//', 'mailto:', 'tel:', 'javascript:')):
@@ -39,9 +55,10 @@ jobs:
                   target = (page.parent / parts.path).resolve()
                   if str(target).startswith(str(root)) and not target.exists():
                       missing.append(f'{page}: {value}')
-          if missing:
-              raise SystemExit('\n'.join(missing))
-          print('HTML and local asset paths are valid.')
+          errors = missing + duplicate_ids + missing_fragments
+          if errors:
+              raise SystemExit('\n'.join(errors))
+          print('HTML, local asset paths, element IDs, and fragment links are valid.')
           PY
       - name: Validate JavaScript syntax
         run: |
@@ -53,9 +70,11 @@ jobs:
           node --check scripts/build-catalog.mjs
           node --check scripts/check-external-links.mjs
           node --check scripts/validate-catalog.mjs
+          node --check scripts/validate-manifest.mjs
           node --check api/telemetry.js
       - name: Validate and rebuild site catalog
         run: |
           node scripts/build-catalog.mjs
           node scripts/validate-catalog.mjs
+          node scripts/validate-manifest.mjs
           git diff --exit-code -- index.html

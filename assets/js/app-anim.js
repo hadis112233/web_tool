@@ -3,7 +3,7 @@
         // 侧栏菜单初始状态设置
         if(theme.minNav != '1')trigger_resizable(true);
         // 主题状态
-        switch_mode(); 
+        if (typeof window.switch_mode === 'function') window.switch_mode();
         // 搜索模块
         intoSearch();
         // 粘性页脚
@@ -736,6 +736,26 @@
         }
     });
     // 搜索模块 -----------------------
+    function getSearchTarget($search, preferredTarget) {
+        var fallbackTarget = "https://www.baidu.com/s?wd=";
+        var $availableTargets = $search.find('.hide-type-list .search-group input:radio');
+        var target = preferredTarget || $search.find('.hide-type-list .search-group input:radio:checked').first().val();
+
+        // 只允许页面中预置的搜索地址，避免旧缓存或异常值拼出错误链接。
+        return $availableTargets.filter(function () {
+            return $(this).val() === target;
+        }).length ? target : fallbackTarget;
+    }
+
+    function syncSearchForm($search) {
+        var $selected = $search.find('.hide-type-list .search-group input:radio:checked').first();
+        var target = getSearchTarget($search, $selected.val());
+        var placeholder = $selected.data('placeholder') || '输入关键字搜索';
+
+        $search.find('.super-search-fm').attr('action', target).attr('data-search-target', target);
+        $search.find('.search-key').attr('placeholder', placeholder);
+    }
+
     function intoSearch() {
         if(window.localStorage.getItem("searchlist")){
             $(".hide-type-list input#"+window.localStorage.getItem("searchlist")).prop('checked', true);
@@ -750,8 +770,9 @@
         $('.hide-type-list input:radio[name="type"]:checked').parents(".search-group").addClass("s-current"); 
         $('.hide-type-list input:radio[name="type2"]:checked').parents(".search-group").addClass("s-current");
 
-        $(".super-search-fm").attr("action",$('.hide-type-list input:radio:checked').val());
-        $(".search-key").attr("placeholder",$('.hide-type-list input:radio:checked').data("placeholder")); 
+        $('.s-search').each(function () {
+            syncSearchForm($(this));
+        });
         if(window.localStorage.getItem("searchlist")=='type-zhannei'){
             $(".search-key").attr("zhannei","true"); 
         }
@@ -769,8 +790,7 @@
     $('.hide-type-list .search-group input').on('click', function() {
         var parent = $(this).parents(".s-search");
         window.localStorage.setItem("searchlist", $(this).attr("id").replace("m_",""));
-        parent.children(".super-search-fm").attr("action",$(this).val());
-        parent.find(".search-key").attr("placeholder",$(this).data("placeholder"));
+        syncSearchForm(parent);
 
         if($(this).attr('id')=="type-zhannei" || $(this).attr('id')=="m_type-zhannei")
             parent.find(".search-key").attr("zhannei","true");
@@ -781,11 +801,14 @@
         parent.find(".search-key").focus();
     });
     $(document).on("submit", ".super-search-fm", function() {
-        var key = encodeURIComponent($(this).find(".search-key").val())
+        var $form = $(this);
+        var key = encodeURIComponent($form.find(".search-key").val().trim())
         if(key == "")
             return false;
         else{
-            window.open( $(this).attr("action") + key);
+            var $search = $form.closest('.s-search');
+            var target = getSearchTarget($search, $form.attr('data-search-target') || $form.attr('action'));
+            window.open(target + key, '_blank', 'noopener,noreferrer');
             return false;
         }
     });
@@ -863,7 +886,7 @@
     });
     $(document).on("focus", ".smart-tips.search-key", function() {
         isZhannei = $(this).attr('zhannei')!=''?true:false;
-        parent = $(this).parents('#search');
+        parent = $(this).closest('.s-search');
         if ($(this).val() && !isZhannei) {
             switch(theme.hotWords) {
                 case "baidu": 
@@ -878,7 +901,7 @@
     });
     $(document).on("keyup", ".smart-tips.search-key", function(e) {
         isZhannei = $(this).attr('zhannei')!=''?true:false;
-        parent = $(this).parents('#search');
+        parent = $(this).closest('.s-search');
         if ($(this).val()) {
             if (e.keyCode == 38 || e.keyCode == 40 || isZhannei) {
                 return
@@ -898,7 +921,7 @@
         }
     });
     $(document).on("keydown", ".smart-tips.search-key", function(e) {
-        parent = $(this).parents('#search');
+        parent = $(this).closest('.s-search');
         if (e.keyCode === 40) {
             listIndex === (tipsList - 1) ? listIndex = 0 : listIndex++;
             parent.find(".search-smart-tips ul li").eq(listIndex).addClass("current").siblings().removeClass("current");
