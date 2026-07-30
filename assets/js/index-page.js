@@ -32,6 +32,22 @@ var theme = {
     if (getNightMode() === '1') document.body.classList.add('io-black-mode');
     setSearchBackground();
 
+    // 旧版“常用”搜索已移除，清理失效的本地选择，回退到搜索分类。
+    ['searchlist', 'searchlistmenu'].forEach(function (key) {
+        var value = localStorage.getItem(key);
+        if (value && !document.getElementById(value) && !document.querySelector('[data-id="' + value + '"]')) localStorage.removeItem(key);
+    });
+
+    // 让自定义搜索标签也能通过键盘切换。
+    document.querySelectorAll('.s-search label[for]').forEach(function (label) {
+        label.tabIndex = 0;
+        label.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+            event.preventDefault();
+            label.click();
+        });
+    });
+
     $(function () {
         var siteWelcome = $('#loading');
         siteWelcome.addClass('close');

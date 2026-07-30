@@ -28,8 +28,8 @@ function renderCard(site) {
 }
 
 function renderCategory(category) {
-  return `            <div class="d-flex flex-fill">
-                <h4 class="text-gray text-lg mb-4"><i class="site-tag iconfont ${escape(category.icon || 'icon-tag')} icon-lg mr-1"${category.id ? ` id="${escape(category.id)}"` : ''}></i>${escape(category.name)}</h4>
+  return `            <div class="d-flex flex-fill"${category.id ? ` id="${escape(category.id)}"` : ''}>
+                <h4 class="text-gray text-lg mb-4"><i class="site-tag iconfont ${escape(category.icon || 'icon-tag')} icon-lg mr-1"></i>${escape(category.name)}</h4>
             </div>
             <div class="row">
 ${category.sites.map(renderCard).join('\n\n')}
