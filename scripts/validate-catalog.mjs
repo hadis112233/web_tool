@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 
 const catalog = JSON.parse(await readFile('data/sites.json', 'utf8'));
+const commit = await readFile('commit.html', 'utf8');
 const errors = [];
 const ids = new Set();
 const urls = new Set();
@@ -14,5 +15,12 @@ for (const category of catalog.categories || []) {
     urls.add(site.url);
   }
 }
+const submitOptions = [...commit.matchAll(/<option value="([^"]+)">/g)]
+  .map((match) => match[1])
+  .filter(Boolean);
+const expectedOptions = [...catalog.categories.map((category) => category.name), '其他'];
+if (JSON.stringify(submitOptions) !== JSON.stringify(expectedOptions)) {
+  errors.push('提交页分类与目录分类不一致，请重新运行目录构建脚本。');
+}
 if (errors.length) throw new Error(errors.join('\n'));
-console.log(`Catalog valid: ${catalog.categories.length} categories, ${urls.size} unique sites.`);
+console.log(`Catalog valid: ${catalog.categories.length} categories, ${urls.size} unique sites, and matching submit options.`);

@@ -7,8 +7,10 @@ const concurrency = 6;
 
 function extractLinks(html) {
   const links = new Set();
-  for (const match of html.matchAll(/\b(?:href|data-url)=["'](https?:[^"']+)/gi)) {
-    links.add(match[1].replace(/&amp;/g, '&'));
+  for (const match of html.matchAll(/\b(href|data-url|action|value)=["'](https?:[^"']+)/gi)) {
+    let url = match[2].replace(/&amp;/g, '&');
+    if (match[1].toLowerCase() === 'value' && /[=/?_]$/.test(url)) url += 'hadis';
+    links.add(url);
   }
   return links;
 }
@@ -23,7 +25,7 @@ async function check(url) {
       signal: controller.signal,
       headers: { 'user-agent': 'HadisLinkAudit/1.0 (+https://web.008997.xyz/)' }
     });
-    if ([405, 501].includes(response.status)) {
+    if (!response.ok && ![401, 403, 429].includes(response.status)) {
       response = await fetch(url, {
         method: 'GET',
         redirect: 'follow',
@@ -31,7 +33,8 @@ async function check(url) {
         headers: { 'user-agent': 'HadisLinkAudit/1.0 (+https://web.008997.xyz/)' }
       });
     }
-    const level = response.ok ? '正常' : ([401, 403, 429].includes(response.status) ? '需人工确认' : '异常');
+    const needsManualReview = [401, 403, 408, 425, 429, 444].includes(response.status) || response.status >= 500;
+    const level = response.ok ? '正常' : (needsManualReview ? '需人工确认' : '异常');
     return { url, level, status: response.status, destination: response.url };
   } catch (error) {
     return { url, level: '需人工确认', status: error.name === 'AbortError' ? '超时' : '连接失败', destination: '' };
@@ -68,4 +71,7 @@ const report = [
 
 await mkdir('reports', { recursive: true });
 await writeFile('reports/link-audit.md', report, 'utf8');
-console.log(`Checked ${results.length} links. Report written to reports/link-audit.md.`);
+const abnormalCount = results.filter((item) => item.level === '异常').length;
+const manualCount = results.filter((item) => item.level === '需人工确认').length;
+console.log(`Checked ${results.length} links: ${abnormalCount} abnormal, ${manualCount} need manual review. Report written to reports/link-audit.md.`);
+if (abnormalCount > 0) process.exitCode = 1;

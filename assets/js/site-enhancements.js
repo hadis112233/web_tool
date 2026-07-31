@@ -25,7 +25,9 @@
             navigator.serviceWorker.register('./sw.js').catch(function () {});
         });
     }
-    if ('PerformanceObserver' in window && navigator.sendBeacon) {
+    var telemetryMeta = document.querySelector('meta[name="hadis-telemetry"]');
+    var telemetryEnabled = telemetryMeta && telemetryMeta.getAttribute('content') === 'enabled';
+    if (telemetryEnabled && 'PerformanceObserver' in window && navigator.sendBeacon) {
         try {
             new PerformanceObserver(function (list) {
                 list.getEntries().forEach(function (entry) {
@@ -53,7 +55,8 @@
     }
 
     function writeFavorites(favorites) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites)); }
+        catch (error) {}
     }
 
     function readRecent() {
@@ -65,7 +68,8 @@
     }
 
     function writeRecent(recent) {
-        localStorage.setItem(RECENT_KEY, JSON.stringify(recent.slice(0, 12)));
+        try { localStorage.setItem(RECENT_KEY, JSON.stringify(recent.slice(0, 12))); }
+        catch (error) {}
     }
 
     var favorites = readFavorites();
@@ -177,6 +181,7 @@
             section.row.hidden = !hasVisible;
         });
         empty.classList.toggle('is-visible', visibleCount === 0);
+        if (featured) featured.hidden = Boolean(term || showingFavorites || showingRecent);
         recentClear.hidden = !showingRecent || recent.length === 0;
         filterStatus.textContent = showingFavorites ? '显示 ' + visibleCount + ' 个已收藏资源' : (showingRecent ? (recent.length ? '显示 ' + visibleCount + ' 个最近访问资源' : '暂无最近访问记录') : '显示 ' + visibleCount + ' 个资源');
     }

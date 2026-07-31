@@ -709,33 +709,15 @@
     $('.form_custom_term_id').on("click", function(event){ 
         $("input[name=term_name]").val("");
     });
-    $(document).on('click', '.url-card a.card', function(event) {
-        var site = {
-            id: $(this).data("id"),
-            name: $(this).find("strong").html(),
-            url: $(this).data("url")
-        };
-        if(site.url==="")
-            return;
-        var liveList = getItem("livelists");
-        var isNew = true;
-        for (var i = 0; i < liveList.length; i++){
-            if (liveList[i].name === site.name) {
-                isNew = false;
-            }
-        }
-        if(isNew){
-            var maxSite = theme.customizemax;
-            if(liveList.length > maxSite-1){
-                $(".my-click-list .site-"+liveList[maxSite-1].id).parent().remove();
-                liveList.splice(maxSite-1, 1);
-            }
-            addSite(site,true,true);
-            liveList.unshift(site);
-            setItem(liveList,"livelists");
-        }
-    });
     // 搜索模块 -----------------------
+    function searchStorageGet(key) {
+        try { return window.localStorage.getItem(key); }
+        catch (error) { return null; }
+    }
+    function searchStorageSet(key, value) {
+        try { window.localStorage.setItem(key, value); }
+        catch (error) {}
+    }
     function getSearchTarget($search, preferredTarget) {
         var fallbackTarget = "https://www.baidu.com/s?wd=";
         var $availableTargets = $search.find('.hide-type-list .search-group input:radio');
@@ -757,23 +739,26 @@
     }
 
     function intoSearch() {
-        if(window.localStorage.getItem("searchlist")){
-            $(".hide-type-list input#"+window.localStorage.getItem("searchlist")).prop('checked', true);
-            $(".hide-type-list input#m_"+window.localStorage.getItem("searchlist")).prop('checked', true);
+        var savedSearch = searchStorageGet("searchlist");
+        var savedMenu = searchStorageGet("searchlistmenu");
+        var savedInput = savedSearch ? document.getElementById(savedSearch) : null;
+        if(savedInput && $(savedInput).closest('.hide-type-list').length){
+            $(savedInput).prop('checked', true);
         }
-        if(window.localStorage.getItem("searchlistmenu")){
+        if(savedMenu){
             $('.s-type-list.big label').removeClass('active');
-            $(".s-type-list [data-id="+window.localStorage.getItem("searchlistmenu")+"]").addClass('active');
+            $(".s-type-list [data-id]").filter(function () {
+                return String($(this).data('id')) === savedMenu;
+            }).addClass('active');
         }
         toTarget($(".s-type-list.big"),false,false);
         $('.hide-type-list .s-current').removeClass("s-current");
         $('.hide-type-list input:radio[name="type"]:checked').parents(".search-group").addClass("s-current"); 
-        $('.hide-type-list input:radio[name="type2"]:checked').parents(".search-group").addClass("s-current");
 
         $('.s-search').each(function () {
             syncSearchForm($(this));
         });
-        if(window.localStorage.getItem("searchlist")=='type-zhannei'){
+        if(savedSearch=='type-zhannei'){
             $(".search-key").attr("zhannei","true"); 
         }
     }
@@ -781,7 +766,7 @@
         //event.preventDefault();
         $('.s-type-list.big label').removeClass('active');
         $(this).addClass('active');
-        window.localStorage.setItem("searchlistmenu", $(this).data("id"));
+        searchStorageSet("searchlistmenu", $(this).data("id"));
         var parent = $(this).parents(".s-search");
         parent.find('.search-group').removeClass("s-current");
         parent.find('#'+$(this).attr("for")).parents(".search-group").addClass("s-current"); 
@@ -789,10 +774,10 @@
     });
     $('.hide-type-list .search-group input').on('click', function() {
         var parent = $(this).parents(".s-search");
-        window.localStorage.setItem("searchlist", $(this).attr("id").replace("m_",""));
+        searchStorageSet("searchlist", $(this).attr("id"));
         syncSearchForm(parent);
 
-        if($(this).attr('id')=="type-zhannei" || $(this).attr('id')=="m_type-zhannei")
+        if($(this).attr('id')=="type-zhannei")
             parent.find(".search-key").attr("zhannei","true");
         else
             parent.find(".search-key").attr("zhannei","");
@@ -810,135 +795,6 @@
             var target = getSearchTarget($search, $form.attr('data-search-target') || $form.attr('action'));
             window.open(target + key, '_blank', 'noopener,noreferrer');
             return false;
-        }
-    });
-    function getSmartTipsGoogle(value,parents) {
-        $.ajax({
-            type: "GET",
-            url: "//suggestqueries.google.com/complete/search?client=firefox&callback=iowenHot",
-            async: true,
-            data: { q: value },
-            dataType: "jsonp",
-            jsonp: "callback",
-            success: function(res) {
-                var list = parents.children(".search-smart-tips");
-                list.children("ul").text("");
-                tipsList = res[1].length;
-                if (tipsList) {
-                    for (var i = 0; i < tipsList; i++) {
-                        list.children("ul").append("<li>" + res[1][i] + "</li>");
-                        list.find("li").eq(i).click(function() {
-                            var keyword = $(this).html();
-                            parents.find(".smart-tips.search-key").val(keyword);
-                            parents.children(".super-search-fm").submit();
-                            list.slideUp(200);
-                        });
-                    };
-                    list.slideDown(200);
-                } else {
-                    list.slideUp(200)
-                }
-            },
-            error: function(res) {
-                tipsList = 0;
-            }
-        })
-    }
-    function getSmartTipsBaidu(value,parents) {
-        $.ajax({
-            type: "GET",
-            url: "//sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?cb=iowenHot",
-            async: true,
-            data: { wd: value },
-            dataType: "jsonp",
-            jsonp: "cb",
-            success: function(res) {
-                var list = parents.children(".search-smart-tips");
-                list.children("ul").text("");
-                tipsList = res.s.length;
-                if (tipsList) {
-                    for (var i = 0; i < tipsList; i++) {
-                        list.children("ul").append("<li>" + res.s[i] + "</li>");
-                        list.find("li").eq(i).click(function() {
-                            var keyword = $(this).html();
-                            parents.find(".smart-tips.search-key").val(keyword);
-                            parents.children(".super-search-fm").submit();
-                            list.slideUp(200);
-                        });
-                    };
-                    list.slideDown(200);
-                } else {
-                    list.slideUp(200)
-                }
-            },
-            error: function(res) {
-                tipsList = 0;
-            }
-        })
-    }
-    var listIndex = -1;
-    var parent;
-    var tipsList = 0;
-    var isZhannei = false;
-    $(document).on("blur", ".smart-tips.search-key", function() {
-        parent = '';
-        $(".search-smart-tips").delay(150).slideUp(200)
-    });
-    $(document).on("focus", ".smart-tips.search-key", function() {
-        isZhannei = $(this).attr('zhannei')!=''?true:false;
-        parent = $(this).closest('.s-search');
-        if ($(this).val() && !isZhannei) {
-            switch(theme.hotWords) {
-                case "baidu": 
-                    getSmartTipsBaidu($(this).val(),parent)
-                    break;
-                case "google": 
-                    getSmartTipsGoogle($(this).val(),parent)
-                    break;
-                default: 
-            } 
-        }
-    });
-    $(document).on("keyup", ".smart-tips.search-key", function(e) {
-        isZhannei = $(this).attr('zhannei')!=''?true:false;
-        parent = $(this).closest('.s-search');
-        if ($(this).val()) {
-            if (e.keyCode == 38 || e.keyCode == 40 || isZhannei) {
-                return
-            }
-            switch(theme.hotWords) {
-                case "baidu": 
-                    getSmartTipsBaidu($(this).val(),parent)
-                    break;
-                case "google": 
-                    getSmartTipsGoogle($(this).val(),parent)
-                    break;
-                default: 
-            } 
-            listIndex = -1;
-        } else {
-            $(".search-smart-tips").slideUp(200)
-        }
-    });
-    $(document).on("keydown", ".smart-tips.search-key", function(e) {
-        parent = $(this).closest('.s-search');
-        if (e.keyCode === 40) {
-            listIndex === (tipsList - 1) ? listIndex = 0 : listIndex++;
-            parent.find(".search-smart-tips ul li").eq(listIndex).addClass("current").siblings().removeClass("current");
-            var hotValue = parent.find(".search-smart-tips ul li").eq(listIndex).html();
-            parent.find(".smart-tips.search-key").val(hotValue)
-        }
-        if (e.keyCode === 38) {
-            if (e.preventDefault) {
-                e.preventDefault()
-            }
-            if (e.returnValue) {
-                e.returnValue = false
-            }
-            listIndex === 0 || listIndex === -1 ? listIndex = (tipsList - 1) : listIndex--;
-            parent.find(".search-smart-tips ul li").eq(listIndex).addClass("current").siblings().removeClass("current");
-            var hotValue = parent.find(".search-smart-tips ul li").eq(listIndex).html();
-            parent.find(".smart-tips.search-key").val(hotValue)
         }
     });
     $('.nav-login-user.dropdown').hover(function(){

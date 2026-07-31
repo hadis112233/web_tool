@@ -10,6 +10,9 @@ const MAX_LENGTHS = {
 const attempts = new Map();
 const WINDOW_MS = 60 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
+const MAX_TRACKED_CLIENTS = 5000;
+const catalog = require('../data/sites.json');
+const ALLOWED_CATEGORIES = new Set([...catalog.categories.map((category) => category.name), '其他']);
 
 function text(value, max) {
   return typeof value === 'string' ? value.trim().slice(0, max) : '';
@@ -29,6 +32,9 @@ module.exports = async function submit(req, res) {
 
   const forwarded = String((req.headers || {})['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
   const now = Date.now();
+  if (!attempts.has(forwarded) && attempts.size >= MAX_TRACKED_CLIENTS) {
+    attempts.delete(attempts.keys().next().value);
+  }
   const recent = (attempts.get(forwarded) || []).filter((time) => now - time < WINDOW_MS);
   if (recent.length >= MAX_ATTEMPTS) return res.status(429).json({ error: '提交过于频繁，请稍后再试。' });
   recent.push(now);
@@ -42,6 +48,9 @@ module.exports = async function submit(req, res) {
   const form = Object.fromEntries(Object.entries(MAX_LENGTHS).map(([key, max]) => [key, text(body[key], max)]));
   if (!form.siteName || !form.category || !form.description || !form.email || !validUrl(form.siteUrl)) {
     return res.status(400).json({ error: '请完整填写有效的网站信息。' });
+  }
+  if (!ALLOWED_CATEGORIES.has(form.category)) {
+    return res.status(400).json({ error: '请选择有效的网站分类。' });
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
     return res.status(400).json({ error: '请输入有效的联系邮箱。' });
