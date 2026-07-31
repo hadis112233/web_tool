@@ -33,10 +33,15 @@ var theme = {
     setSearchBackground();
 
     // 旧版“常用”搜索已移除，清理失效的本地选择，回退到搜索分类。
-    ['searchlist', 'searchlistmenu'].forEach(function (key) {
-        var value = localStorage.getItem(key);
-        if (value && !document.getElementById(value) && !document.querySelector('[data-id="' + value + '"]')) localStorage.removeItem(key);
-    });
+    try {
+        ['searchlist', 'searchlistmenu'].forEach(function (key) {
+            var value = localStorage.getItem(key);
+            var matchingMenu = value && Array.prototype.some.call(document.querySelectorAll('[data-id]'), function (item) {
+                return item.getAttribute('data-id') === value;
+            });
+            if (value && !document.getElementById(value) && !matchingMenu) localStorage.removeItem(key);
+        });
+    } catch (error) {}
 
     // 让自定义搜索标签也能通过键盘切换。
     document.querySelectorAll('.s-search label[for]').forEach(function (label) {
