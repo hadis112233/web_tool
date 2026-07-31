@@ -1,4 +1,4 @@
-const CACHE = 'hadis-nav-v5';
+const CACHE = 'hadis-nav-v6';
 const CORE = [
   '/',
   '/index.html',
@@ -13,12 +13,8 @@ const CORE = [
   '/assets/fontawesome-5.15.4/webfonts/fa-regular-400.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-solid-900.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-brands-400.woff2',
-  '/assets/js/jquery.min-3.2.1.js',
-  '/assets/js/bootstrap.min-4.3.1.js',
-  '/assets/js/theia-sticky-sidebar-1.5.0.js',
-  '/assets/js/app-anim.js?v=20260731-1',
   '/assets/js/site-enhancements.js?v=20260731-1',
-  '/assets/js/index-page.js?v=20260731-1',
+  '/assets/js/index-page.js?v=20260731-2',
   '/assets/images/hadis-logo.svg',
   '/assets/images/hadis-logo-dark.svg',
   '/assets/images/hadis-mark.svg',
