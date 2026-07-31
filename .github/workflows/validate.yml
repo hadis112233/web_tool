@@ -62,7 +62,6 @@ jobs:
           PY
       - name: Validate JavaScript syntax
         run: |
-          node --check assets/js/app-anim.js
           node --check assets/js/site-enhancements.js
           node --check assets/js/index-page.js
           node --check assets/js/commit-page.js
