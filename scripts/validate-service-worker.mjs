@@ -26,8 +26,8 @@ if (!coreMatch) {
     }
   }
 
-  const versionedAssets = [...index.matchAll(/(?:href|src)="(\/assets\/[^"]+\?v=[^"]+)"/g)]
-    .map((match) => match[1]);
+  const versionedAssets = [...index.matchAll(/(?:href|src)="(?:\.\/|\/)(assets\/[^"]+\?v=[^"]+)"/g)]
+    .map((match) => `/${match[1]}`);
   for (const url of versionedAssets) {
     if (!coreSet.has(url)) {
       errors.push(`首页版本化资源未加入 CORE：${url}`);
