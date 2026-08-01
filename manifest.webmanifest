@@ -13,6 +13,21 @@
   "icons": [
     { "src": "/assets/images/hadis-favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "/assets/images/hadis-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/assets/images/hadis-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    { "src": "/assets/images/hadis-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/images/hadis-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "提交网站",
+      "short_name": "提交",
+      "description": "推荐值得收录的网站或在线工具。",
+      "url": "/commit"
+    },
+    {
+      "name": "关于项目",
+      "short_name": "关于",
+      "description": "了解 Hadis 工具导航。",
+      "url": "/about/"
+    }
   ]
 }
