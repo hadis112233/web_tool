@@ -1,4 +1,4 @@
-const CACHE = 'hadis-nav-v12';
+const CACHE = 'hadis-nav-v13';
 const CORE = [
   '/',
   '/index.html',
@@ -15,6 +15,7 @@ const CORE = [
   '/assets/fontawesome-5.15.4/webfonts/fa-brands-400.woff2',
   '/assets/js/site-enhancements.js?v=20260731-1',
   '/assets/js/index-page.js?v=20260801-1',
+  '/assets/js/offline-page.js?v=20260801-1',
   '/assets/images/hadis-logo.svg',
   '/assets/images/hadis-logo-dark.svg',
   '/assets/images/hadis-mark.svg',
