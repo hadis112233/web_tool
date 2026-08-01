@@ -312,7 +312,7 @@ $.ajax({
 Main style files are in `assets/css/` directory:
 
 - `custom-style.css` - Custom styles
-- `style-3.03029.1.css` - Theme styles
+- `theme-subset.css` - Purged theme styles used by the homepage
 
 ### Add New Categories
 

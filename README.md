@@ -293,7 +293,7 @@ $.ajax({
 主要样式文件位于 `assets/css/` 目录：
 
 - `custom-style.css` - 自定义样式
-- `style-3.03029.1.css` - 主题样式
+- `theme-subset.css` - 首页实际使用的精简主题样式
 
 ### 添加新的分类
 
