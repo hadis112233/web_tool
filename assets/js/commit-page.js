@@ -91,15 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
             submitTime: new Date().toISOString()
         };
 
-        try {
-            const storageKey = 'hadis-tool-nav-submissions';
-            const drafts = JSON.parse(localStorage.getItem(storageKey)) || [];
-            drafts.unshift(formData);
-            localStorage.setItem(storageKey, JSON.stringify(drafts.slice(0, 20)));
-        } catch (error) {
-            // 浏览器禁止本地存储时仍可继续提交。
-        }
-
         const controller = new AbortController();
         const timeout = window.setTimeout(function () {
             controller.abort();
