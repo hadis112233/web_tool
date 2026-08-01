@@ -4,7 +4,10 @@ import path from 'node:path';
 const root = path.resolve(import.meta.dirname, '..');
 const logoDir = path.join(root, 'assets/images/logos');
 const sharePath = path.join(root, 'assets/images/hadis-share.png');
+const legacyBackgroundPath = path.join(root, 'assets/images/bg-dna.webp');
 const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const indexPageScript = fs.readFileSync(path.join(root, 'assets/js/index-page.js'), 'utf8');
+const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 const errors = [];
 
 const referencedLogos = new Set();
@@ -23,6 +26,13 @@ const logoFiles = fs.readdirSync(logoDir, { withFileTypes: true })
 const orphanLogos = logoFiles.filter((name) => !referencedLogos.has(name)).sort();
 if (orphanLogos.length) {
   errors.push(`存在首页未引用的站点图标：${orphanLogos.join(', ')}`);
+}
+
+if (fs.existsSync(legacyBackgroundPath)) {
+  errors.push('旧版 DNA 背景图仍然存在。');
+}
+if (/bg-dna\.webp|setSearchBackground/.test(index + indexPageScript + serviceWorker)) {
+  errors.push('页面脚本或 Service Worker 仍引用旧版 DNA 背景。');
 }
 
 if (!fs.existsSync(sharePath)) {

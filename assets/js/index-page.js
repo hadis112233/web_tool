@@ -25,11 +25,6 @@
         return document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, '$1') || '0';
     }
 
-    function setSearchBackground() {
-        var background = document.getElementById('search-bg');
-        if (background) background.style.backgroundImage = 'url(assets/images/bg-dna.webp)';
-    }
-
     function applyTheme(isDark) {
         document.body.classList.toggle('io-black-mode', isDark);
         document.body.classList.toggle('io-grey-mode', !isDark);
@@ -185,7 +180,6 @@
     }
 
     applyTheme(getNightMode() === '1');
-    setSearchBackground();
     initializeSearch();
     updateScrollState();
 

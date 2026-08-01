@@ -1,4 +1,4 @@
-const CACHE = 'hadis-nav-v10';
+const CACHE = 'hadis-nav-v11';
 const CORE = [
   '/',
   '/index.html',
@@ -14,11 +14,10 @@ const CORE = [
   '/assets/fontawesome-5.15.4/webfonts/fa-solid-900.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-brands-400.woff2',
   '/assets/js/site-enhancements.js?v=20260731-1',
-  '/assets/js/index-page.js?v=20260731-2',
+  '/assets/js/index-page.js?v=20260801-1',
   '/assets/images/hadis-logo.svg',
   '/assets/images/hadis-logo-dark.svg',
   '/assets/images/hadis-mark.svg',
-  '/assets/images/bg-dna.webp',
   '/assets/images/logos/default.webp'
 ];
 const CORE_URLS = new Set(CORE.map((path) => new URL(path, self.location.origin).href));
