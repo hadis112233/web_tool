@@ -72,6 +72,7 @@ jobs:
           node --check scripts/validate-manifest.mjs
           node --check scripts/validate-icon-subset.mjs
           node --check scripts/validate-bootstrap-subset.mjs
+          node --check scripts/validate-deployment-headers.mjs
           node --check scripts/validate-theme-subset.mjs
           node --check scripts/validate-image-assets.mjs
           node --check scripts/validate-page-weight.mjs
@@ -87,6 +88,7 @@ jobs:
           node scripts/validate-manifest.mjs
           node scripts/validate-icon-subset.mjs
           node scripts/validate-bootstrap-subset.mjs
+          node scripts/validate-deployment-headers.mjs
           node scripts/validate-theme-subset.mjs
           node scripts/validate-image-assets.mjs
           node scripts/validate-page-weight.mjs
