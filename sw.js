@@ -1,4 +1,4 @@
-const CACHE = 'hadis-nav-v11';
+const CACHE = 'hadis-nav-v12';
 const CORE = [
   '/',
   '/index.html',
@@ -20,8 +20,6 @@ const CORE = [
   '/assets/images/hadis-mark.svg',
   '/assets/images/logos/default.webp'
 ];
-const CORE_URLS = new Set(CORE.map((path) => new URL(path, self.location.origin).href));
-
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE)
@@ -54,11 +52,6 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => caches.match(request).then((cached) => cached || caches.match('/offline.html')))
     );
-    return;
-  }
-
-  if (CORE_URLS.has(url.href)) {
-    event.respondWith(caches.match(request).then((cached) => cached || fetch(request)));
     return;
   }
 
