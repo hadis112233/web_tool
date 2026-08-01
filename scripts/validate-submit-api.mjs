@@ -46,4 +46,42 @@ if (honeypotResult.statusCode !== 400) throw new Error('机器人蜜罐字段未
 const validResult = await request(base, 'POST', 'test-valid');
 if (validResult.statusCode !== 503) throw new Error('未配置邮件服务时没有返回可预期状态。');
 
-console.log('Submit flow valid: no browser persistence, method, category allowlist, honeypot, and service configuration checks passed.');
+const originalFetch = globalThis.fetch;
+const originalApiKey = process.env.RESEND_API_KEY;
+const originalFrom = process.env.SUBMISSION_FROM_EMAIL;
+let capturedRequest;
+try {
+  process.env.RESEND_API_KEY = 'test-api-key';
+  process.env.SUBMISSION_FROM_EMAIL = 'Hadis <submit@example.com>';
+
+  globalThis.fetch = async (url, options) => {
+    capturedRequest = { url, options };
+    return { ok: true };
+  };
+  const successResult = await request(base, 'POST', 'test-success');
+  if (successResult.statusCode !== 200) throw new Error('邮件服务成功时接口未返回 200。');
+  if (capturedRequest?.url !== 'https://api.resend.com/emails') throw new Error('邮件服务地址错误。');
+  if (!capturedRequest.options.signal || capturedRequest.options.signal.aborted) {
+    throw new Error('邮件服务请求未配置有效的超时信号。');
+  }
+  const emailPayload = JSON.parse(capturedRequest.options.body);
+  if (emailPayload.reply_to !== base.email || !emailPayload.subject.includes(base.siteName)) {
+    throw new Error('邮件服务请求内容不完整。');
+  }
+
+  globalThis.fetch = async () => ({ ok: false });
+  const rejectedResult = await request(base, 'POST', 'test-rejected');
+  if (rejectedResult.statusCode !== 502) throw new Error('邮件服务拒绝请求时未返回 502。');
+
+  globalThis.fetch = async () => { throw new Error('network unavailable'); };
+  const failedResult = await request(base, 'POST', 'test-network-error');
+  if (failedResult.statusCode !== 502) throw new Error('邮件服务连接异常时未返回 502。');
+} finally {
+  globalThis.fetch = originalFetch;
+  if (originalApiKey === undefined) delete process.env.RESEND_API_KEY;
+  else process.env.RESEND_API_KEY = originalApiKey;
+  if (originalFrom === undefined) delete process.env.SUBMISSION_FROM_EMAIL;
+  else process.env.SUBMISSION_FROM_EMAIL = originalFrom;
+}
+
+console.log('Submit flow valid: privacy, validation, rate controls, delivery success, timeout signal, and upstream failures passed.');

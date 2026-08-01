@@ -11,6 +11,7 @@ const attempts = new Map();
 const WINDOW_MS = 60 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
 const MAX_TRACKED_CLIENTS = 5000;
+const RESEND_TIMEOUT_MS = 8000;
 const catalog = require('../data/sites.json');
 const ALLOWED_CATEGORIES = new Set([...catalog.categories.map((category) => category.name), '其他']);
 
@@ -68,17 +69,27 @@ module.exports = async function submit(req, res) {
     ['网站描述', form.description], ['关键词', form.keywords || '未填写'],
     ['联系邮箱', form.email], ['其他联系方式', form.contact || '未填写']
   ];
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: form.email,
-      subject: `【网址收录申请】${form.siteName}`,
-      text: lines.map(([label, value]) => `${label}：${value}`).join('\n')
-    })
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), RESEND_TIMEOUT_MS);
+  let response;
+  try {
+    response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: form.email,
+        subject: `【网址收录申请】${form.siteName}`,
+        text: lines.map(([label, value]) => `${label}：${value}`).join('\n')
+      }),
+      signal: controller.signal
+    });
+  } catch (_) {
+    return res.status(502).json({ error: '提交服务连接失败，请稍后重试。' });
+  } finally {
+    clearTimeout(timeout);
+  }
   if (!response.ok) return res.status(502).json({ error: '提交服务暂时不可用，请稍后重试。' });
   return res.status(200).json({ ok: true });
 };
