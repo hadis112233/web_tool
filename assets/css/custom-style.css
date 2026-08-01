@@ -170,6 +170,22 @@ body{color:var(--text);background:#f4f7fb}
 @media(max-width:767.98px){#content .featured-resources{padding:18px 14px;border-radius:15px}#content .featured-heading{align-items:start;flex-direction:column;margin-bottom:14px}#content .featured-heading h2{font-size:20px}.featured-all{padding:7px 10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+/* 平板宽度不再强行保留侧栏，避免 768–991px 时内容被挤出屏幕。 */
+@media(max-width:991.98px){
+    .main-content{margin-left:0!important}
+    .page-header{left:0!important}
+    .sidebar-nav{display:none!important;width:100%!important;height:100%!important;top:0!important;padding-left:0!important;position:fixed!important;z-index:1090!important;background:transparent!important}
+    .sidebar-nav.show{display:block!important}
+    .sidebar-nav.show>div{transform:translate3d(0,0,0)}
+    .sidebar-nav>*{position:fixed;height:100%;width:17.5rem;transition:.2s cubic-bezier(.25,.8,.25,1);transform:translate3d(-100%,0,0)}
+    .sidebar-nav.show::before{content:'';position:fixed;inset:0;z-index:0;background:rgba(15,23,42,.48);backdrop-filter:blur(4px)}
+    .sidebar-nav .sidebar-nav-inner{position:relative;z-index:1}
+    .navbar-brand.d-md-none{display:inline-block!important}
+    .mobile-menu.d-md-none{display:list-item!important}
+    .navbar-expand-md .navbar-collapse{display:none!important}
+    body.sidebar-open{overflow:hidden}
+}
+
 /* 延后布局屏幕外的资源分类，降低长页面的首次渲染开销。 */
 #content > .row {
     content-visibility: auto;
