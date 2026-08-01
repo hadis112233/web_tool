@@ -23,9 +23,21 @@ for (const match of index.matchAll(/(?:src|data-src)=["']([^"']+)["']/g)) {
 const logoFiles = fs.readdirSync(logoDir, { withFileTypes: true })
   .filter((entry) => entry.isFile())
   .map((entry) => entry.name);
+const logoSizes = logoFiles.map((name) => ({
+  name,
+  bytes: fs.statSync(path.join(logoDir, name)).size,
+}));
+const totalLogoBytes = logoSizes.reduce((total, logo) => total + logo.bytes, 0);
+const oversizedLogos = logoSizes.filter((logo) => logo.bytes > 8_000);
 const orphanLogos = logoFiles.filter((name) => !referencedLogos.has(name)).sort();
 if (orphanLogos.length) {
   errors.push(`存在首页未引用的站点图标：${orphanLogos.join(', ')}`);
+}
+if (oversizedLogos.length) {
+  errors.push(`存在超过 8 KB 的站点图标：${oversizedLogos.map((logo) => `${logo.name} (${logo.bytes} bytes)`).join(', ')}`);
+}
+if (totalLogoBytes > 280_000) {
+  errors.push(`站点图标总体积过大：${totalLogoBytes} bytes，应不超过 280000 bytes。`);
 }
 
 if (fs.existsSync(legacyBackgroundPath)) {
@@ -60,5 +72,5 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   const shareBytes = fs.statSync(sharePath).size;
-  console.log(`Image assets valid: ${logoFiles.length} referenced logos, share image ${shareBytes} bytes.`);
+  console.log(`Image assets valid: ${logoFiles.length} referenced logos (${totalLogoBytes} bytes), share image ${shareBytes} bytes.`);
 }
