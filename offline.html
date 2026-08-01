@@ -1,1 +1,165 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>离线状态 - Hadis 工具导航</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f8fafc;color:#172033;font:16px system-ui}.box{max-width:420px;padding:32px;text-align:center}.btn{display:inline-block;padding:10px 14px;border-radius:9px;background:#2563eb;color:#fff;text-decoration:none}</style><main class="box"><h1>当前处于离线状态</h1><p>请检查网络后重试；已访问过的页面仍可能可以打开。</p><a class="btn" href="/">返回首页</a></main></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <title>暂时无法连接 - Hadis 工具导航</title>
+  <link rel="icon" href="./assets/images/hadis-mark.svg" type="image/svg+xml">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 14% 14%, rgba(37, 99, 235, .14), transparent 34rem),
+        radial-gradient(circle at 86% 82%, rgba(13, 148, 136, .12), transparent 30rem),
+        #f4f7fb;
+    }
+
+    .offline-card {
+      width: min(100%, 500px);
+      padding: 46px;
+      text-align: center;
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid rgba(148, 163, 184, .24);
+      border-radius: 28px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .12);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand-mark {
+      width: 68px;
+      height: 68px;
+      margin-bottom: 22px;
+      filter: drop-shadow(0 10px 18px rgba(37, 99, 235, .2));
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 6vw, 38px);
+      line-height: 1.25;
+      letter-spacing: -.03em;
+    }
+
+    .status {
+      min-height: 52px;
+      margin: 18px auto 0;
+      color: #64748b;
+      line-height: 1.75;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    .action {
+      min-height: 46px;
+      padding: 12px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      font: inherit;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+    }
+
+    .action:hover { transform: translateY(-2px); }
+
+    .action:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, .3);
+      outline-offset: 3px;
+    }
+
+    .action-primary {
+      color: #fff;
+      background: #2563eb;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, .24);
+    }
+
+    .action-primary:hover { background: #1d4ed8; }
+    .action-primary:disabled { opacity: .7; cursor: wait; transform: none; }
+
+    .action-secondary {
+      color: #334155;
+      background: rgba(255, 255, 255, .75);
+      border-color: #dbe3ef;
+    }
+
+    .hint {
+      margin: 24px 0 0;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 16px; }
+      .offline-card { padding: 36px 22px; border-radius: 22px; }
+      .actions { flex-direction: column; }
+      .action { width: 100%; }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; background: #0f172a; color: #e5edf8; }
+      body {
+        background:
+          radial-gradient(circle at 14% 14%, rgba(59, 130, 246, .2), transparent 34rem),
+          radial-gradient(circle at 86% 82%, rgba(20, 184, 166, .14), transparent 30rem),
+          #0f172a;
+      }
+      .offline-card { background: rgba(15, 23, 42, .88); border-color: rgba(148, 163, 184, .2); }
+      .status { color: #a7b4c7; }
+      .action-secondary { color: #dbe6f5; background: rgba(30, 41, 59, .75); border-color: #334155; }
+      .hint { color: #8290a5; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .action { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="offline-card">
+    <img class="brand-mark" src="./assets/images/hadis-mark.svg" alt="Hadis 工具导航">
+    <p class="eyebrow">Hadis 工具导航</p>
+    <h1>暂时无法连接网络</h1>
+    <p class="status" id="network-status" role="status" aria-live="polite">请检查网络连接，然后重新尝试。</p>
+    <div class="actions">
+      <button class="action action-primary" id="retry-button" type="button">重新连接</button>
+      <a class="action action-secondary" href="/">返回首页</a>
+    </div>
+    <p class="hint">已访问过的页面和资源仍可能可以打开。</p>
+  </main>
+  <script defer src="./assets/js/offline-page.js?v=20260801-1"></script>
+</body>
+</html>
