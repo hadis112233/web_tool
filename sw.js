@@ -1,4 +1,4 @@
-const CACHE = 'hadis-nav-v6';
+const CACHE = 'hadis-nav-v7';
 const CORE = [
   '/',
   '/index.html',
@@ -9,7 +9,7 @@ const CORE = [
   '/assets/css/bootstrap.min-4.3.1.css',
   '/assets/css/style-3.03029.1.css',
   '/assets/css/custom-style.css?v=20260731-1',
-  '/assets/fontawesome-5.15.4/css/all.min.css',
+  '/assets/css/static-icons.css?v=20260801-1',
   '/assets/fontawesome-5.15.4/webfonts/fa-regular-400.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-solid-900.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-brands-400.woff2',
