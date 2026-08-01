@@ -73,6 +73,7 @@ jobs:
           node --check scripts/validate-icon-subset.mjs
           node --check scripts/validate-bootstrap-subset.mjs
           node --check scripts/validate-theme-subset.mjs
+          node --check scripts/validate-image-assets.mjs
           node --check scripts/validate-service-worker.mjs
           node --check scripts/validate-submit-api.mjs
           node --check sw.js
@@ -85,6 +86,7 @@ jobs:
           node scripts/validate-icon-subset.mjs
           node scripts/validate-bootstrap-subset.mjs
           node scripts/validate-theme-subset.mjs
+          node scripts/validate-image-assets.mjs
           node scripts/validate-service-worker.mjs
           node scripts/validate-submit-api.mjs
           git diff --exit-code -- index.html commit.html
