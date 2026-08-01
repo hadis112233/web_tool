@@ -1,11 +1,11 @@
-const CACHE = 'hadis-nav-v7';
+const CACHE = 'hadis-nav-v8';
 const CORE = [
   '/',
   '/index.html',
   '/offline.html',
   '/manifest.webmanifest',
   '/assets/css/iconfont-3.03029.1.css',
-  '/assets/css/fonts/iconfont-1616676273262.woff',
+  '/assets/css/fonts/iconfont-hadis.woff2',
   '/assets/css/bootstrap.min-4.3.1.css',
   '/assets/css/style-3.03029.1.css',
   '/assets/css/custom-style.css?v=20260731-1',
