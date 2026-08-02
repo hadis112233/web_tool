@@ -12,7 +12,7 @@ const errors = [];
 const cacheVersionMatch = sw.match(/const CACHE = ['"]hadis-nav-v(\d+)['"]/);
 if (!cacheVersionMatch) {
   errors.push('Service Worker 缓存名称缺少数字版本号。');
-} else if (Number(cacheVersionMatch[1]) < 13) {
+} else if (Number(cacheVersionMatch[1]) < 14) {
   errors.push(`Service Worker 缓存版本过旧：v${cacheVersionMatch[1]}。`);
 }
 
