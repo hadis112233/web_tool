@@ -13,6 +13,7 @@
         {
           "name": "办公工具站",
           "url": "http://101.43.88.87:40005/",
+          "allowInsecure": true,
           "description": "一站式办公工具助手。",
           "image": "assets/images/logos/office-tools.svg"
         },
@@ -350,6 +351,7 @@
         {
           "name": "素材中国",
           "url": "http://www.sccnn.com/",
+          "allowInsecure": true,
           "description": "免费素材共享平台。",
           "image": "assets/images/logos/sccnn.webp"
         }
@@ -381,6 +383,7 @@
         {
           "name": "字体传奇网",
           "url": "http://ziticq.com/",
+          "allowInsecure": true,
           "description": "中国首个字体品牌设计师交流网。",
           "image": "assets/images/logos/ziticq.webp"
         },
@@ -460,6 +463,7 @@
         {
           "name": "tretars",
           "url": "http://www.tretars.com/ppt-templates",
+          "allowInsecure": true,
           "description": "收集优质的免费样机素材。",
           "image": "assets/images/logos/tretars.webp"
         },

@@ -289,6 +289,8 @@ node scripts/validate-catalog.mjs
 
 The build script synchronizes homepage cards and submission categories. Put website icons in `assets/images/logos/` and reference them through each entry's `image` field.
 
+Prefer HTTPS URLs. Set `"allowInsecure": true` only when a reviewed site does not support HTTPS and must remain available, then add the exact URL to the approved list in `scripts/validate-catalog.mjs`. The homepage labels these cards as HTTP so users do not mistake them for encrypted connections.
+
 ### Modify About Page
 
 Edit `about/index.html` file to update personal information and contact details.

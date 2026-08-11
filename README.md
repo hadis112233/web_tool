@@ -266,6 +266,8 @@ node scripts/validate-catalog.mjs
 
 构建脚本会同步生成首页卡片和提交页分类，避免多处内容不一致。网站图标放在 `assets/images/logos/`，并在数据的 `image` 字段中填写对应路径。
 
+网址应优先使用 HTTPS。只有确认目标站点不支持 HTTPS 且仍需保留时，才可设置 `"allowInsecure": true`；同时必须在 `scripts/validate-catalog.mjs` 的审核白名单中登记。首页会为这类卡片显示 HTTP 提示，避免用户误认为连接已加密。
+
 ### 修改关于页面
 
 编辑 `about/index.html` 文件，修改个人信息、联系方式等内容。
