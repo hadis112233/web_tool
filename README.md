@@ -162,7 +162,7 @@ SUBMISSION_TO_EMAIL=wwd118932@gmail.com
 
 #### Nginx 安全与缓存配置
 
-如使用自己的服务器，可直接以 `nginx/web.008997.xyz.conf.example` 为模板部署。它已包含 HTTPS 强制跳转、常见安全响应头、静态资源缓存和 404 页面配置；请先填入实际证书路径与网站目录，再执行 `nginx -t` 检查。
+如使用自己的服务器，可直接以 `nginx/web.008997.xyz.conf.example` 为模板部署。它已包含 HTTPS 强制跳转、TLS 1.2/1.3、常见安全响应头、无扩展名页面路由、静态资源缓存和 404 页面配置；请先填入实际证书路径与网站目录，再执行 `nginx -t` 检查。
 
 #### 方法 1: 通过 Vercel Dashboard (最简单)
 

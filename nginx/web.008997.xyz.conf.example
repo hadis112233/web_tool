@@ -8,29 +8,36 @@ server {
 server {
     listen 443 ssl http2;
     server_name web.008997.xyz;
+    server_tokens off;
 
     root /var/www/web_tool;
     index index.html;
 
     # ssl_certificate /etc/letsencrypt/live/web.008997.xyz/fullchain.pem;
     # ssl_certificate_key /etc/letsencrypt/live/web.008997.xyz/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
 
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
-    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self' data:; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'" always;
 
     gzip on;
     gzip_types text/plain text/css application/javascript application/json image/svg+xml;
 
     location / {
-        try_files $uri $uri/ =404;
+        # 同时支持 /commit 与 commit.html，保持 canonical 和 sitemap 地址可访问。
+        try_files $uri $uri/ $uri.html =404;
     }
 
     location ~* \.(?:css|js|woff2?|svg|png|jpe?g|webp)$ {
-        expires 30d;
-        add_header Cache-Control "public, max-age=2592000, immutable";
+        # 图标文件没有版本参数，使用短缓存避免替换后长期显示旧图。
+        # 不在此处使用 add_header，以免旧版 Nginx 丢失上层安全响应头。
+        expires 1d;
     }
 
     error_page 404 /404.html;

@@ -144,6 +144,10 @@ sudo certbot --nginx -d your-domain.com
 sudo certbot renew --dry-run
 ```
 
+#### Nginx Security and Routing
+
+Use `nginx/web.008997.xyz.conf.example` as the deployment template for your own server. It includes HTTPS redirection, TLS 1.2/1.3, security headers, extensionless routes such as `/commit`, safe static asset caching, and 404 handling. Fill in the certificate paths and website directory, then run `nginx -t` to validate it.
+
 ### Method 2: Vercel Deployment (Recommended)
 
 Vercel provides free static website hosting with simple and fast deployment.
