@@ -1,7 +1,9 @@
-const CACHE = 'hadis-nav-v15';
+const CACHE = 'hadis-nav-v16';
 const CORE = [
   '/',
   '/index.html',
+  '/about/index.html',
+  '/commit.html',
   '/offline.html',
   '/manifest.webmanifest',
   '/assets/css/iconfont-3.03029.1.css',
@@ -15,12 +17,29 @@ const CORE = [
   '/assets/fontawesome-5.15.4/webfonts/fa-brands-400.woff2',
   '/assets/js/site-enhancements.js?v=20260811-1',
   '/assets/js/index-page.js?v=20260802-1',
+  '/assets/js/commit-page.js?v=20260801-1',
   '/assets/js/offline-page.js?v=20260801-1',
+  '/assets/images/hadis-favicon.svg',
+  '/assets/images/hadis-icon-192.png',
   '/assets/images/hadis-logo.svg',
   '/assets/images/hadis-logo-dark.svg',
   '/assets/images/hadis-mark.svg',
   '/assets/images/logos/default.webp'
 ];
+const NAVIGATION_FALLBACKS = new Map([
+  ['/commit', '/commit.html'],
+  ['/commit.html', '/commit.html'],
+  ['/about', '/about/index.html'],
+  ['/about/index.html', '/about/index.html']
+]);
+
+function cachedNavigation(request) {
+  const pathname = new URL(request.url).pathname;
+  const normalizedPath = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  const fallback = NAVIGATION_FALLBACKS.get(normalizedPath) || '/offline.html';
+  return caches.match(request).then((cached) => cached || caches.match(fallback));
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE)
@@ -51,7 +70,7 @@ self.addEventListener('fetch', (event) => {
             .then((cache) => cache.put(request, response.clone()))
             .then(() => response);
         })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('/offline.html')))
+        .catch(() => cachedNavigation(request))
     );
     return;
   }
