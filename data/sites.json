@@ -281,12 +281,6 @@
       "icon": "icon-tag",
       "sites": [
         {
-          "name": "Iconsfeed",
-          "url": "https://www.iconsfeed.com/",
-          "description": "iOS 图标设计画廊。",
-          "image": "assets/images/logos/iconsfeed.webp"
-        },
-        {
           "name": "iOS Icon Gallery",
           "url": "https://www.iosicongallery.com/",
           "description": "精选展示 App Store 中的优秀 iOS 图标。",
