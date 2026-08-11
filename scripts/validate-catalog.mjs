@@ -5,6 +5,20 @@ const commit = await readFile('commit.html', 'utf8');
 const errors = [];
 const ids = new Set();
 const urls = new Set();
+const retiredUrls = new Set([
+  'https://www.iconfinder.com',
+  'https://material.io/icons/',
+  'https://typekit.com/',
+  'http://www.pptplus.cn/',
+  'https://affinity.serif.com/',
+  'https://sketchapp.com/',
+  'https://www.invisionapp.com/',
+  'https://creative.adobe.com/zh-cn/products/download/muse',
+  'https://klart.co/colors/',
+  'https://www.elastic.co/blog/welcome-insight-io-to-the-elastic-team',
+  'https://material.io/guidelines/',
+  'https://developer.apple.com/ios/human-interface-guidelines'
+]);
 for (const category of catalog.categories || []) {
   if (!category.id || ids.has(category.id)) errors.push(`分类锚点重复或缺失：${category.name}`);
   ids.add(category.id);
@@ -12,6 +26,7 @@ for (const category of catalog.categories || []) {
     if (!site.name || !site.url || !site.description || !site.image) errors.push(`网站字段不完整：${site.name || category.name}`);
     try { new URL(site.url); } catch { errors.push(`网址无效：${site.name}`); }
     if (urls.has(site.url)) errors.push(`网址重复：${site.url}`);
+    if (retiredUrls.has(site.url)) errors.push(`仍在使用已停用或过时的网址：${site.name}（${site.url}）`);
     urls.add(site.url);
   }
 }

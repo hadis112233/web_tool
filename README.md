@@ -257,16 +257,14 @@ vercel --prod
 
 ### 修改网址导航内容
 
-编辑 `index.html` 文件，找到对应的网址链接区域进行修改：
+网址数据统一维护在 `data/sites.json`，不要直接修改首页生成出来的卡片。修改数据后运行：
 
-```html
-<div class="url-card io-px-3 io-py-2 mb-2">
-    <a href="https://your-website.com" target="_blank" rel="nofollow" class="text-xs">
-        <strong>网站名称</strong>
-        <span class="url-desc">网站描述</span>
-    </a>
-</div>
+```bash
+node scripts/build-catalog.mjs
+node scripts/validate-catalog.mjs
 ```
+
+构建脚本会同步生成首页卡片和提交页分类，避免多处内容不一致。网站图标放在 `assets/images/logos/`，并在数据的 `image` 字段中填写对应路径。
 
 ### 修改关于页面
 
@@ -274,19 +272,7 @@ vercel --prod
 
 ### 修改网站提交页面
 
-编辑 `commit.html` 文件，可以配置表单字段和提交逻辑：
-
-```javascript
-// 在第 371 行附近，替换为实际的 API 地址
-$.ajax({
-    url: '/api/submit',
-    method: 'POST',
-    data: formData,
-    success: function(response) {
-        // 处理成功响应
-    }
-});
-```
+表单结构位于 `commit.html`，浏览器端逻辑位于 `assets/js/commit-page.js`，服务端邮件接口位于 `api/submit.js`。修改后请运行 `node scripts/validate-submit-api.mjs`。
 
 ### 自定义样式
 
@@ -297,16 +283,11 @@ $.ajax({
 
 ### 添加新的分类
 
-在 `index.html` 中添加新的分类区块：
+在 `data/sites.json` 的 `categories` 数组中增加分类和网站，然后重新运行目录构建与校验命令：
 
-```html
-<div class="io-title text-sm" id="your-category-id">
-    <i class="far fa-star fa-lg fa-fw mr-1"></i>
-    分类名称
-</div>
-<div class="row io-mx-n2">
-    <!-- 添加网址卡片 -->
-</div>
+```bash
+node scripts/build-catalog.mjs
+node scripts/validate-catalog.mjs
 ```
 
 ## 项目结构
@@ -323,6 +304,9 @@ web_tool/
 │   ├── js/                # JavaScript 文件
 │   ├── images/            # 图片资源
 │   └── fontawesome-5.15.4/ # 图标库
+├── data/
+│   └── sites.json         # 导航分类与网站数据源
+├── scripts/               # 构建与自动校验脚本
 ├── README.md              # 项目文档
 └── vercel.json            # Vercel 配置（可选）
 ```
@@ -357,7 +341,7 @@ web_tool/
 
 - HTML5
 - CSS3
-- JavaScript (jQuery)
+- 原生 JavaScript（无需 jQuery）
 - Bootstrap 4
 - Font Awesome 5
 

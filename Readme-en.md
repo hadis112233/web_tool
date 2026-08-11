@@ -276,16 +276,14 @@ Create `vercel.json` in project root for advanced configuration:
 
 ### Modify Navigation Links
 
-Edit `index.html` file and find the URL link section:
+Maintain navigation data in `data/sites.json` instead of editing the generated cards in `index.html`. After changing the catalog, run:
 
-```html
-<div class="url-card io-px-3 io-py-2 mb-2">
-    <a href="https://your-website.com" target="_blank" rel="nofollow" class="text-xs">
-        <strong>Website Name</strong>
-        <span class="url-desc">Website Description</span>
-    </a>
-</div>
+```bash
+node scripts/build-catalog.mjs
+node scripts/validate-catalog.mjs
 ```
+
+The build script synchronizes homepage cards and submission categories. Put website icons in `assets/images/logos/` and reference them through each entry's `image` field.
 
 ### Modify About Page
 
@@ -293,19 +291,7 @@ Edit `about/index.html` file to update personal information and contact details.
 
 ### Modify Submission Page
 
-Edit `commit.html` file to configure form fields and submission logic:
-
-```javascript
-// Around line 371, replace with actual API endpoint
-$.ajax({
-    url: '/api/submit',
-    method: 'POST',
-    data: formData,
-    success: function(response) {
-        // Handle success response
-    }
-});
-```
+The form markup is in `commit.html`, browser logic is in `assets/js/commit-page.js`, and the email API is in `api/submit.js`. Run `node scripts/validate-submit-api.mjs` after making changes.
 
 ### Custom Styles
 
@@ -316,16 +302,11 @@ Main style files are in `assets/css/` directory:
 
 ### Add New Categories
 
-Add new category blocks in `index.html`:
+Add categories and sites to the `categories` array in `data/sites.json`, then rebuild and validate the catalog:
 
-```html
-<div class="io-title text-sm" id="your-category-id">
-    <i class="far fa-star fa-lg fa-fw mr-1"></i>
-    Category Name
-</div>
-<div class="row io-mx-n2">
-    <!-- Add URL cards here -->
-</div>
+```bash
+node scripts/build-catalog.mjs
+node scripts/validate-catalog.mjs
 ```
 
 ## Project Structure
@@ -342,6 +323,9 @@ web_tool/
 │   ├── js/                # JavaScript files
 │   ├── images/            # Image resources
 │   └── fontawesome-5.15.4/ # Icon library
+├── data/
+│   └── sites.json         # Navigation catalog source
+├── scripts/               # Build and validation scripts
 ├── README.md              # Documentation (Chinese)
 ├── Readme-en.md           # Documentation (English)
 └── vercel.json            # Vercel config (optional)
@@ -377,7 +361,7 @@ Integrate analytics tools:
 
 - HTML5
 - CSS3
-- JavaScript (jQuery)
+- Vanilla JavaScript (no jQuery dependency)
 - Bootstrap 4
 - Font Awesome 5
 

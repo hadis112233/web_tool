@@ -220,12 +220,6 @@
       "icon": "icon-tag",
       "sites": [
         {
-          "name": "Iconfinder",
-          "url": "https://www.iconfinder.com",
-          "description": "收录超过 210 万个免费及付费矢量图标。",
-          "image": "assets/images/logos/Iconfinder.webp"
-        },
-        {
           "name": "iconfont",
           "url": "https://www.iconfont.cn/",
           "description": "阿里巴巴矢量图标库。",
@@ -257,8 +251,8 @@
         },
         {
           "name": "Material icons",
-          "url": "https://material.io/icons/",
-          "description": "提供多尺寸、多密度的 Material 系统图标。",
+          "url": "https://fonts.google.com/icons",
+          "description": "Google 官方 Material Symbols 与图标库。",
           "image": "assets/images/logos/Materialicons.webp"
         },
         {
@@ -373,9 +367,9 @@
           "image": "assets/images/logos/googlefont.webp"
         },
         {
-          "name": "Typekit",
-          "url": "https://typekit.com/",
-          "description": "汇集全球优质字库厂商的字体。",
+          "name": "Adobe Fonts",
+          "url": "https://fonts.adobe.com/",
+          "description": "Adobe 提供的字体浏览与授权服务。",
           "image": "assets/images/logos/typekit.webp"
         },
         {
@@ -464,12 +458,6 @@
           "image": "assets/images/logos/ypppt.webp"
         },
         {
-          "name": "PPT+",
-          "url": "http://www.pptplus.cn/",
-          "description": "支持 PPT 直播、录制与语音内容分享。",
-          "image": "assets/images/logos/pptplus.webp"
-        },
-        {
           "name": "tretars",
           "url": "http://www.tretars.com/ppt-templates",
           "description": "收集优质的免费样机素材。",
@@ -495,9 +483,9 @@
           "image": "assets/images/logos/photoshop.webp"
         },
         {
-          "name": "Affinity Designer",
-          "url": "https://affinity.serif.com/",
-          "description": "专业创意软件",
+          "name": "Affinity",
+          "url": "https://www.affinity.studio/",
+          "description": "专业的图像、矢量与排版创意套件。",
           "image": "assets/images/logos/AffinityDesigner.webp"
         },
         {
@@ -533,7 +521,7 @@
       "sites": [
         {
           "name": "Sketch",
-          "url": "https://sketchapp.com/",
+          "url": "https://www.sketch.com/",
           "description": "面向界面设计的数字设计工具。",
           "image": "assets/images/logos/sketchapp.webp"
         },
@@ -544,22 +532,10 @@
           "image": "assets/images/logos/ADOBEXDCC.webp"
         },
         {
-          "name": "invisionapp",
-          "url": "https://www.invisionapp.com/",
-          "description": "强大的界面设计与原型协作工具。",
-          "image": "assets/images/logos/invisionapp.webp"
-        },
-        {
           "name": "marvelapp",
           "url": "https://marvelapp.com/",
           "description": "简单易用的设计、原型与协作平台。",
           "image": "assets/images/logos/marvelapp.webp"
-        },
-        {
-          "name": "Muse CC",
-          "url": "https://creative.adobe.com/zh-cn/products/download/muse",
-          "description": "无需利用编码即可进行网站设计。",
-          "image": "assets/images/logos/MuseCC.webp"
         },
         {
           "name": "figma",
@@ -647,9 +623,9 @@
           "image": "assets/images/logos/flatuicolorpicker.webp"
         },
         {
-          "name": "klart",
-          "url": "https://klart.co/colors/",
-          "description": "每周分享精选色彩与设计灵感。",
+          "name": "Pixelfika Colors",
+          "url": "https://pixelfika.com/colors/",
+          "description": "每日更新的配色与设计灵感。",
           "image": "assets/images/logos/klart.webp"
         },
         {
@@ -727,12 +703,6 @@
           "image": "assets/images/logos/csspeeper.webp"
         },
         {
-          "name": "insight",
-          "url": "https://www.elastic.co/blog/welcome-insight-io-to-the-elastic-team",
-          "description": "像 IDE 一样进行在线代码搜索与跳转。",
-          "image": "assets/images/logos/insight.webp"
-        },
-        {
           "name": "mustsee",
           "url": "https://mustsee.earth/",
           "description": "每次打开新标签页，发现世界各地的美景。",
@@ -803,14 +773,14 @@
         },
         {
           "name": "Material Design",
-          "url": "https://material.io/guidelines/",
+          "url": "https://m3.material.io/",
           "description": "Google Material Design 官方设计规范。",
           "image": "assets/images/logos/Material_Design.webp"
         },
         {
           "name": "Human Interface Guidelines",
-          "url": "https://developer.apple.com/ios/human-interface-guidelines",
-          "description": "Apple iOS 人机界面设计指南。",
+          "url": "https://developer.apple.com/design/human-interface-guidelines",
+          "description": "Apple 全平台人机界面设计指南。",
           "image": "assets/images/logos/human_interface_guidelines.webp"
         },
         {
