@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import vm from 'node:vm';
 
 const root = path.resolve(import.meta.dirname, '..');
 const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
@@ -9,11 +10,24 @@ const offline = fs.readFileSync(path.join(root, 'offline.html'), 'utf8');
 const offlineScript = fs.readFileSync(path.join(root, 'assets/js/offline-page.js'), 'utf8');
 const errors = [];
 
-const cacheVersionMatch = sw.match(/const CACHE = ['"]hadis-nav-v(\d+)['"]/);
+const cacheVersionMatch = sw.match(/const CACHE = `\$\{CACHE_PREFIX\}v(\d+)`/);
 if (!cacheVersionMatch) {
-  errors.push('Service Worker 缓存名称缺少数字版本号。');
-} else if (Number(cacheVersionMatch[1]) < 14) {
+  errors.push('Service Worker 缓存名称缺少统一前缀或数字版本号。');
+} else if (Number(cacheVersionMatch[1]) < 18) {
   errors.push(`Service Worker 缓存版本过旧：v${cacheVersionMatch[1]}。`);
+}
+
+if (!sw.includes("const CACHE_PREFIX = 'hadis-nav-';")) {
+  errors.push('Service Worker 缺少自有缓存前缀。');
+}
+if (!sw.includes('key.startsWith(CACHE_PREFIX) && key !== CACHE')) {
+  errors.push('缓存清理范围过大，可能误删同域其他应用的缓存。');
+}
+if (!sw.includes("url.pathname.startsWith('/api/')")) {
+  errors.push('Service Worker 未绕过 API 请求。');
+}
+if (!sw.includes("cache.put(url.pathname || '/', response.clone())")) {
+  errors.push('导航缓存未移除查询参数，可能因追踪参数产生重复缓存。');
 }
 
 if (/CORE_URLS|cached\s*\|\|\s*fetch\(request\)/.test(sw)) {
@@ -42,7 +56,8 @@ if (!coreMatch) {
     }
   }
 
-  const versionedAssets = [index, offline].flatMap((page) => [...page.matchAll(/(?:href|src)="(?:\.\/|\/)(assets\/[^"]+\?v=[^"]+)"/g)])
+  const commit = fs.readFileSync(path.join(root, 'commit.html'), 'utf8');
+  const versionedAssets = [index, commit, offline].flatMap((page) => [...page.matchAll(/(?:href|src)="(?:\.\/|\/)(assets\/[^"]+\?v=[^"]+)"/g)])
     .map((match) => `/${match[1]}`);
   for (const url of versionedAssets) {
     if (!coreSet.has(url)) {
@@ -50,9 +65,53 @@ if (!coreMatch) {
     }
   }
 
-  for (const required of ['/', '/index.html', '/offline.html', '/manifest.webmanifest']) {
+  for (const required of ['/', '/index.html', '/about/index.html', '/commit.html', '/offline.html', '/manifest.webmanifest']) {
     if (!coreSet.has(required)) errors.push(`CORE 缺少离线必需项：${required}`);
   }
+}
+
+if (!sw.includes("['/commit', '/commit.html']")) {
+  errors.push('Service Worker 缺少提交页离线路由回退。');
+}
+if (!sw.includes("['/about', '/about/index.html']")) {
+  errors.push('Service Worker 缺少关于页离线路由回退。');
+}
+if (!sw.includes("NAVIGATION_FALLBACKS.get(normalizedPath) || '/offline.html'")) {
+  errors.push('Service Worker 缺少未知页面的通用离线回退。');
+}
+if (!sw.includes('.catch(() => cachedNavigation(request))')) {
+  errors.push('离线导航未调用按路由匹配的缓存页面。');
+}
+
+try {
+  const precached = new Set(['/', '/index.html', '/about/index.html', '/commit.html', '/offline.html']);
+  const sandbox = {
+    URL,
+    caches: {
+      match(key) {
+        return Promise.resolve(typeof key === 'string' && precached.has(key) ? key : undefined);
+      }
+    },
+    self: {
+      addEventListener() {},
+      skipWaiting() {},
+      clients: { claim() {} }
+    }
+  };
+  vm.runInNewContext(`${sw}\nglobalThis.__cachedNavigation = cachedNavigation;`, sandbox);
+  const routeCases = new Map([
+    ['/commit', '/commit.html'],
+    ['/about/', '/about/index.html'],
+    ['/?utm_source=test', '/'],
+    ['/index.html?ref=test', '/index.html'],
+    ['/missing-page', '/offline.html']
+  ]);
+  for (const [route, expected] of routeCases) {
+    const actual = await sandbox.__cachedNavigation({ url: `https://web.008997.xyz${route}` });
+    if (actual !== expected) errors.push(`离线路由 ${route} 回退错误：${actual || '无结果'}`);
+  }
+} catch (error) {
+  errors.push(`无法执行 Service Worker 离线路由测试：${error.message}`);
 }
 
 for (const requiredMarkup of ['id="retry-button"', 'id="network-status"', 'aria-live="polite"']) {
@@ -67,5 +126,5 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
-  console.log('Service Worker 校验通过：缓存文件存在，页面版本化资源和离线重连交互已同步。');
+  console.log('Service Worker 校验通过：离线路由、API 绕过、查询参数归一化与缓存隔离均正常。');
 }

@@ -72,9 +72,30 @@
         catch (error) {}
     }
 
+    function removeStored(key) {
+        try { localStorage.removeItem(key); }
+        catch (error) {}
+    }
+
+    function cleanStoredUrls(urls, availableUrls, limit) {
+        var seen = new Set();
+        return urls.filter(function (url) {
+            if (!availableUrls.has(url) || seen.has(url) || seen.size >= limit) return false;
+            seen.add(url);
+            return true;
+        });
+    }
+
     var favorites = readFavorites();
     var recent = readRecent();
     var cards = Array.prototype.slice.call(content.querySelectorAll('.url-card'));
+    var availableUrls = new Set(cards.map(getUrl).filter(Boolean));
+    var cleanedFavorites = cleanStoredUrls(favorites, availableUrls, availableUrls.size);
+    var cleanedRecent = cleanStoredUrls(recent, availableUrls, 12);
+    if (JSON.stringify(cleanedFavorites) !== JSON.stringify(favorites)) writeFavorites(cleanedFavorites);
+    if (JSON.stringify(cleanedRecent) !== JSON.stringify(recent)) writeRecent(cleanedRecent);
+    favorites = cleanedFavorites;
+    recent = cleanedRecent;
     cards.forEach(function (card) {
         card.querySelectorAll('img').forEach(function (image) {
             image.loading = 'lazy';
@@ -242,7 +263,7 @@
     });
     recentClear.addEventListener('click', function () {
         recent = [];
-        localStorage.removeItem(RECENT_KEY);
+        removeStored(RECENT_KEY);
         resetFilters();
     });
     resetButton.addEventListener('click', resetFilters);

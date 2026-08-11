@@ -17,7 +17,13 @@ function renderCard(site) {
   const title = escape(site.name);
   const description = escape(site.description);
   const image = escape(site.image || 'assets/images/logos/default.webp');
-  return `<div class="url-card col-6 col-sm-6 col-md-4 col-xl-5a col-xxl-6a"><div class="url-body default"><a href="${href}" target="_blank" rel="noopener noreferrer" class="card no-c mb-4"><div class="card-body"><div class="url-content d-flex align-items-center"><div class="url-img mr-2 d-flex align-items-center justify-content-center"><img class="lazy" loading="lazy" decoding="async" width="40" height="40" src="${image}" alt="${title}"></div><div class="url-info flex-fill"><div class="text-sm overflowClip_1"><strong>${title}</strong></div><p class="overflowClip_1 m-0 text-muted text-xs">${description}</p></div></div></div></a></div></div>`;
+  const securityAttributes = site.allowInsecure
+    ? ' data-insecure="true" title="此网站仅支持 HTTP 明文连接"'
+    : '';
+  const securityBadge = site.allowInsecure
+    ? '<span class="insecure-badge" aria-label="仅支持 HTTP 明文连接">HTTP</span>'
+    : '';
+  return `<div class="url-card col-6 col-sm-6 col-md-4 col-xl-5a col-xxl-6a"><div class="url-body default"><a href="${href}" target="_blank" rel="noopener noreferrer" class="card no-c mb-4"${securityAttributes}><div class="card-body"><div class="url-content d-flex align-items-center"><div class="url-img mr-2 d-flex align-items-center justify-content-center"><img class="lazy" loading="lazy" decoding="async" width="40" height="40" src="${image}" alt="${title}"></div><div class="url-info flex-fill"><div class="text-sm overflowClip_1"><strong>${title}${securityBadge}</strong></div><p class="overflowClip_1 m-0 text-muted text-xs">${description}</p></div></div></div></a></div></div>`;
 }
 
 function renderCategory(category) {

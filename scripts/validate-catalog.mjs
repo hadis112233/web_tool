@@ -2,18 +2,58 @@ import { readFile } from 'node:fs/promises';
 
 const catalog = JSON.parse(await readFile('data/sites.json', 'utf8'));
 const commit = await readFile('commit.html', 'utf8');
+const index = await readFile('index.html', 'utf8');
 const errors = [];
 const ids = new Set();
 const urls = new Set();
+const approvedInsecureUrls = new Set([
+  'http://101.43.88.87:40005/',
+  'http://www.sccnn.com/',
+  'http://ziticq.com/',
+  'http://www.tretars.com/ppt-templates'
+]);
+const renderedInsecureUrls = new Set();
+const retiredUrls = new Set([
+  'https://www.iconfinder.com',
+  'https://material.io/icons/',
+  'https://typekit.com/',
+  'http://www.pptplus.cn/',
+  'https://affinity.serif.com/',
+  'https://sketchapp.com/',
+  'https://www.invisionapp.com/',
+  'https://creative.adobe.com/zh-cn/products/download/muse',
+  'https://klart.co/colors/',
+  'https://www.elastic.co/blog/welcome-insight-io-to-the-elastic-team',
+  'https://material.io/guidelines/',
+  'https://developer.apple.com/ios/human-interface-guidelines'
+]);
 for (const category of catalog.categories || []) {
   if (!category.id || ids.has(category.id)) errors.push(`分类锚点重复或缺失：${category.name}`);
   ids.add(category.id);
   for (const site of category.sites || []) {
     if (!site.name || !site.url || !site.description || !site.image) errors.push(`网站字段不完整：${site.name || category.name}`);
-    try { new URL(site.url); } catch { errors.push(`网址无效：${site.name}`); }
+    let parsedUrl;
+    try { parsedUrl = new URL(site.url); } catch { errors.push(`网址无效：${site.name}`); }
+    if (parsedUrl?.protocol === 'http:') {
+      if (site.allowInsecure !== true || !approvedInsecureUrls.has(site.url)) {
+        errors.push(`HTTP 网址未经过明确审核：${site.name}（${site.url}）`);
+      }
+      renderedInsecureUrls.add(site.url);
+    } else if (site.allowInsecure === true) {
+      errors.push(`HTTPS 网址不应标记 allowInsecure：${site.name}`);
+    }
     if (urls.has(site.url)) errors.push(`网址重复：${site.url}`);
+    if (retiredUrls.has(site.url)) errors.push(`仍在使用已停用或过时的网址：${site.name}（${site.url}）`);
     urls.add(site.url);
   }
+}
+for (const url of approvedInsecureUrls) {
+  if (!renderedInsecureUrls.has(url)) errors.push(`HTTP 白名单包含已移除网址，请同步清理：${url}`);
+}
+const insecureCardCount = (index.match(/\bdata-insecure="true"/g) || []).length;
+const insecureBadgeCount = (index.match(/\bclass="insecure-badge"/g) || []).length;
+if (insecureCardCount !== approvedInsecureUrls.size || insecureBadgeCount !== approvedInsecureUrls.size) {
+  errors.push('首页 HTTP 卡片标识与审核白名单不一致，请重新运行目录构建脚本。');
 }
 const submitOptions = [...commit.matchAll(/<option value="([^"]+)">/g)]
   .map((match) => match[1])
