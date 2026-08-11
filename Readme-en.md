@@ -10,6 +10,7 @@ A web navigation tool based on HTML + CSS + JavaScript, with a clean and beautif
 - Responsive design, mobile-friendly
 - Day/Night mode toggle
 - Clear categorization with quick search
+- PWA offline access with isolated site caches and API bypass
 - URL submission feature for easy management
 - Simple deployment, supports multiple deployment methods
 

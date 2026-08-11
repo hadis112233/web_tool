@@ -1,4 +1,5 @@
-const CACHE = 'hadis-nav-v17';
+const CACHE_PREFIX = 'hadis-nav-';
+const CACHE = `${CACHE_PREFIX}v18`;
 const CORE = [
   '/',
   '/index.html',
@@ -37,7 +38,7 @@ function cachedNavigation(request) {
   const pathname = new URL(request.url).pathname;
   const normalizedPath = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
   const fallback = NAVIGATION_FALLBACKS.get(normalizedPath) || '/offline.html';
-  return caches.match(request).then((cached) => cached || caches.match(fallback));
+  return caches.match(pathname || '/').then((cached) => cached || caches.match(fallback));
 }
 
 self.addEventListener('install', (event) => {
@@ -51,7 +52,9 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
+      .then((keys) => Promise.all(keys
+        .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE)
+        .map((key) => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
@@ -60,6 +63,7 @@ self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith('/api/')) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(
@@ -67,7 +71,7 @@ self.addEventListener('fetch', (event) => {
         .then((response) => {
           if (!response.ok) return response;
           return caches.open(CACHE)
-            .then((cache) => cache.put(request, response.clone()))
+            .then((cache) => cache.put(url.pathname || '/', response.clone()))
             .then(() => response);
         })
         .catch(() => cachedNavigation(request))
