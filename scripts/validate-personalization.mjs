@@ -4,7 +4,9 @@ import vm from 'node:vm';
 const source = fs.readFileSync('assets/js/site-enhancements.js', 'utf8');
 const errors = [];
 const functionStart = source.indexOf('function cleanStoredUrls');
-const functionEnd = source.indexOf('\n\n    var favorites', functionStart);
+const functionTail = functionStart === -1 ? '' : source.slice(functionStart);
+const functionEndMatch = functionTail.match(/\r?\n\r?\n\s*var favorites/);
+const functionEnd = functionEndMatch ? functionStart + functionEndMatch.index : -1;
 
 if (functionStart === -1 || functionEnd === -1) {
   errors.push('未找到收藏与最近访问清理函数。');

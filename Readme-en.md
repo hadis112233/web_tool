@@ -346,7 +346,7 @@ Check if resource paths are correct and ensure relative paths are accurate.
 
 ### 2. How to Implement Backend for Submission
 
-The static version opens the submitter's email client and keeps a local draft backup; the submitter must manually confirm sending the email. For backend review and persistent storage:
+The project includes an optional Vercel email endpoint. With Resend configured, requests are submitted online; otherwise the page offers an email-client fallback. Submission details are not persisted in the browser. For backend review and persistent storage:
 - Use Vercel Serverless Functions
 - Configure backend API (Node.js, Python, PHP, etc.)
 - Use third-party form services (Formspree, Typeform, etc.)

@@ -9,9 +9,13 @@ if (/\b(?:localStorage|sessionStorage)\b/.test(submitPageScript)) {
   throw new Error('提交页不应在浏览器中持久化邮箱、联系方式等申请资料。');
 }
 
-async function request(body, method = 'POST', ip = '127.0.0.1') {
-  const result = { statusCode: 0, body: null };
+async function request(body, method = 'POST', ip = '127.0.0.1', extraHeaders = {}) {
+  const result = { statusCode: 0, body: null, headers: {} };
   const response = {
+    setHeader(name, value) {
+      result.headers[name.toLowerCase()] = String(value);
+      return this;
+    },
     status(code) {
       result.statusCode = code;
       return this;
@@ -21,7 +25,7 @@ async function request(body, method = 'POST', ip = '127.0.0.1') {
       return result;
     }
   };
-  await submit({ method, body, headers: { 'x-forwarded-for': ip } }, response);
+  await submit({ method, body, headers: { 'content-type': 'application/json', 'x-forwarded-for': ip, ...extraHeaders } }, response);
   return result;
 }
 
@@ -36,6 +40,20 @@ const base = {
 
 const methodResult = await request({}, 'GET', 'test-method');
 if (methodResult.statusCode !== 405) throw new Error('非 POST 请求未被拒绝。');
+if (methodResult.headers.allow !== 'POST') throw new Error('405 响应缺少 Allow 头。');
+if (methodResult.headers['cache-control'] !== 'no-store') throw new Error('接口响应未禁止缓存。');
+
+const mediaTypeResult = await request(base, 'POST', 'test-media-type', { 'content-type': 'text/plain' });
+if (mediaTypeResult.statusCode !== 415) throw new Error('非 JSON 请求未返回 415。');
+
+const oversizedResult = await request(base, 'POST', 'test-oversized', { 'content-length': '9000' });
+if (oversizedResult.statusCode !== 413) throw new Error('过大的请求体未返回 413。');
+
+const oversizedBodyResult = await request({ ...base, unused: 'x'.repeat(9000) }, 'POST', 'test-oversized-body');
+if (oversizedBodyResult.statusCode !== 413) throw new Error('未声明长度的过大请求体未返回 413。');
+
+const malformedResult = await request('{bad json', 'POST', 'test-malformed');
+if (malformedResult.statusCode !== 400) throw new Error('损坏的 JSON 未被安全拒绝。');
 
 const categoryResult = await request({ ...base, category: '不存在的分类' }, 'POST', 'test-category');
 if (categoryResult.statusCode !== 400) throw new Error('非法分类未被拒绝。');
@@ -45,6 +63,12 @@ if (honeypotResult.statusCode !== 400) throw new Error('机器人蜜罐字段未
 
 const validResult = await request(base, 'POST', 'test-valid');
 if (validResult.statusCode !== 503) throw new Error('未配置邮件服务时没有返回可预期状态。');
+
+let rateLimitResult;
+for (let index = 0; index < 6; index += 1) rateLimitResult = await request(base, 'POST', 'test-rate-limit');
+if (rateLimitResult.statusCode !== 429 || !/^\d+$/.test(rateLimitResult.headers['retry-after'] || '')) {
+  throw new Error('频率限制未返回 429 和 Retry-After。');
+}
 
 const originalFetch = globalThis.fetch;
 const originalApiKey = process.env.RESEND_API_KEY;
@@ -84,4 +108,4 @@ try {
   else process.env.SUBMISSION_FROM_EMAIL = originalFrom;
 }
 
-console.log('Submit flow valid: privacy, validation, rate controls, delivery success, timeout signal, and upstream failures passed.');
+console.log('Submit flow valid: media type, body limit, privacy, validation, rate controls, delivery, timeout, and failure handling passed.');
