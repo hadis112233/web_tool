@@ -82,6 +82,7 @@ jobs:
           node --check scripts/validate-service-worker.mjs
           node --check scripts/validate-seo.mjs
           node --check scripts/validate-submit-api.mjs
+          node --check scripts/validate-telemetry-api.mjs
           node --check sw.js
           node --check api/telemetry.js
       - name: Validate and rebuild site catalog
@@ -101,4 +102,5 @@ jobs:
           node scripts/validate-service-worker.mjs
           node scripts/validate-seo.mjs
           node scripts/validate-submit-api.mjs
+          node scripts/validate-telemetry-api.mjs
           git diff --exit-code -- index.html commit.html
