@@ -76,6 +76,7 @@ jobs:
           node --check scripts/validate-navigation-accessibility.mjs
           node --check scripts/validate-personalization.mjs
           node --check scripts/validate-search-providers.mjs
+          node --check scripts/validate-secondary-accessibility.mjs
           node --check scripts/validate-icon-subset.mjs
           node --check scripts/validate-bootstrap-subset.mjs
           node --check scripts/validate-deployment-headers.mjs
@@ -96,6 +97,7 @@ jobs:
           node scripts/validate-navigation-accessibility.mjs
           node scripts/validate-personalization.mjs
           node scripts/validate-search-providers.mjs
+          node scripts/validate-secondary-accessibility.mjs
           node scripts/validate-icon-subset.mjs
           node scripts/validate-bootstrap-subset.mjs
           node scripts/validate-deployment-headers.mjs
