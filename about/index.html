@@ -72,6 +72,23 @@
             line-height: 1.5;
         }
 
+        .skip-link {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #4338ca;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            transform: translateY(-160%);
+            transition: transform .2s;
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
         h1, h2, p {
             margin-top: 0;
         }
@@ -241,6 +258,12 @@
             transform: translateY(-2px);
         }
 
+        .back-home a:focus-visible,
+        .contact-list a:focus-visible {
+            outline: 3px solid rgba(79, 70, 229, .35);
+            outline-offset: 3px;
+        }
+
         .back-home a i {
             margin-right: 8px;
         }
@@ -280,12 +303,18 @@
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            .skip-link, .skill-item, .contact-list li, .back-home a { transition: none; }
+            .skill-item:hover, .back-home a:hover { transform: none; }
+        }
     </style>
 
 </head>
 
 <body class="io-grey-mode">
-    <div class="about-container">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <main class="about-container" id="main-content" tabindex="-1">
         <div class="about-header">
             <h1><i class="fas fa-user-circle"></i> 关于项目</h1>
             <p>由 hadis112233 维护的实用网址导航项目</p>
@@ -366,7 +395,7 @@
                 返回首页
             </a>
         </div>
-    </div>
+    </main>
 
 </body>
 </html>

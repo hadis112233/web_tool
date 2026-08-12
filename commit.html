@@ -66,6 +66,23 @@
             line-height: 1.5;
         }
 
+        .skip-link {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #166534;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            transform: translateY(-160%);
+            transition: transform .2s;
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
         h1, h3, p {
             margin-top: 0;
         }
@@ -141,8 +158,9 @@
         }
 
         .form-control:focus {
-            outline: none;
             border-color: #4CAF50;
+            outline: 3px solid rgba(22, 163, 74, .24);
+            outline-offset: 2px;
         }
 
         .form-control.error {
@@ -182,6 +200,12 @@
             cursor: not-allowed;
         }
 
+        .submit-btn:focus-visible,
+        .back-home a:focus-visible {
+            outline: 3px solid rgba(22, 163, 74, .3);
+            outline-offset: 3px;
+        }
+
         .submit-notice { margin: 14px 0 0; color: #64748b; font-size: 13px; line-height: 1.6; text-align: center; }
         .submit-result { display: none; margin-top: 12px; padding: 10px 12px; border-radius: 6px; font-size: 14px; }
         .submit-result.success { display: block; background: #ecfdf5; color: #047857; }
@@ -199,15 +223,6 @@
 
         .back-home a:hover {
             text-decoration: underline;
-        }
-
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            display: none;
         }
 
         .guidelines {
@@ -251,18 +266,19 @@
                 padding: 16px;
             }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            .skip-link, .form-control, .submit-btn { transition: none; }
+        }
     </style>
 </head>
 
 <body class="io-grey-mode">
-    <div class="submit-container">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <main class="submit-container" id="main-content" tabindex="-1">
         <div class="submit-header">
             <h1><i class="fas fa-paper-plane"></i> 网址提交</h1>
             <p>提交您的优质网站，我们将在审核后收录到网址导航中</p>
-        </div>
-
-        <div class="success-message" id="successMessage">
-            <i class="fas fa-check-circle"></i> 提交成功！我们会尽快审核您的网站。
         </div>
 
         <div class="guidelines">
@@ -357,7 +373,7 @@
         <div class="back-home">
             <a href="/"><i class="fas fa-home"></i> 返回首页</a>
         </div>
-    </div>
+    </main>
 
     <script defer src="./assets/js/commit-page.js?v=20260801-1"></script>
 </body>
