@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.innerHTML = '<i class="fas ' + icon + '"></i> ' + text;
     };
 
+    const setBusy = function (busy) {
+        form.setAttribute('aria-busy', busy ? 'true' : 'false');
+        submitButton.disabled = busy;
+    };
+
     const clearError = function (control) {
         control.classList.remove('error');
         control.setAttribute('aria-invalid', 'false');
@@ -77,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submitResult.classList.remove('success', 'error');
         if (!validateForm()) return;
 
-        submitButton.disabled = true;
+        setBusy(true);
         setButton('fa-spinner fa-spin', '提交中...');
 
         const formData = {
@@ -134,10 +139,8 @@ document.addEventListener('DOMContentLoaded', function () {
             setButton('fa-envelope', '使用邮件提交');
         } finally {
             window.clearTimeout(timeout);
-            window.setTimeout(function () {
-                submitButton.disabled = false;
-                setButton('fa-paper-plane', '提交收录申请');
-            }, 1500);
+            setBusy(false);
+            setButton('fa-paper-plane', '提交收录申请');
         }
     });
 });

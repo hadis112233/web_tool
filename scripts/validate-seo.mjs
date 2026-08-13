@@ -33,6 +33,9 @@ for (const page of pages) {
       errors.push(`${page.file} 包含无效的 JSON-LD 结构化数据。`);
     }
   }
+  if (/"@type"\s*:\s*"SearchAction"/i.test(html)) {
+    errors.push(`${page.file} 仍包含 Google 已停止支持的站点搜索框 SearchAction 数据。`);
+  }
   if (!structuredUrls.includes(page.url)) {
     errors.push(`${page.file} 结构化数据缺少标准地址：${page.url}`);
   }

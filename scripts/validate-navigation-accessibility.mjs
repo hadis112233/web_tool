@@ -8,6 +8,18 @@ for (const markup of ['id="sidebar"', 'id="sidebar-switch"', 'aria-controls="sid
   if (!index.includes(markup)) errors.push(`首页缺少侧栏无障碍标记：${markup}`);
 }
 
+for (const markup of [
+  'class="super-search-fm" role="search" aria-label="网页搜索"',
+  'enterkeyhint="search" autocapitalize="none" spellcheck="false"'
+]) {
+  if (!index.includes(markup)) errors.push(`首页搜索框缺少移动端或语义标记：${markup}`);
+}
+
+const enhancements = fs.readFileSync('assets/js/site-enhancements.js', 'utf8');
+for (const markup of ['type="search"', 'enterkeyhint="search"', 'spellcheck="false"']) {
+  if (!enhancements.includes(markup)) errors.push(`站内筛选框缺少移动端搜索标记：${markup}`);
+}
+
 for (const behavior of [
   'function syncSidebarAccessibility()',
   'sidebar.inert = isHidden',
