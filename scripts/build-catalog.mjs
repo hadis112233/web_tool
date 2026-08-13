@@ -23,8 +23,9 @@ function renderCard(site) {
   const securityBadge = site.allowInsecure
     ? '<span class="insecure-badge" aria-label="仅支持 HTTP 明文连接">HTTP</span>'
     : '';
+  const newTabIndicator = '<span class="new-tab-indicator" aria-hidden="true">↗</span>';
   const featuredAttribute = Number.isInteger(site.featured) ? ` data-featured="${site.featured}"` : '';
-  return `<div class="url-card col-6 col-sm-6 col-md-4 col-xl-5a col-xxl-6a"${featuredAttribute}><div class="url-body default"><a href="${href}" target="_blank" rel="noopener noreferrer" class="card no-c mb-4"${securityAttributes}><div class="card-body"><div class="url-content d-flex align-items-center"><div class="url-img mr-2 d-flex align-items-center justify-content-center"><img class="lazy" loading="lazy" decoding="async" width="40" height="40" src="${image}" alt=""></div><div class="url-info flex-fill"><div class="text-sm overflowClip_1"><strong>${title}${securityBadge}</strong></div><p class="overflowClip_1 m-0 text-muted text-xs">${description}</p></div></div></div></a></div></div>`;
+  return `<div class="url-card col-6 col-sm-6 col-md-4 col-xl-5a col-xxl-6a"${featuredAttribute}><div class="url-body default"><a href="${href}" target="_blank" rel="noopener noreferrer" aria-describedby="new-tab-note" class="card no-c mb-4"${securityAttributes}><div class="card-body"><div class="url-content d-flex align-items-center"><div class="url-img mr-2 d-flex align-items-center justify-content-center"><img class="lazy" loading="lazy" decoding="async" width="40" height="40" src="${image}" alt=""></div><div class="url-info flex-fill"><div class="text-sm overflowClip_1"><strong>${title}${securityBadge}${newTabIndicator}</strong></div><p class="overflowClip_1 m-0 text-muted text-xs">${description}</p></div></div></div></a></div></div>`;
 }
 
 function renderCategory(category) {

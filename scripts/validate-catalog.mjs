@@ -77,6 +77,20 @@ if (cardImages.length !== urls.size) {
 if (cardImages.some((tag) => !/\balt=""/.test(tag))) {
   errors.push('资源卡片图标与可见标题相邻，必须使用空 alt 避免读屏重复朗读。');
 }
+const cardLinks = [...index.matchAll(/<a\b[^>]*\bclass="card no-c mb-4"[^>]*>/g)].map((match) => match[0]);
+if (cardLinks.length !== urls.size) {
+  errors.push(`首页资源卡片链接数量异常：预期 ${urls.size}，实际 ${cardLinks.length}。`);
+}
+if (!index.includes('id="new-tab-note"') || !index.includes('将在新标签页打开')) {
+  errors.push('首页缺少资源卡片的新标签页打开说明。');
+}
+if (cardLinks.some((tag) => !/\btarget="_blank"/.test(tag) || !/\baria-describedby="new-tab-note"/.test(tag))) {
+  errors.push('每张资源卡片都必须声明在新标签页打开，并关联读屏说明。');
+}
+const newTabIndicatorCount = (index.match(/\bclass="new-tab-indicator"\s+aria-hidden="true">↗<\/span>/g) || []).length;
+if (newTabIndicatorCount !== urls.size) {
+  errors.push(`资源卡片的新标签页可见提示数量异常：预期 ${urls.size}，实际 ${newTabIndicatorCount}。`);
+}
 const submitOptions = [...commit.matchAll(/<option value="([^"]+)">/g)]
   .map((match) => match[1])
   .filter(Boolean);
