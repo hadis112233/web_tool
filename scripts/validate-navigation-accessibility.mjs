@@ -10,8 +10,10 @@ for (const markup of ['id="sidebar"', 'id="sidebar-switch"', 'aria-controls="sid
 }
 
 for (const markup of [
-  'class="super-search-fm" role="search" aria-label="网页搜索"',
-  'enterkeyhint="search" autocapitalize="none" spellcheck="false"'
+  'class="super-search-fm" role="search" aria-label="网页搜索" aria-describedby="search-new-tab-note"',
+  'enterkeyhint="search" autocapitalize="none" spellcheck="false"',
+  'aria-label="开始搜索，结果将在新标签页打开"',
+  'id="search-new-tab-note" class="search-new-tab-hint"'
 ]) {
   if (!index.includes(markup)) errors.push(`首页搜索框缺少移动端或语义标记：${markup}`);
 }

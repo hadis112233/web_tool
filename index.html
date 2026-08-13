@@ -53,7 +53,7 @@
         type="text/css" media="all" />
     <link rel="stylesheet" id="theme-css" href="./assets/css/theme-subset.css?v=20260801-1"
         type="text/css" media="all" />
-    <link rel="stylesheet" id="custom-css" href="./assets/css/custom-style.css?v=20260813-2"
+    <link rel="stylesheet" id="custom-css" href="./assets/css/custom-style.css?v=20260813-3"
         type="text/css" media="all" />
     <link rel="stylesheet" id="fortawesome-css" href="./assets/css/static-icons.css?v=20260801-1" type="text/css" />
 </head>
@@ -333,12 +333,13 @@
             </div>
 
             <form action="https://www.baidu.com/s" method="get" target="_blank" rel="noopener noreferrer"
-                class="super-search-fm" role="search" aria-label="网页搜索">
+                class="super-search-fm" role="search" aria-label="网页搜索" aria-describedby="search-new-tab-note">
                 <input type="search" id="search-text" name="wd" class="form-control smart-tips search-key"
                     zhannei="" placeholder="输入关键字搜索" autocomplete="off"
                     enterkeyhint="search" autocapitalize="none" spellcheck="false" aria-label="搜索关键词">
-                <button class="submit" type="submit" aria-label="开始搜索"><i class="iconfont icon-search"></i></button>
+                <button class="submit" type="submit" aria-label="开始搜索，结果将在新标签页打开"><i class="iconfont icon-search"></i></button>
             </form>
+            <p id="search-new-tab-note" class="search-new-tab-hint"><span aria-hidden="true">↗</span> 搜索结果将在新标签页打开</p>
 
             <div id="search-list" class="hide-type-list">
                 <div class="search-group group-b">
