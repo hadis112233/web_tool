@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'hadis-nav-';
-const CACHE = `${CACHE_PREFIX}v21`;
+const CACHE = `${CACHE_PREFIX}v22`;
 const CORE = [
   '/',
   '/index.html',
@@ -11,7 +11,7 @@ const CORE = [
   '/assets/css/fonts/iconfont-hadis.woff2',
   '/assets/css/bootstrap-subset.css?v=20260801-1',
   '/assets/css/theme-subset.css?v=20260801-1',
-  '/assets/css/custom-style.css?v=20260813-1',
+  '/assets/css/custom-style.css?v=20260813-2',
   '/assets/css/static-icons.css?v=20260801-1',
   '/assets/fontawesome-5.15.4/webfonts/fa-regular-400.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-solid-900.woff2',
