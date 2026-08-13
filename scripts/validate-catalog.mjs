@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 const catalog = JSON.parse(await readFile('data/sites.json', 'utf8'));
 const commit = await readFile('commit.html', 'utf8');
 const index = await readFile('index.html', 'utf8');
+const enhancements = await readFile('assets/js/site-enhancements.js', 'utf8');
 const errors = [];
 const ids = new Set();
 const urls = new Set();
@@ -13,6 +14,7 @@ const approvedInsecureUrls = new Set([
   'http://www.tretars.com/ppt-templates'
 ]);
 const renderedInsecureUrls = new Set();
+const featuredSites = [];
 const retiredUrls = new Set([
   'https://www.iconfinder.com',
   'https://material.io/icons/',
@@ -45,6 +47,7 @@ for (const category of catalog.categories || []) {
     if (urls.has(site.url)) errors.push(`网址重复：${site.url}`);
     if (retiredUrls.has(site.url)) errors.push(`仍在使用已停用或过时的网址：${site.name}（${site.url}）`);
     urls.add(site.url);
+    if (site.featured !== undefined) featuredSites.push(site);
   }
 }
 for (const url of approvedInsecureUrls) {
@@ -55,6 +58,18 @@ const insecureBadgeCount = (index.match(/\bclass="insecure-badge"/g) || []).leng
 if (insecureCardCount !== approvedInsecureUrls.size || insecureBadgeCount !== approvedInsecureUrls.size) {
   errors.push('首页 HTTP 卡片标识与审核白名单不一致，请重新运行目录构建脚本。');
 }
+const featuredRanks = featuredSites.map((site) => site.featured).sort((left, right) => left - right);
+if (JSON.stringify(featuredRanks) !== JSON.stringify([1, 2, 3, 4, 5, 6])) {
+  errors.push('精选资源顺序必须是唯一且连续的 1 到 6。');
+}
+const renderedFeaturedRanks = [...index.matchAll(/\bdata-featured="(\d+)"/g)]
+  .map((match) => Number(match[1])).sort((left, right) => left - right);
+if (JSON.stringify(renderedFeaturedRanks) !== JSON.stringify(featuredRanks)) {
+  errors.push('首页精选资源标记与数据源不一致，请重新运行目录构建脚本。');
+}
+if (!enhancements.includes('return card.dataset.featured;') || enhancements.includes('title.textContent.trim()')) {
+  errors.push('精选资源仍依赖可见标题文字匹配，徽标可能导致卡片丢失。');
+}
 const submitOptions = [...commit.matchAll(/<option value="([^"]+)">/g)]
   .map((match) => match[1])
   .filter(Boolean);
@@ -63,4 +78,4 @@ if (JSON.stringify(submitOptions) !== JSON.stringify(expectedOptions)) {
   errors.push('提交页分类与目录分类不一致，请重新运行目录构建脚本。');
 }
 if (errors.length) throw new Error(errors.join('\n'));
-console.log(`Catalog valid: ${catalog.categories.length} categories, ${urls.size} unique sites, and matching submit options.`);
+console.log(`Catalog valid: ${catalog.categories.length} categories, ${urls.size} unique sites, ${featuredSites.length} featured resources, and matching submit options.`);

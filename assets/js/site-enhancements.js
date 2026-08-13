@@ -134,13 +134,11 @@
     if (firstCategory && !firstCategory.id) firstCategory.id = allResourcesTarget;
 
     // 首页精选：复用已有卡片内容，避免维护两套链接与图标数据。
-    var featuredNames = ['GitHub', '阿里云', '有道词典', '办公工具站', 'PDFCraft', '抖音'];
-    var featuredCards = featuredNames.map(function (name) {
-        return cards.find(function (card) {
-            var title = card.querySelector('strong');
-            return title && title.textContent.trim() === name;
-        });
-    }).filter(Boolean);
+    var featuredCards = cards.filter(function (card) {
+        return card.dataset.featured;
+    }).sort(function (left, right) {
+        return Number(left.dataset.featured) - Number(right.dataset.featured);
+    });
     if (featuredCards.length) {
         var featured = document.createElement('section');
         featured.className = 'featured-resources';
