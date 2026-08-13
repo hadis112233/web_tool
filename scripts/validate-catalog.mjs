@@ -70,6 +70,13 @@ if (JSON.stringify(renderedFeaturedRanks) !== JSON.stringify(featuredRanks)) {
 if (!enhancements.includes('return card.dataset.featured;') || enhancements.includes('title.textContent.trim()')) {
   errors.push('精选资源仍依赖可见标题文字匹配，徽标可能导致卡片丢失。');
 }
+const cardImages = [...index.matchAll(/<img\b[^>]*\bclass="lazy"[^>]*>/g)].map((match) => match[0]);
+if (cardImages.length !== urls.size) {
+  errors.push(`首页资源图标数量异常：预期 ${urls.size}，实际 ${cardImages.length}。`);
+}
+if (cardImages.some((tag) => !/\balt=""/.test(tag))) {
+  errors.push('资源卡片图标与可见标题相邻，必须使用空 alt 避免读屏重复朗读。');
+}
 const submitOptions = [...commit.matchAll(/<option value="([^"]+)">/g)]
   .map((match) => match[1])
   .filter(Boolean);
