@@ -171,6 +171,43 @@ body{color:var(--text);background:#f4f7fb}
 @media(max-width:767.98px){#content .featured-resources{padding:18px 14px;border-radius:15px}#content .featured-heading{align-items:start;flex-direction:column;margin-bottom:14px}#content .featured-heading h2{font-size:20px}.featured-all{padding:7px 10px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+/* 旧主题会隐藏链接轮廓；为键盘操作统一提供在浅色、深色和图片背景上都清晰的双色焦点环。 */
+a[href]:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+    outline: 3px solid #fff !important;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 5px #1d4ed8 !important;
+}
+
+.io-black-mode a[href]:focus-visible,
+.io-black-mode button:focus-visible,
+.io-black-mode input:focus-visible,
+.io-black-mode select:focus-visible,
+.io-black-mode textarea:focus-visible,
+.io-black-mode summary:focus-visible,
+.io-black-mode [tabindex]:not([tabindex="-1"]):focus-visible {
+    outline-color: #0f172a !important;
+    box-shadow: 0 0 0 5px #93c5fd !important;
+}
+
+@media(forced-colors:active) {
+    a[href]:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    summary:focus-visible,
+    [tabindex]:not([tabindex="-1"]):focus-visible {
+        outline: 3px solid Highlight !important;
+        box-shadow: none !important;
+    }
+}
+
 /* 平板宽度不再强行保留侧栏，避免 768–991px 时内容被挤出屏幕。 */
 @media(max-width:991.98px){
     .main-content{margin-left:0!important}

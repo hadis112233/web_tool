@@ -15,6 +15,12 @@ function attribute(tag, name) {
 
 for (const page of pages) {
   const html = fs.readFileSync(path.join(root, page.file), 'utf8');
+  if (/<meta\b[^>]*\bname=["']keywords["']/i.test(html)) {
+    errors.push(`${page.file} 仍包含 Google 不使用的 keywords 元标签。`);
+  }
+  if (/<meta\b[^>]*\bhttp-equiv=["']X-UA-Compatible["']/i.test(html)) {
+    errors.push(`${page.file} 仍包含仅供已退役 Internet Explorer 使用的兼容模式标签。`);
+  }
   const canonicalTag = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i)?.[0];
   const ogUrlTag = html.match(/<meta\b[^>]*\bproperty=["']og:url["'][^>]*>/i)?.[0];
   const canonical = attribute(canonicalTag, 'href');
@@ -61,5 +67,5 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
-  console.log(`SEO URLs valid: ${pages.length} pages match canonical, Open Graph, JSON-LD, and sitemap.`);
+  console.log(`SEO metadata valid: ${pages.length} pages use current metadata, canonical, Open Graph, JSON-LD, and sitemap.`);
 }

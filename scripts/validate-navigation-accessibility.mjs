@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const index = fs.readFileSync('index.html', 'utf8');
 const navigation = fs.readFileSync('assets/js/index-page.js', 'utf8');
+const customStyle = fs.readFileSync('assets/css/custom-style.css', 'utf8');
 const errors = [];
 
 for (const markup of ['id="sidebar"', 'id="sidebar-switch"', 'aria-controls="sidebar"', 'aria-expanded="false"']) {
@@ -13,6 +14,19 @@ for (const markup of [
   'enterkeyhint="search" autocapitalize="none" spellcheck="false"'
 ]) {
   if (!index.includes(markup)) errors.push(`首页搜索框缺少移动端或语义标记：${markup}`);
+}
+
+if (/style=["'][^"']*outline\s*:\s*(?:0|none)/i.test(index)) {
+  errors.push('首页仍通过行内样式隐藏键盘焦点轮廓。');
+}
+for (const markup of [
+  'a[href]:focus-visible',
+  'outline: 3px solid #fff !important',
+  'box-shadow: 0 0 0 5px #1d4ed8 !important',
+  '@media(forced-colors:active)',
+  'outline: 3px solid Highlight !important'
+]) {
+  if (!customStyle.includes(markup)) errors.push(`首页缺少全局键盘焦点可见性：${markup}`);
 }
 
 const enhancements = fs.readFileSync('assets/js/site-enhancements.js', 'utf8');
@@ -36,5 +50,5 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
-  console.log('Navigation accessibility valid: hidden mobile sidebar is inert and focus state is synchronized.');
+  console.log('Navigation accessibility valid: mobile sidebar, search semantics, and keyboard focus indicators passed.');
 }
