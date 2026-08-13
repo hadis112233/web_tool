@@ -334,9 +334,11 @@
                 </div>
             </div>
 
-            <form action="https://www.baidu.com/s" method="get" target="_blank" rel="noopener noreferrer" class="super-search-fm">
-                <input type="text" id="search-text" name="wd" class="form-control smart-tips search-key"
-                    zhannei="" placeholder="输入关键字搜索" style="outline:0" autocomplete="off" aria-label="搜索关键词">
+            <form action="https://www.baidu.com/s" method="get" target="_blank" rel="noopener noreferrer"
+                class="super-search-fm" role="search" aria-label="网页搜索">
+                <input type="search" id="search-text" name="wd" class="form-control smart-tips search-key"
+                    zhannei="" placeholder="输入关键字搜索" style="outline:0" autocomplete="off"
+                    enterkeyhint="search" autocapitalize="none" spellcheck="false" aria-label="搜索关键词">
                 <button class="submit" type="submit" aria-label="开始搜索"><i class="iconfont icon-search"></i></button>
             </form>
 
@@ -602,7 +604,7 @@
 
 
 
-<script defer src="./assets/js/site-enhancements.js?v=20260813-1"></script>
+<script defer src="./assets/js/site-enhancements.js?v=20260813-2"></script>
 <script defer src="./assets/js/index-page.js?v=20260802-1"></script>
 </body>
 </html>

@@ -114,7 +114,7 @@
     dashboard.setAttribute('aria-label', '导航筛选工具');
     dashboard.innerHTML =
         '<div class="dashboard-copy"><strong>资源导航</strong><small id="filter-status" aria-live="polite">' + cards.length + ' 个链接 · ' + sections.length + ' 个分类</small></div>' +
-        '<label class="dashboard-search"><input id="site-filter" type="search" placeholder="筛选网站、工具或描述" autocomplete="off" aria-label="筛选网站、工具或描述" aria-keyshortcuts="/"><span>⌕</span></label>' +
+        '<label class="dashboard-search"><input id="site-filter" type="search" placeholder="筛选网站、工具或描述" autocomplete="off" enterkeyhint="search" autocapitalize="none" spellcheck="false" aria-label="筛选网站、工具或描述" aria-keyshortcuts="/"><span>⌕</span></label>' +
         '<div class="dashboard-actions"><button class="dashboard-button recent-toggle" id="recent-toggle" type="button" aria-pressed="false"><span aria-hidden="true">◷</span> 最近</button><button class="dashboard-button history-clear" id="recent-clear" type="button" hidden>清空最近</button><button class="dashboard-button favorites-toggle" id="favorites-toggle" type="button" aria-pressed="false"><span aria-hidden="true">♡</span> 收藏夹</button><button class="dashboard-button reset-button" id="filter-reset" type="button">清除</button></div>';
     content.insertBefore(dashboard, content.firstChild);
 

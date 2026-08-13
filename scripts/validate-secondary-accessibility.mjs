@@ -21,6 +21,19 @@ for (const page of pages) {
 }
 
 const commit = fs.readFileSync('commit.html', 'utf8');
+for (const markup of [
+  '<form id="submitForm" aria-busy="false">',
+  'autocomplete="url" inputmode="url"',
+  'autocomplete="email" inputmode="email"',
+  'aria-describedby="submitNotice"',
+  'id="submitNotice"'
+]) {
+  if (!commit.includes(markup)) errors.push(`commit.html 缺少易填写或提交状态标记：${markup}`);
+}
+const commitScript = fs.readFileSync('assets/js/commit-page.js', 'utf8');
+for (const markup of ["form.setAttribute('aria-busy'", 'setBusy(true)', 'setBusy(false)']) {
+  if (!commitScript.includes(markup)) errors.push(`提交脚本缺少忙碌状态同步：${markup}`);
+}
 if (/\bsuccessMessage\b|\.success-message\b/.test(commit)) {
   errors.push('提交页仍包含未使用的旧成功提示。');
 }
