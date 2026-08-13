@@ -36,10 +36,11 @@ python -m http.server 8000
 # 使用 Node.js (需要先安装 http-server)
 npx http-server -p 8000
 
-# 或者直接用浏览器打开 index.html
 ```
 
 3. 在浏览器中访问 `http://localhost:8000`
+
+> 请使用本地 HTTP 服务器预览，不要直接双击打开 `index.html`。浏览器的 `file://` 模式无法正确测试 PWA、接口地址和无扩展名路由。
 
 ## 部署指南
 
@@ -82,36 +83,11 @@ sudo git clone https://github.com/hadis112233/web_tool.git
 sudo vim /etc/nginx/sites-available/web_tool
 ```
 
-添加以下配置：
+项目已经提供与当前安全响应头、路由和缓存策略同步的配置模板。复制后只需修改证书路径和网站目录：
 
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;  # 修改为你的域名或服务器 IP
-
-    root /var/www/web_tool;
-    index index.html;
-
-    # 启用 gzip 压缩
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # 静态资源缓存
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-    }
-
-    # 404 页面
-    error_page 404 /404.html;
-    location = /404.html {
-        internal;
-    }
-}
+```bash
+sudo cp nginx/web.008997.xyz.conf.example /etc/nginx/sites-available/web_tool
+sudo vim /etc/nginx/sites-available/web_tool
 ```
 
 #### 4. 启用站点并重启 Nginx

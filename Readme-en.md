@@ -36,10 +36,11 @@ python -m http.server 8000
 # Using Node.js (requires http-server)
 npx http-server -p 8000
 
-# Or simply open index.html in browser
 ```
 
 3. Visit `http://localhost:8000` in your browser
+
+> Use a local HTTP server instead of opening `index.html` directly. The browser's `file://` mode cannot correctly test PWA behavior, API paths, or extensionless routes.
 
 ## Deployment Guide
 
@@ -82,36 +83,11 @@ Create Nginx configuration file:
 sudo vim /etc/nginx/sites-available/web_tool
 ```
 
-Add the following configuration:
+The repository already includes a configuration template synchronized with the current security headers, routes, and caching policy. Copy it, then update only the certificate paths and site root:
 
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;  # Change to your domain or server IP
-
-    root /var/www/web_tool;
-    index index.html;
-
-    # Enable gzip compression
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    # Static resource caching
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-    }
-
-    # 404 page
-    error_page 404 /404.html;
-    location = /404.html {
-        internal;
-    }
-}
+```bash
+sudo cp nginx/web.008997.xyz.conf.example /etc/nginx/sites-available/web_tool
+sudo vim /etc/nginx/sites-available/web_tool
 ```
 
 #### 4. Enable Site and Restart Nginx
@@ -217,41 +193,9 @@ vercel --prod
 
 4. Follow instructions to add DNS records at your domain registrar
 
-#### Vercel Configuration File (Optional)
+#### Vercel Configuration
 
-Create `vercel.json` in project root for advanced configuration:
-
-```json
-{
-  "version": 2,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    }
-  ]
-}
-```
+The checked-in `vercel.json` is the source of truth for security headers, extensionless routes, and safe asset caching. Keep it in the project root and update the file itself when deployment behavior needs to change.
 
 ### Method 3: Other Deployment Platforms
 
