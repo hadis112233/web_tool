@@ -19,6 +19,12 @@ for (const markup of [
 if (/style=["'][^"']*outline\s*:\s*(?:0|none)/i.test(index)) {
   errors.push('首页仍通过行内样式隐藏键盘焦点轮廓。');
 }
+const internalNewTabLinks = [...index.matchAll(/<a\b[^>]*>/g)]
+  .map((match) => match[0])
+  .filter((tag) => /\bhref="(?:\.\/)?(?:commit\.html|about\/?|\.\/about\/?|index\.html|\.\/)"/.test(tag) && /\btarget="_blank"/.test(tag));
+if (internalNewTabLinks.length) {
+  errors.push('首页站内导航不应强制在新标签页打开。');
+}
 for (const markup of [
   'a[href]:focus-visible',
   'outline: 3px solid #fff !important',
