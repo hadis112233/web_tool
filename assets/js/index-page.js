@@ -191,6 +191,11 @@
         if (headerBanner) headerBanner.classList.toggle('header-bg', scrolled);
     }
 
+    function focusScrollTarget(target) {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+    }
+
     applyTheme(getNightMode() === '1');
     initializeSearch();
     updateScrollState();
@@ -264,6 +269,7 @@
         event.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         if (link.classList.contains('go-search-btn') && searchInput) searchInput.focus();
+        else focusScrollTarget(target);
         if (window.innerWidth < 768 && sidebar && sidebar.contains(link)) closeSidebar(false);
     });
 

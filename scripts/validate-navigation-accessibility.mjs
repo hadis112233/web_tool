@@ -48,7 +48,10 @@ for (const behavior of [
   "sidebar.setAttribute('aria-hidden', isHidden ? 'true' : 'false')",
   "sidebarSwitch.setAttribute('aria-expanded', isOpen ? 'true' : 'false')",
   "firstLink.focus()",
-  "closeSidebar(true)"
+  "closeSidebar(true)",
+  'function focusScrollTarget(target)',
+  "target.setAttribute('tabindex', '-1')",
+  'target.focus({ preventScroll: true })'
 ]) {
   if (!navigation.includes(behavior)) errors.push(`侧栏脚本缺少无障碍行为：${behavior}`);
 }
