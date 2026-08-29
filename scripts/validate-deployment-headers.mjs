@@ -3,13 +3,14 @@ import path from 'node:path';
 
 const root = path.resolve(import.meta.dirname, '..');
 const errors = [];
+const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const securityHeaders = new Map([
   ['X-Content-Type-Options', 'nosniff'],
   ['X-Frame-Options', 'SAMEORIGIN'],
   ['Referrer-Policy', 'strict-origin-when-cross-origin'],
   ['Permissions-Policy', 'camera=(), microphone=(), geolocation=()'],
   ['Strict-Transport-Security', 'max-age=31536000; includeSubDomains'],
-  ['Content-Security-Policy', "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'self'"],
+  ['Content-Security-Policy', "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; form-action 'self' mailto: https://www.baidu.com; base-uri 'self'; frame-ancestors 'self'"],
 ]);
 const assetCache = 'public, max-age=86400, stale-while-revalidate=604800';
 
@@ -64,6 +65,14 @@ if (!nginx.includes('ssl_protocols TLSv1.2 TLSv1.3;')) {
 }
 if (!nginx.includes('expires 1d;') || /max-age=2592000|\bimmutable\b/.test(nginx)) {
   errors.push('Nginx 示例配置的静态资源缓存可能长期保留未版本化旧图标。');
+}
+if (!/<form\b[^>]*\baction="https:\/\/www\.baidu\.com\/s"/.test(index)) {
+  errors.push('首页搜索的无脚本备用表单地址缺失或不是百度。');
+}
+for (const policy of [vercelSecurity.get('Content-Security-Policy'), cloudflareSecurity.get('Content-Security-Policy')]) {
+  if (!policy?.includes("form-action 'self' mailto: https://www.baidu.com")) {
+    errors.push('部署安全策略未放行首页搜索的无脚本备用地址。');
+  }
 }
 
 if (errors.length) {
