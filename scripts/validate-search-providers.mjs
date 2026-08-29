@@ -10,7 +10,8 @@ const retiredTemplates = [
   'https://www.qunar.com/?',
   'https://sou.zhaopin.com/jobs/searchresult.ashx?kw=',
   'https://search.51job.com/?',
-  'https://www.lagou.com/jobs/list_'
+  'https://www.lagou.com/jobs/list_',
+  'https://www.xiangha.com/so/?q=caipu&s='
 ];
 const expectedTemplates = new Map([
   ['type-zhaopin', 'https://sou.zhaopin.com/?kw='],
