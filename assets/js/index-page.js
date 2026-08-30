@@ -10,6 +10,8 @@
     var headerBanner = document.querySelector('.big-header-banner');
     var themeButton = document.querySelector('.switch-dark-mode');
     var themeColor = document.querySelector('meta[name="theme-color"]');
+    var installButton = document.getElementById('install-app');
+    var installStatus = document.getElementById('install-status');
     var shareButton = document.getElementById('share-site');
     var shareStatus = document.getElementById('share-status');
     var searchMenu = search && search.querySelector('.s-type-list.big');
@@ -56,6 +58,29 @@
 
     function setShareStatus(message) {
         if (shareStatus) shareStatus.textContent = message;
+    }
+
+    var deferredInstallPrompt = null;
+
+    function setInstallStatus(message) {
+        if (installStatus) installStatus.textContent = message;
+    }
+
+    function hideInstallButton() {
+        if (installButton) installButton.hidden = true;
+    }
+
+    function installApp() {
+        if (!deferredInstallPrompt) return;
+        hideInstallButton();
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(function (choice) {
+            setInstallStatus(choice.outcome === 'accepted' ? '正在安装 Hadis 工具导航。' : '已取消安装。');
+            deferredInstallPrompt = null;
+        }).catch(function () {
+            setInstallStatus('暂时无法显示安装提示。');
+            deferredInstallPrompt = null;
+        });
     }
 
     function copyShareLink(url) {
@@ -318,6 +343,19 @@
     }
     if (shareButton) {
         shareButton.addEventListener('click', shareSite);
+    }
+    if (installButton) {
+        window.addEventListener('beforeinstallprompt', function (event) {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            installButton.hidden = false;
+        });
+        window.addEventListener('appinstalled', function () {
+            deferredInstallPrompt = null;
+            hideInstallButton();
+            setInstallStatus('Hadis 工具导航已安装。');
+        });
+        installButton.addEventListener('click', installApp);
     }
     if (goUp) {
         goUp.addEventListener('click', function (event) {

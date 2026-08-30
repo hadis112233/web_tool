@@ -18,7 +18,14 @@ for (const markup of [
   if (!index.includes(markup)) errors.push(`首页搜索框缺少移动端或语义标记：${markup}`);
 }
 
-for (const markup of ['id="share-site"', 'aria-label="分享本站"', 'id="share-status" class="share-status" aria-live="polite"']) {
+for (const markup of [
+  'id="share-site"',
+  'aria-label="分享本站"',
+  'id="share-status" class="share-status" aria-live="polite"',
+  'id="install-app" class="btn rounded-circle m-1" hidden',
+  'aria-label="安装 Hadis 工具导航"',
+  'id="install-status" class="share-status" aria-live="polite"'
+]) {
   if (!index.includes(markup)) errors.push(`首页缺少分享功能标记：${markup}`);
 }
 
@@ -51,6 +58,11 @@ for (const markup of ['type="search"', 'enterkeyhint="search"', 'spellcheck="fal
 }
 
 for (const behavior of [
+  'function installApp()',
+  "window.addEventListener('beforeinstallprompt'",
+  'deferredInstallPrompt.prompt()',
+  "window.addEventListener('appinstalled'",
+  "installButton.addEventListener('click', installApp)",
   'function shareSite()',
   'navigator.share(data)',
   'function copyShareLink(url)',
