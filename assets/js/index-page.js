@@ -11,9 +11,8 @@
     var themeButton = document.querySelector('.switch-dark-mode');
     var themeColor = document.querySelector('meta[name="theme-color"]');
     var installButton = document.getElementById('install-app');
-    var installStatus = document.getElementById('install-status');
     var shareButton = document.getElementById('share-site');
-    var shareStatus = document.getElementById('share-status');
+    var siteNotice = document.getElementById('site-notice');
     var searchMenu = search && search.querySelector('.s-type-list.big');
 
     function storageGet(key) {
@@ -56,15 +55,21 @@
         document.cookie = 'night=' + (isDark ? '1' : '0') + ';path=/;SameSite=Lax;max-age=31536000';
     }
 
-    function setShareStatus(message) {
-        if (shareStatus) shareStatus.textContent = message;
+    var noticeTimer = null;
+
+    function showNotice(message) {
+        if (!siteNotice) return;
+        siteNotice.textContent = message;
+        siteNotice.hidden = false;
+        siteNotice.classList.add('is-visible');
+        window.clearTimeout(noticeTimer);
+        noticeTimer = window.setTimeout(function () {
+            siteNotice.classList.remove('is-visible');
+            siteNotice.hidden = true;
+        }, 3600);
     }
 
     var deferredInstallPrompt = null;
-
-    function setInstallStatus(message) {
-        if (installStatus) installStatus.textContent = message;
-    }
 
     function hideInstallButton() {
         if (installButton) installButton.hidden = true;
@@ -75,10 +80,10 @@
         hideInstallButton();
         deferredInstallPrompt.prompt();
         deferredInstallPrompt.userChoice.then(function (choice) {
-            setInstallStatus(choice.outcome === 'accepted' ? '正在安装 Hadis 工具导航。' : '已取消安装。');
+            showNotice(choice.outcome === 'accepted' ? '正在安装 Hadis 工具导航。' : '已取消安装。');
             deferredInstallPrompt = null;
         }).catch(function () {
-            setInstallStatus('暂时无法显示安装提示。');
+            showNotice('暂时无法显示安装提示。');
             deferredInstallPrompt = null;
         });
     }
@@ -107,21 +112,21 @@
         var data = { title: document.title, text: '常用网站与在线工具，一站直达。', url: url };
         if (navigator.share) {
             navigator.share(data).then(function () {
-                setShareStatus('已完成分享。');
+                showNotice('已完成分享。');
             }).catch(function (error) {
                 if (error && error.name === 'AbortError') return;
                 copyShareLink(url).then(function () {
-                    setShareStatus('系统分享不可用，链接已复制。');
+                    showNotice('系统分享不可用，链接已复制。');
                 }).catch(function () {
-                    setShareStatus('暂时无法分享，请复制浏览器地址栏链接。');
+                    showNotice('暂时无法分享，请复制浏览器地址栏链接。');
                 });
             });
             return;
         }
         copyShareLink(url).then(function () {
-            setShareStatus('链接已复制。');
+            showNotice('链接已复制。');
         }).catch(function () {
-            setShareStatus('暂时无法复制链接，请复制浏览器地址栏链接。');
+            showNotice('暂时无法复制链接，请复制浏览器地址栏链接。');
         });
     }
 
@@ -353,7 +358,7 @@
         window.addEventListener('appinstalled', function () {
             deferredInstallPrompt = null;
             hideInstallButton();
-            setInstallStatus('Hadis 工具导航已安装。');
+            showNotice('Hadis 工具导航已安装。');
         });
         installButton.addEventListener('click', installApp);
     }

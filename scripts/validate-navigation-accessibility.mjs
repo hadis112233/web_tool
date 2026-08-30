@@ -21,10 +21,9 @@ for (const markup of [
 for (const markup of [
   'id="share-site"',
   'aria-label="分享本站"',
-  'id="share-status" class="share-status" aria-live="polite"',
   'id="install-app" class="btn rounded-circle m-1" hidden',
   'aria-label="安装 Hadis 工具导航"',
-  'id="install-status" class="share-status" aria-live="polite"'
+  'id="site-notice" class="site-notice" role="status" aria-live="polite" aria-atomic="true" hidden'
 ]) {
   if (!index.includes(markup)) errors.push(`首页缺少分享功能标记：${markup}`);
 }
@@ -58,6 +57,9 @@ for (const markup of ['type="search"', 'enterkeyhint="search"', 'spellcheck="fal
 }
 
 for (const behavior of [
+  'function showNotice(message)',
+  "siteNotice.classList.add('is-visible')",
+  "window.setTimeout(function () {",
   'function installApp()',
   "window.addEventListener('beforeinstallprompt'",
   'deferredInstallPrompt.prompt()',
