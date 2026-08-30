@@ -10,6 +10,8 @@
     var headerBanner = document.querySelector('.big-header-banner');
     var themeButton = document.querySelector('.switch-dark-mode');
     var themeColor = document.querySelector('meta[name="theme-color"]');
+    var shareButton = document.getElementById('share-site');
+    var shareStatus = document.getElementById('share-status');
     var searchMenu = search && search.querySelector('.s-type-list.big');
 
     function storageGet(key) {
@@ -50,6 +52,52 @@
         var isDark = !document.body.classList.contains('io-black-mode');
         applyTheme(isDark);
         document.cookie = 'night=' + (isDark ? '1' : '0') + ';path=/;SameSite=Lax;max-age=31536000';
+    }
+
+    function setShareStatus(message) {
+        if (shareStatus) shareStatus.textContent = message;
+    }
+
+    function copyShareLink(url) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(url);
+        }
+        return new Promise(function (resolve, reject) {
+            var input = document.createElement('textarea');
+            input.value = url;
+            input.setAttribute('readonly', '');
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.select();
+            var copied = document.execCommand('copy');
+            input.remove();
+            copied ? resolve() : reject(new Error('copy failed'));
+        });
+    }
+
+    function shareSite() {
+        var canonical = document.querySelector('link[rel="canonical"]');
+        var url = canonical ? canonical.href : window.location.href;
+        var data = { title: document.title, text: '常用网站与在线工具，一站直达。', url: url };
+        if (navigator.share) {
+            navigator.share(data).then(function () {
+                setShareStatus('已完成分享。');
+            }).catch(function (error) {
+                if (error && error.name === 'AbortError') return;
+                copyShareLink(url).then(function () {
+                    setShareStatus('系统分享不可用，链接已复制。');
+                }).catch(function () {
+                    setShareStatus('暂时无法分享，请复制浏览器地址栏链接。');
+                });
+            });
+            return;
+        }
+        copyShareLink(url).then(function () {
+            setShareStatus('链接已复制。');
+        }).catch(function () {
+            setShareStatus('暂时无法复制链接，请复制浏览器地址栏链接。');
+        });
     }
 
     function syncSidebarAccessibility() {
@@ -267,6 +315,9 @@
             event.preventDefault();
             switchNightMode();
         });
+    }
+    if (shareButton) {
+        shareButton.addEventListener('click', shareSite);
     }
     if (goUp) {
         goUp.addEventListener('click', function (event) {

@@ -18,6 +18,10 @@ for (const markup of [
   if (!index.includes(markup)) errors.push(`首页搜索框缺少移动端或语义标记：${markup}`);
 }
 
+for (const markup of ['id="share-site"', 'aria-label="分享本站"', 'id="share-status" class="share-status" aria-live="polite"']) {
+  if (!index.includes(markup)) errors.push(`首页缺少分享功能标记：${markup}`);
+}
+
 if (!index.includes('<meta name="color-scheme" content="light dark" />')) {
   errors.push('首页缺少对浏览器深浅色控件的声明。');
 }
@@ -47,6 +51,10 @@ for (const markup of ['type="search"', 'enterkeyhint="search"', 'spellcheck="fal
 }
 
 for (const behavior of [
+  'function shareSite()',
+  'navigator.share(data)',
+  'function copyShareLink(url)',
+  "shareButton.addEventListener('click', shareSite)",
   'function getPreferredNightMode()',
   "window.matchMedia('(prefers-color-scheme: dark)')",
   "if (getNightMode() === '0' || getNightMode() === '1') return;",
