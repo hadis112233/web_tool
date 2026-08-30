@@ -9,6 +9,7 @@
     var goUp = document.getElementById('go-to-up');
     var headerBanner = document.querySelector('.big-header-banner');
     var themeButton = document.querySelector('.switch-dark-mode');
+    var themeColor = document.querySelector('meta[name="theme-color"]');
     var searchMenu = search && search.querySelector('.s-type-list.big');
 
     function storageGet(key) {
@@ -22,12 +23,19 @@
     }
 
     function getNightMode() {
-        return document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, '$1') || '0';
+        return document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+    }
+
+    function getPreferredNightMode() {
+        var savedMode = getNightMode();
+        if (savedMode === '0' || savedMode === '1') return savedMode === '1';
+        return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
 
     function applyTheme(isDark) {
         document.body.classList.toggle('io-black-mode', isDark);
         document.body.classList.toggle('io-grey-mode', !isDark);
+        if (themeColor) themeColor.setAttribute('content', isDark ? '#0f172a' : '#2563eb');
         if (themeButton) {
             themeButton.title = isDark ? '切换到日间模式' : '切换到夜间模式';
             themeButton.setAttribute('aria-label', themeButton.title);
@@ -196,7 +204,16 @@
         target.focus({ preventScroll: true });
     }
 
-    applyTheme(getNightMode() === '1');
+    applyTheme(getPreferredNightMode());
+    var colorScheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    if (colorScheme) {
+        var syncSystemTheme = function (event) {
+            if (getNightMode() === '0' || getNightMode() === '1') return;
+            applyTheme(event.matches);
+        };
+        if (typeof colorScheme.addEventListener === 'function') colorScheme.addEventListener('change', syncSystemTheme);
+        else if (typeof colorScheme.addListener === 'function') colorScheme.addListener(syncSystemTheme);
+    }
     initializeSearch();
     updateScrollState();
 

@@ -18,6 +18,10 @@ for (const markup of [
   if (!index.includes(markup)) errors.push(`首页搜索框缺少移动端或语义标记：${markup}`);
 }
 
+if (!index.includes('<meta name="color-scheme" content="light dark" />')) {
+  errors.push('首页缺少对浏览器深浅色控件的声明。');
+}
+
 if (/style=["'][^"']*outline\s*:\s*(?:0|none)/i.test(index)) {
   errors.push('首页仍通过行内样式隐藏键盘焦点轮廓。');
 }
@@ -43,6 +47,10 @@ for (const markup of ['type="search"', 'enterkeyhint="search"', 'spellcheck="fal
 }
 
 for (const behavior of [
+  'function getPreferredNightMode()',
+  "window.matchMedia('(prefers-color-scheme: dark)')",
+  "if (getNightMode() === '0' || getNightMode() === '1') return;",
+  "themeColor.setAttribute('content', isDark ? '#0f172a' : '#2563eb')",
   'function syncSidebarAccessibility()',
   'sidebar.inert = isHidden',
   "sidebar.setAttribute('aria-hidden', isHidden ? 'true' : 'false')",
