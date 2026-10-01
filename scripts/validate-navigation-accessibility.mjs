@@ -24,7 +24,10 @@ for (const markup of [
   'id="install-app" class="btn rounded-circle m-1" hidden',
   'aria-label="安装 Hadis 工具导航"',
   'id="site-notice" class="site-notice" role="status" aria-live="polite" aria-atomic="true" hidden',
-  'id="network-notice" class="network-notice" role="status" aria-live="polite" aria-atomic="true" hidden'
+  'id="network-notice" class="network-notice" role="status" aria-live="polite" aria-atomic="true" hidden',
+  'id="update-notice" class="update-notice" role="region" aria-label="网站更新" hidden',
+  'id="update-status" role="status" aria-live="polite" aria-atomic="true"',
+  'id="update-now" type="button"'
 ]) {
   if (!index.includes(markup)) errors.push(`首页缺少分享功能标记：${markup}`);
 }
@@ -55,6 +58,14 @@ for (const markup of [
 const enhancements = fs.readFileSync('assets/js/site-enhancements.js', 'utf8');
 for (const markup of ['type="search"', 'enterkeyhint="search"', 'spellcheck="false"']) {
   if (!enhancements.includes(markup)) errors.push(`站内筛选框缺少移动端搜索标记：${markup}`);
+}
+for (const behavior of [
+  "registration.addEventListener('updatefound', observeInstallingWorker)",
+  'if (registration.waiting) showUpdate(registration.waiting)',
+  "waitingWorker.postMessage({ type: 'SKIP_WAITING' })",
+  "navigator.serviceWorker.addEventListener('controllerchange'"
+]) {
+  if (!enhancements.includes(behavior)) errors.push(`新版提醒缺少必要行为：${behavior}`);
 }
 
 for (const behavior of [
