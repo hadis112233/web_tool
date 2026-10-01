@@ -13,6 +13,7 @@
     var installButton = document.getElementById('install-app');
     var shareButton = document.getElementById('share-site');
     var siteNotice = document.getElementById('site-notice');
+    var networkNotice = document.getElementById('network-notice');
     var searchMenu = search && search.querySelector('.s-type-list.big');
 
     function storageGet(key) {
@@ -67,6 +68,12 @@
             siteNotice.classList.remove('is-visible');
             siteNotice.hidden = true;
         }, 3600);
+    }
+
+    function updateNetworkState(isOnline) {
+        if (!networkNotice) return;
+        networkNotice.hidden = isOnline;
+        document.body.classList.toggle('is-offline', !isOnline);
     }
 
     var deferredInstallPrompt = null;
@@ -283,6 +290,7 @@
     }
 
     applyTheme(getPreferredNightMode());
+    updateNetworkState(navigator.onLine !== false);
     var colorScheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
     if (colorScheme) {
         var syncSystemTheme = function (event) {
@@ -388,6 +396,13 @@
         if (event.key === 'Escape') closeSidebar(true);
     });
     window.addEventListener('scroll', updateScrollState, { passive: true });
+    window.addEventListener('offline', function () {
+        updateNetworkState(false);
+    });
+    window.addEventListener('online', function () {
+        updateNetworkState(true);
+        showNotice('网络已恢复。');
+    });
     window.addEventListener('resize', function () {
         setMiniSidebar(Boolean(miniButton && miniButton.checked));
         if (window.innerWidth >= 768) {
