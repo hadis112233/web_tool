@@ -5,6 +5,11 @@
     var RECENT_KEY = 'hadis-tool-nav-recent';
     var content = document.getElementById('content');
     if (!content) return;
+    var updateNotice = document.getElementById('update-notice');
+    var updateButton = document.getElementById('update-now');
+    var updateStatus = document.getElementById('update-status');
+    var waitingWorker = null;
+    var reloadingForUpdate = false;
 
     document.addEventListener('error', function (event) {
         var image = event.target;
@@ -22,7 +27,42 @@
                 }).catch(function () {});
                 return;
             }
-            navigator.serviceWorker.register('./sw.js').catch(function () {});
+            navigator.serviceWorker.register('./sw.js').then(function (registration) {
+                function showUpdate(worker) {
+                    if (!worker || !updateNotice || !updateButton) return;
+                    waitingWorker = worker;
+                    updateButton.disabled = false;
+                    updateButton.textContent = '立即刷新';
+                    if (updateStatus) updateStatus.textContent = '发现新版网站';
+                    updateNotice.hidden = false;
+                }
+
+                function observeInstallingWorker() {
+                    var installingWorker = registration.installing;
+                    if (!installingWorker) return;
+                    installingWorker.addEventListener('statechange', function () {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            showUpdate(installingWorker);
+                        }
+                    });
+                }
+
+                if (registration.waiting) showUpdate(registration.waiting);
+                registration.addEventListener('updatefound', observeInstallingWorker);
+            }).catch(function () {});
+
+            navigator.serviceWorker.addEventListener('controllerchange', function () {
+                if (reloadingForUpdate) window.location.reload();
+            });
+            if (updateButton) {
+                updateButton.addEventListener('click', function () {
+                    if (!waitingWorker) return;
+                    reloadingForUpdate = true;
+                    updateButton.disabled = true;
+                    updateButton.textContent = '正在更新…';
+                    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+                });
+            }
         });
     }
     var telemetryMeta = document.querySelector('meta[name="hadis-telemetry"]');

@@ -26,6 +26,12 @@ if (!sw.includes('key.startsWith(CACHE_PREFIX) && key !== CACHE')) {
 if (!sw.includes("url.pathname.startsWith('/api/')")) {
   errors.push('Service Worker 未绕过 API 请求。');
 }
+if (!sw.includes("event.data && event.data.type === 'SKIP_WAITING'")) {
+  errors.push('Service Worker 缺少用户确认后的更新激活消息。');
+}
+if (/\.then\(\(\)\s*=>\s*self\.skipWaiting\(\)\)/.test(sw)) {
+  errors.push('Service Worker 不应在安装后自动接管旧页面。');
+}
 if (!sw.includes("cache.put(url.pathname || '/', response.clone())")) {
   errors.push('导航缓存未移除查询参数，可能因追踪参数产生重复缓存。');
 }
