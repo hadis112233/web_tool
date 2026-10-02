@@ -40,15 +40,18 @@
                 function observeInstallingWorker() {
                     var installingWorker = registration.installing;
                     if (!installingWorker) return;
-                    installingWorker.addEventListener('statechange', function () {
+                    function checkWorkerState() {
                         if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             showUpdate(installingWorker);
                         }
-                    });
+                    }
+                    installingWorker.addEventListener('statechange', checkWorkerState);
+                    checkWorkerState();
                 }
 
                 if (registration.waiting) showUpdate(registration.waiting);
                 registration.addEventListener('updatefound', observeInstallingWorker);
+                observeInstallingWorker();
             }).catch(function () {});
 
             navigator.serviceWorker.addEventListener('controllerchange', function () {
@@ -57,6 +60,10 @@
             if (updateButton) {
                 updateButton.addEventListener('click', function () {
                     if (!waitingWorker) return;
+                    if (waitingWorker.state === 'activated') {
+                        window.location.reload();
+                        return;
+                    }
                     reloadingForUpdate = true;
                     updateButton.disabled = true;
                     updateButton.textContent = '正在更新…';
