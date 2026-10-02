@@ -215,6 +215,7 @@
 
     function recordRecent(url) {
         if (!url) return;
+        recent = cleanStoredUrls(readRecent(), availableUrls, 12);
         var position = recent.indexOf(url);
         if (position !== -1) recent.splice(position, 1);
         recent.unshift(url);
@@ -275,12 +276,14 @@
         button.className = 'favorite-button';
         updateButton(button, url);
         button.addEventListener('click', function () {
+            favorites = cleanStoredUrls(readFavorites(), availableUrls, availableUrls.size);
             var position = favorites.indexOf(url);
             if (position === -1) favorites.push(url);
             else favorites.splice(position, 1);
             writeFavorites(favorites);
             cards.forEach(function (item) {
-                if (getUrl(item) === url) updateButton(item.querySelector('.favorite-button'), url);
+                var favoriteButton = item.querySelector('.favorite-button');
+                if (favoriteButton) updateButton(favoriteButton, getUrl(item));
             });
             filterCards();
         });
@@ -288,6 +291,17 @@
     });
 
     filterInput.addEventListener('input', filterCards);
+    window.addEventListener('storage', function (event) {
+        if (event.storageArea !== localStorage) return;
+        if (event.key !== null && event.key !== STORAGE_KEY && event.key !== RECENT_KEY) return;
+        favorites = cleanStoredUrls(readFavorites(), availableUrls, availableUrls.size);
+        recent = cleanStoredUrls(readRecent(), availableUrls, 12);
+        cards.forEach(function (card) {
+            var button = card.querySelector('.favorite-button');
+            if (button) updateButton(button, getUrl(card));
+        });
+        filterCards();
+    });
     filterInput.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') { filterInput.value = ''; filterCards(); }
     });
