@@ -219,6 +219,7 @@
         var position = recent.indexOf(url);
         if (position !== -1) recent.splice(position, 1);
         recent.unshift(url);
+        recent = recent.slice(0, 12);
         writeRecent(recent);
     }
 
@@ -291,9 +292,7 @@
     });
 
     filterInput.addEventListener('input', filterCards);
-    window.addEventListener('storage', function (event) {
-        if (event.storageArea !== localStorage) return;
-        if (event.key !== null && event.key !== STORAGE_KEY && event.key !== RECENT_KEY) return;
+    function syncPersonalization() {
         favorites = cleanStoredUrls(readFavorites(), availableUrls, availableUrls.size);
         recent = cleanStoredUrls(readRecent(), availableUrls, 12);
         cards.forEach(function (card) {
@@ -301,6 +300,14 @@
             if (button) updateButton(button, getUrl(card));
         });
         filterCards();
+    }
+    window.addEventListener('storage', function (event) {
+        if (event.storageArea !== localStorage) return;
+        if (event.key !== null && event.key !== STORAGE_KEY && event.key !== RECENT_KEY) return;
+        syncPersonalization();
+    });
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) syncPersonalization();
     });
     filterInput.addEventListener('keydown', function (event) {
         if (event.isComposing || event.keyCode === 229) return;
