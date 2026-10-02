@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'hadis-nav-';
-const CACHE = `${CACHE_PREFIX}v35`;
+const CACHE = `${CACHE_PREFIX}v36`;
 const CORE = [
   '/',
   '/index.html',
@@ -16,7 +16,7 @@ const CORE = [
   '/assets/fontawesome-5.15.4/webfonts/fa-regular-400.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-solid-900.woff2',
   '/assets/fontawesome-5.15.4/webfonts/fa-brands-400.woff2',
-  '/assets/js/site-enhancements.js?v=20261002-4',
+  '/assets/js/site-enhancements.js?v=20261002-5',
   '/assets/js/index-page.js?v=20261002-1',
   '/assets/js/commit-page.js?v=20260813-1',
   '/assets/js/offline-page.js?v=20260801-1',

@@ -291,7 +291,18 @@
         card.querySelector('.url-body').appendChild(button);
     });
 
-    filterInput.addEventListener('input', filterCards);
+    var composingFilter = false;
+    filterInput.addEventListener('compositionstart', function () {
+        composingFilter = true;
+    });
+    filterInput.addEventListener('compositionend', function () {
+        composingFilter = false;
+        filterCards();
+    });
+    filterInput.addEventListener('input', function (event) {
+        if (composingFilter || event.isComposing) return;
+        filterCards();
+    });
     function syncPersonalization() {
         favorites = cleanStoredUrls(readFavorites(), availableUrls, availableUrls.size);
         recent = cleanStoredUrls(readRecent(), availableUrls, 12);
