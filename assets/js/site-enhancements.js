@@ -303,6 +303,7 @@
         filterCards();
     });
     filterInput.addEventListener('keydown', function (event) {
+        if (event.isComposing || event.keyCode === 229) return;
         if (event.key === 'Escape') { filterInput.value = ''; filterCards(); }
     });
     favoriteToggle.addEventListener('click', function () {
@@ -328,7 +329,10 @@
     resetButton.addEventListener('click', resetFilters);
     empty.querySelector('button').addEventListener('click', resetFilters);
     document.addEventListener('keydown', function (event) {
-        if (event.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || event.ctrlKey || event.altKey || event.metaKey || event.repeat) return;
+        var active = document.activeElement;
+        if (active && (active.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName))) return;
+        if (event.key === '/') {
             event.preventDefault();
             filterInput.focus();
         }

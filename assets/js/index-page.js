@@ -235,6 +235,7 @@
         search.querySelectorAll('label[for]').forEach(function (label) {
             label.tabIndex = 0;
             label.addEventListener('keydown', function (event) {
+                if (event.isComposing || event.keyCode === 229) return;
                 if (event.key !== 'Enter' && event.key !== ' ') return;
                 event.preventDefault();
                 label.click();
@@ -393,6 +394,7 @@
     });
 
     document.addEventListener('keydown', function (event) {
+        if (event.isComposing || event.keyCode === 229) return;
         if (event.key === 'Escape') closeSidebar(true);
     });
     window.addEventListener('scroll', updateScrollState, { passive: true });
