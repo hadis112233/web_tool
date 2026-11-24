@@ -55,13 +55,16 @@ async function worker() {
   while (queue.length) results.push(await check(queue.shift()));
 }
 await Promise.all(Array.from({ length: concurrency }, worker));
-results.sort((a, b) => a.level.localeCompare(b.level) || a.url.localeCompare(b.url));
+const priority = { '异常': 0, '需人工确认': 1, '正常': 2 };
+results.sort((a, b) => priority[a.level] - priority[b.level] || a.url.localeCompare(b.url));
+const abnormalCount = results.filter((item) => item.level === '异常').length;
+const manualCount = results.filter((item) => item.level === '需人工确认').length;
 
 const report = [
   '# Hadis 外链巡检报告',
   '',
   `生成时间：${new Date().toISOString()}`,
-  `检查数量：${results.length}`,
+  `共检查 ${results.length} 个链接，其中 ${abnormalCount} 个异常，${manualCount} 个需人工确认。`,
   '',
   '| 状态 | HTTP 状态 | 原链接 | 最终地址 |',
   '| --- | --- | --- | --- |',
@@ -71,7 +74,5 @@ const report = [
 
 await mkdir('reports', { recursive: true });
 await writeFile('reports/link-audit.md', report, 'utf8');
-const abnormalCount = results.filter((item) => item.level === '异常').length;
-const manualCount = results.filter((item) => item.level === '需人工确认').length;
 console.log(`Checked ${results.length} links: ${abnormalCount} abnormal, ${manualCount} need manual review. Report written to reports/link-audit.md.`);
 if (abnormalCount > 0) process.exitCode = 1;
